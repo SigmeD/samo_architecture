@@ -9,15 +9,19 @@
 - [x] Корневой `CLAUDE.md` (правила проекта, `36b3c01`)
 
 ## В работе
-- [ ] Фаза 1 — вертикальный срез «Куратор» (ветка `feature/curator-vertical-slice`)
-  - [ ] Task 1 — каркас Next.js
-  - [ ] Task 2 — тест-раннеры (Vitest + Playwright)
-  - [ ] Task 3 — бренд-токены, зоны, ассеты
-  - [ ] Task 4–8 — контент-слой (типы, Zod, Куратор, 2 модуля)
-  - [ ] Task 9–13 — дженерик-компоненты
-  - [ ] Task 14–17 — маршруты L0/L1/L2
-  - [ ] Task 18 — Playwright screenshot-diff
-  - [ ] Task 19 — деплой Vercel
+- Фаза 1 — вертикальный срез «Куратор» (ветка `feature/curator-vertical-slice`) — **собран, не смёржен**
+  - [x] Task 1 — каркас Next.js (App Router, strict TS, static export) — Next 15.5.19
+  - [x] Task 2 — тест-раннеры (Vitest + Playwright)
+  - [x] Task 3 — бренд-токены, зоны, ассеты (`styles/brand.css`, `public/brand/`)
+  - [x] Task 4–6 — контент: типы, Zod-схема (TDD), зоны
+  - [x] Task 7–8 — контент Куратора (15 доменов / 8 связей / 14 модулей) + 2 модуля
+  - [x] Task 9–13 — дженерик-компоненты (`components/atlas/*`)
+  - [x] Task 14–17 — маршруты L0/L1/L2 (Next 15 async params; 17 статических страниц)
+  - [x] Task 18 — Playwright e2e (3 функц. ✓) + baseline screenshot
+  - [ ] Task 19 — деплой Vercel (требует авторизации владельца)
+  - [ ] Финал: code-review всего среза → merge `feature/curator-vertical-slice` → `main`
+
+**Проверено:** `npm run build` (17 страниц) · `npm run test` 18/18 · `npm run typecheck` 0 ошибок · e2e канон-инварианты (нет «7 этапов»/«0–100%», ядро = процедура урока, badge «расхождение с каноном»).
 
 ## Не покрыто / отложено
 - [ ] Кабинеты, кроме Куратора (Фазы 2..N) — навигируемые стабы
