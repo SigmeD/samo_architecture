@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Архитектура модуля «Дети на миллион»</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700;800&family=Roboto:wght@400;500;700;900&display=swap');
+
+  :root{
+    --blue:#0055A7; --blue-d:#013a72; --blue-2:#1f72c4; --blue-l:#e9f1fb; --blue-b:#bcd5ef;
+    --green:#00A550; --green-d:#0a6c3c; --green-l:#e6f6ec; --green-b:#aee0c1;
+    --orange:#F7933C; --orange-d:#a55c16; --orange-l:#fdefdf; --orange-b:#f1c894;
+    --teal:#0E8E8E; --teal-d:#0a5d5d; --teal-l:#e2f4f4; --teal-b:#a3d8d8;
+    --purple:#6f54be; --purple-d:#4a3683; --purple-l:#eee9fa; --purple-b:#c9bbeb;
+    --gold:#B7791F; --gold-d:#7f5512; --gold-l:#fbf1da; --gold-b:#e7cd92;
+    --slate:#566778; --slate-d:#36434f; --slate-l:#eef2f7; --slate-b:#cdd9e5;
+    --ink:#14212e; --muted:#62748a; --faint:#8497a8; --line:#d8e2ee;
+    --bg1:#e8eef6; --bg2:#f4f8fc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{font-family:"Roboto","Segoe UI",Arial,sans-serif;}
+  body{
+    width:1720px;padding:46px 48px;color:var(--ink);
+    background:
+      radial-gradient(1100px 520px at 82% -8%, rgba(247,147,60,.10), transparent 60%),
+      radial-gradient(1300px 680px at 8% 4%, rgba(0,85,167,.12), transparent 58%),
+      linear-gradient(160deg,var(--bg1),var(--bg2));
+  }
+
+  .frame{
+    position:relative;background:#fff;border:1px solid var(--line);border-radius:28px;
+    padding:0 0 34px;box-shadow:0 26px 70px -24px rgba(11,44,82,.34), 0 4px 14px rgba(11,44,82,.06);overflow:hidden;
+  }
+  .frame::before{content:"";position:absolute;inset:0 0 auto 0;height:7px;
+    background:linear-gradient(90deg,var(--blue) 0%,var(--blue-2) 45%,var(--teal) 70%,var(--green) 100%);}
+
+  /* faint dot texture on header */
+  .header{
+    position:relative;padding:34px 46px 26px;
+    background:
+      radial-gradient(circle at 1px 1px, rgba(0,85,167,.07) 1px, transparent 0) 0 0/22px 22px,
+      linear-gradient(180deg,#f7fafd,#ffffff);
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{font-family:"Fira Sans";font-size:12.5px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--blue);display:flex;align-items:center;gap:11px;}
+  .eyebrow::before{content:"";width:30px;height:2px;background:var(--orange);display:inline-block;border-radius:2px;}
+  h1{font-family:"Fira Sans";font-size:46px;line-height:1.04;font-weight:800;color:var(--blue-d);letter-spacing:-.5px;margin:12px 0 6px;}
+  h1 .q{color:var(--blue);}
+  .acad{font-family:"Fira Sans";font-size:16.5px;font-weight:600;color:var(--ink);}
+  .acad b{color:var(--blue);}
+  .metaRow{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px;}
+  .metaRow .m{font-size:12px;font-weight:600;color:var(--slate-d);background:#fff;border:1px solid var(--line);border-radius:9px;padding:6px 13px;display:flex;align-items:center;gap:7px;box-shadow:0 1px 2px rgba(11,44,82,.04);}
+  .metaRow .m b{color:var(--blue);font-weight:800;font-family:"Fira Sans";}
+  .metaRow .m .dot{width:7px;height:7px;border-radius:50%;background:var(--green);}
+
+  .body{padding:26px 46px 0;}
+
+  /* section header */
+  .sec{display:flex;align-items:center;gap:16px;margin:30px 0 16px;}
+  .sec .no{font-family:"Fira Sans";font-size:14px;font-weight:800;color:#fff;background:var(--blue);width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;letter-spacing:.5px;box-shadow:0 4px 10px -3px rgba(0,85,167,.5);}
+  .sec h2{font-family:"Fira Sans";font-size:23px;font-weight:800;color:var(--blue-d);letter-spacing:.2px;white-space:nowrap;}
+  .sec .cap{font-size:12.5px;color:var(--muted);font-weight:500;}
+  .sec .rule{flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent);}
+
+  /* ── core band ── */
+  .core{
+    display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center;
+    background:linear-gradient(120deg,var(--blue) 0%,var(--blue-d) 100%);color:#fff;
+    border-radius:18px;padding:20px 26px;box-shadow:0 16px 34px -16px rgba(0,60,120,.7);position:relative;overflow:hidden;
+  }
+  .core::after{content:"";position:absolute;right:-40px;top:-60px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.14),transparent 65%);}
+  .core .badge{width:62px;height:62px;border-radius:16px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.34);display:flex;align-items:center;justify-content:center;font-size:30px;}
+  .core .t{font-family:"Fira Sans";font-size:21px;font-weight:800;letter-spacing:.3px;}
+  .core .feats{display:flex;gap:10px;flex-wrap:wrap;margin-top:11px;}
+  .core .feats span{font-size:12px;font-weight:600;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);border-radius:8px;padding:5px 11px;}
+  .core .feats span b{font-weight:800;color:#ffe2c4;}
+
+  /* ── role/cabinet cards ── */
+  .tierlab{font-family:"Fira Sans";font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--faint);margin:22px 0 11px;display:flex;align-items:center;gap:10px;}
+  .tierlab::after{content:"";flex:1;height:1px;background:var(--line);}
+
+  .grid2{display:grid;grid-template-columns:1.42fr 1fr;gap:18px;}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+
+  .ccard{position:relative;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 17px 15px;box-shadow:0 8px 20px -14px rgba(11,44,82,.4);overflow:hidden;}
+  .ccard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c,var(--blue));}
+  .ccard .ch{display:flex;align-items:flex-start;gap:12px;margin-bottom:11px;}
+  .ccard .ic{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:21px;background:var(--cl,var(--blue-l));border:1px solid var(--cb,var(--blue-b));flex-shrink:0;}
+  .ccard .nm{font-family:"Fira Sans";font-size:16px;font-weight:800;color:var(--cd,var(--blue-d));line-height:1.12;letter-spacing:.1px;}
+  .ccard .role{font-size:11px;font-weight:600;color:var(--muted);margin-top:2px;display:block;}
+  .ccard .opt{font-size:8.5px;font-weight:800;color:var(--cd,var(--blue-d));background:var(--cl,var(--blue-l));border:1px solid var(--cb,var(--blue-b));border-radius:5px;padding:1px 5px;margin-left:6px;letter-spacing:.4px;text-transform:uppercase;vertical-align:middle;}
+  .feats2{list-style:none;display:flex;flex-direction:column;gap:6px;}
+  .feats2 li{font-size:11.7px;line-height:1.32;color:#33485c;padding-left:15px;position:relative;}
+  .feats2 li::before{content:"";position:absolute;left:1px;top:6px;width:6px;height:6px;border-radius:2px;background:var(--c,var(--blue));}
+  .feats2 li b{color:var(--ink);font-weight:700;}
+  .feats2 li .new{font-size:8.5px;font-weight:800;color:#fff;background:var(--orange);border-radius:4px;padding:0 5px;margin-left:4px;letter-spacing:.4px;text-transform:uppercase;vertical-align:middle;}
+  .feats2 li .tag{font-size:9px;font-weight:700;color:var(--green-d);background:var(--green-l);border:1px solid var(--green-b);border-radius:4px;padding:0 5px;margin-left:3px;vertical-align:middle;}
+
+  /* hero student */
+  .hero{--c:var(--green);--cl:var(--green-l);--cb:var(--green-b);--cd:var(--green-d);}
+  .hero .ch{align-items:center;}
+  .hero .ic{width:50px;height:50px;font-size:26px;}
+  .hero .nm{font-size:19px;}
+  .hero .feats2{display:grid;grid-template-columns:1fr 1fr;gap:7px 20px;}
+
+  /* color themes */
+  .c-green{--c:var(--green);--cl:var(--green-l);--cb:var(--green-b);--cd:var(--green-d);}
+  .c-blue{--c:var(--blue);--cl:var(--blue-l);--cb:var(--blue-b);--cd:var(--blue-d);}
+  .c-teal{--c:var(--teal);--cl:var(--teal-l);--cb:var(--teal-b);--cd:var(--teal-d);}
+  .c-orange{--c:var(--orange);--cl:var(--orange-l);--cb:var(--orange-b);--cd:var(--orange-d);}
+  .c-purple{--c:var(--purple);--cl:var(--purple-l);--cb:var(--purple-b);--cd:var(--purple-d);}
+  .c-gold{--c:var(--gold);--cl:var(--gold-l);--cb:var(--gold-b);--cd:var(--gold-d);}
+  .c-slate{--c:var(--slate);--cl:var(--slate-l);--cb:var(--slate-b);--cd:var(--slate-d);}
+
+  /* ── process flows ── */
+  .flow{background:#fbfcfe;border:1px solid var(--line);border-radius:16px;padding:15px 18px 16px;margin-bottom:14px;}
+  .flow .ft{font-family:"Fira Sans";font-size:14px;font-weight:800;color:var(--blue-d);display:flex;align-items:center;gap:9px;margin-bottom:13px;}
+  .flow .ft .pin{font-size:16px;}
+  .flow .ft .note{margin-left:auto;font-size:10.5px;font-weight:700;color:var(--orange-d);background:var(--orange-l);border:1px solid var(--orange-b);border-radius:7px;padding:3px 10px;letter-spacing:.2px;}
+  .chain{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;}
+  .step{flex:1;min-width:0;background:#fff;border:1px solid var(--line);border-radius:11px;padding:9px 11px;display:flex;flex-direction:column;gap:3px;position:relative;margin-right:24px;box-shadow:0 3px 8px -6px rgba(11,44,82,.4);}
+  .step:last-child{margin-right:0;}
+  .step::after{content:"\27A4";position:absolute;right:-19px;top:50%;transform:translateY(-50%);color:var(--blue-2);font-size:14px;}
+  .step:last-child::after{display:none;}
+  .step .k{font-size:9px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--blue);}
+  .step .v{font-size:11.5px;font-weight:600;color:var(--ink);line-height:1.2;}
+  .step.alt{background:var(--orange-l);border-color:var(--orange-b);}
+  .step.alt .k{color:var(--orange-d);} .step.alt::after{color:var(--orange);}
+  .step.end{background:var(--green-l);border-color:var(--green-b);}
+  .step.end .k{color:var(--green-d);} .step.end::after{color:var(--green);}
+  .branch{display:flex;gap:9px;flex:1.4;}
+  .branch .step{margin-right:0;flex:1;}
+  .branch .step::after{display:none;}
+
+  /* ── supporting ── */
+  .supgrid{display:grid;grid-template-columns:1.55fr 1fr;gap:18px;}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:0 8px 20px -16px rgba(11,44,82,.4);}
+  .panel .pt{font-family:"Fira Sans";font-size:13.5px;font-weight:800;color:var(--blue-d);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .panel .pt .ic{font-size:16px;}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;}
+  .chips span{font-size:11.5px;font-weight:600;color:#33485c;background:#f5f8fc;border:1px solid var(--line);border-radius:9px;padding:6px 12px;display:inline-flex;align-items:center;gap:6px;}
+  .chips span .d{width:7px;height:7px;border-radius:50%;}
+  .chips span.star{background:var(--orange-l);border-color:var(--orange-b);color:var(--orange-d);font-weight:700;}
+  .infra{list-style:none;display:flex;flex-direction:column;gap:8px;}
+  .infra li{font-size:11.7px;color:#33485c;background:#f5f8fc;border:1px solid var(--line);border-radius:9px;padding:8px 11px;line-height:1.3;}
+  .infra li b{color:var(--ink);}
+  .infra li .plan{font-size:8.5px;font-weight:800;color:var(--orange-d);background:var(--orange-l);border:1px solid var(--orange-b);border-radius:4px;padding:0 5px;margin-left:4px;text-transform:uppercase;letter-spacing:.3px;vertical-align:middle;}
+  .infra .gl{font-size:9.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--faint);margin-top:4px;}
+
+  /* ── result ── */
+  .result{display:flex;align-items:center;gap:18px;background:linear-gradient(120deg,var(--green-l),#d4eede 55%,var(--blue-l));border:1px solid var(--green-b);border-radius:18px;padding:18px 26px;margin-top:24px;box-shadow:0 14px 30px -20px rgba(0,120,70,.6);}
+  .result .ic{width:54px;height:54px;border-radius:14px;background:#fff;border:1px solid var(--green-b);display:flex;align-items:center;justify-content:center;font-size:27px;flex-shrink:0;}
+  .result .rt{font-family:"Fira Sans";font-size:21px;font-weight:800;color:var(--green-d);line-height:1.12;}
+  .result .rs{font-size:12.5px;color:#2c5a44;font-weight:500;margin-top:4px;}
+
+  .foot{margin-top:20px;padding:0 46px;text-align:center;font-size:11.5px;color:var(--muted);line-height:1.7;}
+  .foot .note{display:inline-block;font-style:italic;color:var(--orange-d);}
+  .foot b{color:var(--slate-d);font-weight:700;}
+  .foot .sep{color:var(--line);margin:0 4px;}
+</style>
+</head>
+<body>
+  <div class="frame">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="eyebrow">Экосистема SAMO · автономный образовательный модуль</div>
+      <h1>Архитектура модуля <span class="q">«Дети&nbsp;на&nbsp;миллион»</span></h1>
+      <div class="acad"><b>Детская Бизнес Академия Саидмурода Давлатова</b> · финансовая грамотность и предпринимательство для детей 10–17 лет</div>
+      <div class="metaRow">
+        <span class="m"><span class="dot"></span><b>11</b> кабинетов</span>
+        <span class="m"><span class="dot"></span><b>73</b> модуля</span>
+        <span class="m"><span class="dot"></span><b>108</b> моделей данных</span>
+        <span class="m"><span class="dot"></span>4 семестра · постоянный набор</span>
+        <span class="m"><span class="dot"></span>мультиязычность ru / kz / tj / uz</span>
+        <span class="m"><span class="dot"></span>срез 2026-06-04 · по встречам 04.06</span>
+      </div>
+    </div>
+
+    <div class="body">
+
+      <!-- 01 CORE -->
+      <div class="sec"><span class="no">01</span><h2>Ядро модуля</h2><span class="cap">общий движок, на котором работают все кабинеты</span><span class="rule"></span></div>
+      <div class="core">
+        <div class="badge">🧠</div>
+        <div>
+          <div class="t">Учебный движок · Аналитика и KPI · Геймификация</div>
+          <div class="feats">
+            <span>урок-цикл, программа семестра, тесты <b>≥70%</b>, экзамены</span>
+            <span>дашборды, рейтинги, отчётность, <b>аналитика CRM + счётчик</b></span>
+            <span>звёздочки за активность → <b>солары</b>, уровни, достижения</span>
+            <span>RBAC + scope-изоляция «своя школа / сеть»</span>
+            <span><b>ИИ-аватар Довлатова</b> — у ученика, родителя, куратора</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 ROLES & CABINETS -->
+      <div class="sec"><span class="no">02</span><h2>Роли и кабинеты</h2><span class="cap">11 кабинетов в трёх контурах — у каждого свой набор функций и scope данных</span><span class="rule"></span></div>
+
+      <div class="tierlab">Потребители</div>
+      <div class="grid2">
+        <!-- Ученик hero -->
+        <div class="ccard hero">
+          <div class="ch">
+            <div class="ic">🎓</div>
+            <div><div class="nm">Кабинет ученика</div><span class="role">ребёнок 10–17 лет · потребитель обучения</span></div>
+          </div>
+          <ul class="feats2">
+            <li><b>Уроки:</b> смотрит заранее → на занятии разбор фрагментов с куратором</li>
+            <li><b>СУ</b> (Система успеха) <b>+ Бизнес-проект</b> — два отдельных блока</li>
+            <li>Звёздочки за активность → <b>солары</b>, уровни, рейтинг, магазин</li>
+            <li>ДЗ: статус <b>«принято / не принято»</b>, средняя, успеваемость</li>
+            <li>Сертификат как <b>ритуал</b>: ролик «путь успеха» → Instagram → вручение</li>
+            <li><b>ИИ-аватар Довлатова</b>, «Зачем учиться» (топ-100)</li>
+            <li>Расписание, чат группы, уведомления, профиль</li>
+            <li>3 пробных урока на стадии знакомства с продуктом</li>
+          </ul>
+        </div>
+        <!-- Родитель -->
+        <div class="ccard c-blue">
+          <div class="ch">
+            <div class="ic">👪</div>
+            <div><div class="nm">Кабинет родителя</div><span class="role">контроль и оплата · отдельный аккаунт</span></div>
+          </div>
+          <ul class="feats2">
+            <li><b>Мои дети:</b> статусы <b>активен / не активен / ждёт оплаты</b> · реф-ссылка</li>
+            <li><b>Центр контроля:</b> мгновенное уведомление о непосещении урока</li>
+            <li>Сводка: ДЗ «принято/не принято», рейтинг; отчёты куратора (нед./месяц/семестр, видео-«кругляшочки»)</li>
+            <li>Старт с <b>договора</b> (онлайн-подпись) → оплата, рассрочка, график</li>
+            <li><b>Расторжение договора</b> (поэтапно) · приостановка («академ»)</li>
+            <li>Чаты: куратор / админ / <b>франчайзи</b> · «поблагодарить» · опросы</li>
+            <li>Расписание ребёнка · приобретённые курсы · программа (видит все темы)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tierlab">Операционная команда школы</div>
+      <div class="grid3">
+        <!-- Куратор -->
+        <div class="ccard c-teal">
+          <div class="ch"><div class="ic">🧑‍🏫</div><div><div class="nm">Куратор</div><span class="role">ведёт группы · участвует в продаже</span></div></div>
+          <ul class="feats2">
+            <li>Уроки по <b>процедуре занятия</b> (реальная методика школы)</li>
+            <li>Проверка: посещаемость → ДЗ → успеваемость → классная</li>
+            <li><b>3 цикла проверки:</b> ДЗ · эссе · бизнес-проекты</li>
+            <li><b>Пробный урок</b> (воронка продаж): коэф. успешности 70–80% <span class="new">встреча</span></li>
+            <li><b>Академия обучения куратора:</b> квизы ~100, аттестация</li>
+            <li>Ежемесячный отчёт родителю · <b>Мой KPI</b> · рейтинг, <b>топ-3 значок</b></li>
+            <li>Задачи и напоминания · встречи со ст. куратором (раз в 2 нед.)</li>
+          </ul>
+        </div>
+        <!-- Старший куратор -->
+        <div class="ccard c-teal">
+          <div class="ch"><div class="ic">🧑‍🏫</div><div><div class="nm">Старший куратор</div><span class="role">играющий тренер · scope школы</span></div></div>
+          <ul class="feats2">
+            <li>Свои группы + собственная аналитика</li>
+            <li>Аналитика по <b>подчинённым кураторам</b>: этапы, средние, явка</li>
+            <li>Обучение новых кураторов · <b>лидерборд кураторов</b></li>
+            <li>Перераспределение групп · приём месячных отчётов</li>
+          </ul>
+        </div>
+        <!-- Администратор -->
+        <div class="ccard c-orange">
+          <div class="ch"><div class="ic">🏫</div><div><div class="nm">Администратор школы</div><span class="role">все операции своей школы</span></div></div>
+          <ul class="feats2">
+            <li><b>Маркетинг:</b> лидогенерация, ролики, Instagram школы <span class="new">встреча</span></li>
+            <li><b>Продажи:</b> воронка, пробные уроки, план наполнения (250/120) <span class="new">встреча</span></li>
+            <li>Зачисление = <b>цепочка</b>: лид → менеджер → пробный → договор</li>
+            <li>Учебный процесс: группы (лимит 5–8) / индивид / СУ / доп. / бизнес-проекты / выезды</li>
+            <li>Непосещение решает <b>администратор</b>; запись живых уроков</li>
+            <li><b>Отдел качества</b> · штатка + оргструктура · дебиторка</li>
+          </ul>
+        </div>
+        <!-- Менеджер -->
+        <div class="ccard c-teal">
+          <div class="ch"><div class="ic">🤝</div><div><div class="nm">Менеджер по продажам</div><span class="role">привлечение и сделка</span></div></div>
+          <ul class="feats2">
+            <li>Лиды и воронка · <b>3 пути регистрации</b></li>
+            <li>Доступ к <b>3 урокам</b> родителю → запись на пробный</li>
+            <li>Пробный урок с куратором → <b>дожим в WhatsApp</b></li>
+            <li>Договор, рассрочка, график · дебиторка · KPI</li>
+          </ul>
+        </div>
+        <!-- Финансист -->
+        <div class="ccard c-gold">
+          <div class="ch"><div class="ic">📊</div><div><div class="nm">Финансист / бухгалтер</div><span class="role">финконтроль · конфиденциально</span></div></div>
+          <ul class="feats2">
+            <li>P&amp;L (ОПиУ), доходы/расходы, ФОТ, осн. средства, cashflow</li>
+            <li><b>Роялти 20%</b> · план платежа · возвраты</li>
+            <li>Выплаты: <b>Фикса + Бонус − Штрафы</b> (KPI)</li>
+            <li>Финотчёты видят <b>владелец + бухгалтер</b>; один на сеть</li>
+          </ul>
+        </div>
+        <!-- spacer placeholder card: пустая ячейка визуально не нужна -->
+        <div class="ccard c-slate" style="--c:var(--slate)">
+          <div class="ch"><div class="ic">🛡️</div><div><div class="nm">Качество и контроль</div><span class="role">сквозная функция администрации</span></div></div>
+          <ul class="feats2">
+            <li>Работа с проблемными клиентами, сбор ОС (позитив/негатив)</li>
+            <li>Проверки кураторов по негативным отзывам</li>
+            <li>Записи живых уроков → оценка качества работы куратора</li>
+            <li>Опросы родителей = <b>рейтинг школы</b></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tierlab">Сеть и управление</div>
+      <div class="grid3">
+        <!-- Куратор франшиз -->
+        <div class="ccard c-purple">
+          <div class="ch"><div class="ic">🧭</div><div><div class="nm">Куратор франшиз</div><span class="role">закреплённые школы</span></div></div>
+          <ul class="feats2">
+            <li>Обучение кураторов и менеджеров закреплённых школ</li>
+            <li>Созвоны + ручные отчёты руководителю франшизы</li>
+            <li>Документы франшизы (чтение) · не работает с учениками</li>
+          </ul>
+        </div>
+        <!-- Франчайзи -->
+        <div class="ccard c-purple">
+          <div class="ch"><div class="ic">🏬</div><div><div class="nm">Франчайзи / директор</div><span class="role">управление школой(ами)</span></div></div>
+          <ul class="feats2">
+            <li>Видит как директор: <b>расширенная аналитика</b> школы</li>
+            <li>Все функции админа + KPI / табель / рейтинг / явка в цифрах</li>
+            <li><b>2 модели оргструктуры</b> (1 школа / сеть школ)</li>
+            <li>Настройка прав, фиче-тоглы, ценовые диапазоны</li>
+          </ul>
+        </div>
+        <!-- Руководитель -->
+        <div class="ccard c-blue">
+          <div class="ch"><div class="ic">🎯</div><div><div class="nm">Руководитель проекта<span class="opt">+ подразд. опц.</span></div><span class="role">вся сеть школ</span></div></div>
+          <ul class="feats2">
+            <li>Сводный дашборд всех школ · <b>конструктор программы</b></li>
+            <li>Магазин мерча (каталог / распределение) · документы франшизы</li>
+            <li>Назначение кураторов франшиз · делегирование прав</li>
+            <li>KPI: школа → головной офис</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 03 KEY PROCESSES -->
+      <div class="sec"><span class="no">03</span><h2>Ключевые процессы</h2><span class="cap">сквозные бизнес-сценарии из встреч 04.06.2026</span><span class="rule"></span></div>
+
+      <div class="flow">
+        <div class="ft"><span class="pin">💼</span>Воронка продаж и пробного урока<span class="note">коэф. успешности куратора 70–80% · записи урока + WhatsApp-беседы</span></div>
+        <div class="chain">
+          <div class="step"><span class="k">Маркетинг</span><span class="v">лид: таргет / органика / реклама / рекомендация</span></div>
+          <div class="step"><span class="k">Менеджер</span><span class="v">квалификация в CRM, запись на пробный</span></div>
+          <div class="step"><span class="k">3 урока</span><span class="v">доступ родителю + ребёнку (~1 час)</span></div>
+          <div class="step alt"><span class="k">Пробный урок</span><span class="v">куратор формирует ценность у родителя</span></div>
+          <div class="step alt"><span class="k">Дожим</span><span class="v">продавец закрывает сделку (WhatsApp)</span></div>
+          <div class="step end"><span class="k">Договор → оплата</span><span class="v">логин/пароль ребёнку, доступ открыт</span></div>
+        </div>
+      </div>
+
+      <div class="flow">
+        <div class="ft"><span class="pin">📄</span>Жизненный цикл договора<span class="note">статусы: активен · не активен · ждёт оплаты (без «заморозки»)</span></div>
+        <div class="chain">
+          <div class="step"><span class="k">Договор</span><span class="v">онлайн-подпись или вложение с подписью</span></div>
+          <div class="step"><span class="k">Оплата</span><span class="v">онлайн/офлайн, рассрочка, график</span></div>
+          <div class="step"><span class="k">Доступ</span><span class="v">ученик + родитель на платформе</span></div>
+          <div class="step"><span class="k">Контроль</span><span class="v">прогресс, отчёты, обратная связь</span></div>
+          <div class="branch">
+            <div class="step end"><span class="k">Пролонгация</span><span class="v">новый период</span></div>
+            <div class="step"><span class="k">Приостановка</span><span class="v">«академ» / каникулы</span></div>
+            <div class="step alt"><span class="k">Расторжение</span><span class="v">поэтапно → возврат</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 SUPPORTING -->
+      <div class="sec"><span class="no">04</span><h2>Сквозные модули и платформа</h2><span class="cap">общие сервисы, данные и интеграции экосистемы SAMO</span><span class="rule"></span></div>
+      <div class="supgrid">
+        <div class="panel">
+          <div class="pt"><span class="ic">⚙️</span>Сквозные модули</div>
+          <div class="chips">
+            <span class="star"><span class="d" style="background:var(--orange)"></span>ИИ-аватар Довлатова</span>
+            <span><span class="d" style="background:var(--blue)"></span>Чат: куратор / админ / франчайзи</span>
+            <span><span class="d" style="background:var(--blue)"></span>Уведомления (мгновенные)</span>
+            <span><span class="d" style="background:var(--teal)"></span>Видеосозвоны + записи уроков</span>
+            <span><span class="d" style="background:var(--teal)"></span>Аналитика: CRM + счётчик</span>
+            <span><span class="d" style="background:var(--slate)"></span>Отдел качества</span>
+            <span><span class="d" style="background:var(--gold)"></span>KPI и выплаты: Фикса+Бонус−Штраф</span>
+            <span><span class="d" style="background:var(--gold)"></span>Штатка + оргструктура (2 модели)</span>
+            <span><span class="d" style="background:var(--blue)"></span>Отчёты: ОПиУ + по направлениям</span>
+            <span><span class="d" style="background:var(--purple)"></span>Документы и договоры</span>
+            <span><span class="d" style="background:var(--green)"></span>Сертификаты-ритуал</span>
+            <span><span class="d" style="background:var(--slate)"></span>Безопасность: RBAC + scope</span>
+            <span><span class="d" style="background:var(--orange)"></span>Мультиязычность ru/kz/tj/uz</span>
+            <span><span class="d" style="background:var(--purple)"></span>Фиче-тоглы и настройки</span>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="pt"><span class="ic">🗄️</span>Данные и интеграции</div>
+          <ul class="infra">
+            <li><span class="gl">Хранение</span></li>
+            <li><b>PostgreSQL</b> — единая база модуля · <b>S3</b> — документы, медиа, записи</li>
+            <li><span class="gl">Видео и связь</span></li>
+            <li><b>Сервис видеосвязи</b> (онлайн-уроки) · видеохостинг <span class="plan">план</span></li>
+            <li><span class="gl">Платформа SAMO</span></li>
+            <li>IAM · CRM · Финансы · Франчайзинг · Юр · Уведомления · Маркетинг</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- RESULT -->
+      <div class="result">
+        <div class="ic">🏆</div>
+        <div>
+          <div class="rt">Финансово грамотный ребёнок и управляемая сеть школ</div>
+          <div class="rs">сквозной путь: лид → пробный урок → договор → обучение → результат и пролонгация · непрерывный набор групп</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="foot">
+      <span class="note">«Бизнес-проект» и СУ — два отдельных блока проверки; для старшей группы (14–17) бизнес-проект полноценный, у младшей (10–13) — игровая тема.</span><br/>
+      Экосистема <b>SAMO</b> <span class="sep">·</span> автономный образовательный модуль <span class="sep">·</span> <b>11 кабинетов</b> <span class="sep">·</span> <b>73 модуля</b> <span class="sep">·</span> <b>108 моделей</b> <span class="sep">·</span> выровнено по канону <b>samo-docs</b> и встречам ДНМ 04.06.2026
+    </div>
+
+  </div>
+</body>
+</html>

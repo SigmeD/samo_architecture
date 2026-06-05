@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Кабинет администратора школы — ДНМ</title>
+<style>
+  :root{
+    --blue:#0055A7; --blue-d:#003c78; --blue-l:#e9f1fb; --blue-b:#9fc1e4;
+    --green:#00A550; --green-d:#0a6c3c; --green-l:#e4f6ec; --green-b:#a9ddbf;
+    --orange:#F7933C; --orange-d:#9c5a14; --orange-l:#fdeedd; --orange-b:#f0c089;
+    --teal:#0E8E8E; --teal-d:#0a5d5d; --teal-l:#e1f4f4; --teal-b:#9ed6d6;
+    --purple:#7a5cc4; --purple-d:#4f3a8a; --purple-l:#efeafa; --purple-b:#c8b8ec;
+    --gold:#B7791F; --gold-d:#8a5a13; --gold-l:#fbf0d9; --gold-b:#e6c98c;
+    --red:#d64545; --red-d:#9c2b2b; --red-l:#fbeaea; --red-b:#e8a9a9;
+    --slate:#5d6f80; --slate-d:#3a4753; --slate-l:#eef2f6; --slate-b:#cdd9e5;
+    --ink:#16222e; --muted:#5f7081; --line:#cdd9e5; --bg:#eef3f9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:"Roboto","Segoe UI",Arial,sans-serif;}
+  body{background:var(--bg);width:1660px;padding:36px 42px;}
+  .frame{background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px 32px;box-shadow:0 8px 34px rgba(20,50,90,.10);}
+
+  .head{display:flex;align-items:center;gap:16px;border-bottom:3px solid var(--orange);padding-bottom:16px;margin-bottom:18px;}
+  .head .big{width:54px;height:54px;border-radius:14px;background:var(--orange-l);border:2px solid var(--orange);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+  .head h1{font-size:26px;letter-spacing:.5px;color:var(--orange-d);font-weight:800;text-transform:uppercase;line-height:1.1;}
+  .head .sub{font-size:13px;color:var(--muted);font-weight:600;margin-top:4px;}
+  .head .role{margin-left:auto;text-align:right;font-size:11.5px;color:var(--muted);}
+  .head .role b{display:block;font-size:14px;color:var(--orange-d);}
+
+  .secbar{display:flex;gap:9px;flex-wrap:wrap;background:var(--orange-l);border:1.5px solid var(--orange-b);border-radius:14px;padding:12px 14px;margin-bottom:8px;}
+  .secbar .lbl{width:100%;font-size:11px;font-weight:800;color:var(--orange-d);text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px;}
+  .tile{background:#fff;border:1px solid var(--orange-b);border-radius:10px;padding:7px 11px;display:flex;align-items:center;gap:7px;min-width:120px;}
+  .tile .i{font-size:16px;}
+  .tile .t{font-size:12px;font-weight:700;color:#5a3a14;}
+  .tile.hub{border-color:var(--orange);background:#fff5ea;box-shadow:inset 0 0 0 1px var(--orange-b);} .tile.hub .t{color:var(--orange-d);}
+
+  .flowdown{display:flex;justify-content:center;color:var(--orange);font-size:18px;margin:5px 0;}
+  .flowdown::before{content:"▼";}
+
+  .core{border:2px solid var(--orange);border-radius:16px;padding:15px 18px;background:linear-gradient(180deg,#fff8f1,#fff);margin-bottom:14px;}
+  .core .ct{font-size:15px;font-weight:800;color:var(--orange-d);text-transform:uppercase;letter-spacing:.4px;display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+  .core .ct .badge{margin-left:auto;font-size:10.5px;font-weight:700;color:var(--green-d);background:var(--green-l);border:1px solid var(--green-b);border-radius:7px;padding:3px 9px;text-transform:none;letter-spacing:0;}
+  .chain{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;}
+  .step{background:#fff;border:1.6px solid var(--orange-b);border-radius:11px;padding:9px 11px;min-width:110px;text-align:center;flex:1;}
+  .step .si{font-size:18px;}
+  .step .st{font-size:12px;font-weight:800;color:var(--orange-d);margin-top:3px;line-height:1.15;}
+  .step .sd{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.2;}
+  .step.done{border-color:var(--green);background:var(--green-l);} .step.done .st{color:var(--green-d);}
+  .arrow{display:flex;align-items:center;justify-content:center;color:var(--orange);font-size:17px;font-weight:800;padding:0 5px;flex-shrink:0;}
+  .core .note{font-size:11px;color:var(--muted);margin-top:11px;line-height:1.5;background:#f7fafd;border-left:3px solid var(--orange);padding:8px 11px;border-radius:0 8px 8px 0;}
+  .core .note b{color:var(--ink);}
+
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:14px;}
+  .card{border:1.5px solid;border-radius:13px;padding:12px 13px;display:flex;flex-direction:column;}
+  .card .h{display:flex;align-items:center;gap:8px;margin-bottom:9px;}
+  .card .h .ci{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;background:#fff;flex-shrink:0;}
+  .card .h .ct{font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.2px;line-height:1.05;}
+  .card .h .ro{margin-left:auto;font-size:8.5px;font-weight:800;color:var(--slate-d);background:#fff;border:1px solid var(--slate-b);border-radius:6px;padding:2px 6px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+  .card ul{list-style:none;display:flex;flex-direction:column;gap:5px;}
+  .card li{font-size:11px;color:#33404c;background:#fff;border:1px solid;border-radius:7px;padding:5px 8px;line-height:1.3;display:flex;gap:6px;align-items:flex-start;}
+  .card li .li{font-size:12px;line-height:1.1;flex-shrink:0;}
+  .card li b{color:var(--ink);}
+
+  .c-green{background:var(--green-l);border-color:var(--green);} .c-green .ci{border:1px solid var(--green-b);} .c-green .ct{color:var(--green-d);} .c-green li{border-color:var(--green-b);}
+  .c-gold{background:var(--gold-l);border-color:var(--gold);} .c-gold .ci{border:1px solid var(--gold-b);} .c-gold .ct{color:var(--gold-d);} .c-gold li{border-color:var(--gold-b);}
+  .c-purple{background:var(--purple-l);border-color:var(--purple);} .c-purple .ci{border:1px solid var(--purple-b);} .c-purple .ct{color:var(--purple-d);} .c-purple li{border-color:var(--purple-b);}
+  .c-blue{background:var(--blue-l);border-color:var(--blue);} .c-blue .ci{border:1px solid var(--blue-b);} .c-blue .ct{color:var(--blue-d);} .c-blue li{border-color:var(--blue-b);}
+  .c-teal{background:var(--teal-l);border-color:var(--teal);} .c-teal .ci{border:1px solid var(--teal-b);} .c-teal .ct{color:var(--teal-d);} .c-teal li{border-color:var(--teal-b);}
+
+  .handoffs{border:1.6px dashed var(--orange-b);border-radius:14px;padding:13px 16px;background:var(--orange-l);margin-bottom:14px;}
+  .handoffs .ht{font-size:12.5px;font-weight:800;color:var(--orange-d);text-transform:uppercase;letter-spacing:.4px;margin-bottom:11px;display:flex;align-items:center;gap:8px;}
+  .holist{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .ho{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--orange-b);border-radius:10px;padding:9px 12px;}
+  .ho .role{font-size:11px;font-weight:800;color:var(--orange-d);background:var(--orange-l);border:1px solid var(--orange-b);border-radius:8px;padding:5px 9px;white-space:nowrap;display:flex;align-items:center;gap:5px;}
+  .ho .ha{color:var(--orange);font-size:15px;font-weight:800;flex-shrink:0;}
+  .ho .hd{font-size:11px;color:#33404c;line-height:1.3;}
+  .ho .hd b{color:var(--ink);}
+
+  .bottom{display:grid;grid-template-columns:2.4fr 1fr;gap:14px;}
+  .logic{background:var(--orange-l);border:1.5px solid var(--orange-b);border-radius:14px;padding:12px 15px;}
+  .logic .lt{font-size:12px;font-weight:800;color:var(--orange-d);text-transform:uppercase;letter-spacing:.4px;margin-bottom:9px;}
+  .logic .lflow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .logic .ls{font-size:11px;font-weight:700;color:#5a3a14;background:#fff;border:1px solid var(--orange-b);border-radius:20px;padding:5px 12px;}
+  .logic .la{color:var(--orange);font-weight:800;}
+  .legend{background:var(--slate-l);border:1.5px solid var(--slate-b);border-radius:14px;padding:12px 15px;}
+  .legend .lt{font-size:12px;font-weight:800;color:var(--slate-d);text-transform:uppercase;letter-spacing:.4px;margin-bottom:9px;}
+  .legend .lrow{display:flex;align-items:center;gap:8px;font-size:11px;color:#42525f;margin-bottom:6px;}
+  .legend .lk{font-weight:800;font-size:14px;width:26px;text-align:center;flex-shrink:0;}
+
+  .foot{text-align:center;font-size:11px;color:var(--muted);margin-top:16px;letter-spacing:.2px;}
+  .foot b{color:var(--slate-d);}
+</style>
+</head>
+<body>
+  <div class="frame">
+
+    <div class="head">
+      <span class="big">🏫</span>
+      <div>
+        <h1>Кабинет администратора школы — операции школы</h1>
+        <div class="sub">Что видит и делает администратор школы в системе ДНМ</div>
+      </div>
+      <div class="role">админ школы · сотрудник<b>«своя школа» · все операции</b>франчайзи входит сюда как директор</div>
+    </div>
+
+    <!-- SECTION TILES -->
+    <div class="secbar">
+      <span class="lbl">Разделы кабинета (постоянное меню · 🟠 — хаб с подразделами · ⚙ — под feature-toggle франчайзи)</span>
+      <div class="tile hub"><span class="i">👥</span><span class="t">Ученики</span></div>
+      <div class="tile hub"><span class="i">📚</span><span class="t">Учебный процесс</span></div>
+      <div class="tile hub"><span class="i">💰</span><span class="t">Финансы</span></div>
+      <div class="tile hub"><span class="i">👔</span><span class="t">Персонал</span></div>
+      <div class="tile hub"><span class="i">📊</span><span class="t">Отчётность</span></div>
+      <div class="tile hub"><span class="i">📣</span><span class="t">Коммуникации</span></div>
+      <div class="tile hub"><span class="i">✔️</span><span class="t">Задачи</span></div>
+      <div class="tile hub"><span class="i">🛍️</span><span class="t">Магазин</span></div>
+      <div class="tile"><span class="i">📄</span><span class="t">Документы</span></div>
+      <div class="tile"><span class="i">💬</span><span class="t">Шаблоны ОС</span></div>
+      <div class="tile"><span class="i">💬</span><span class="t">Чат</span></div>
+    </div>
+
+    <div class="flowdown"></div>
+
+    <!-- CORE: ENROLLMENT MASTER -->
+    <div class="core">
+      <div class="ct">🧾 Зачисление ученика — мастер <span class="badge">ключевой процесс школы</span></div>
+      <div class="chain">
+        <div class="step"><div class="si">📋</div><div class="st">Данные ученика</div><div class="sd">профиль</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="si">👥</div><div class="st">Группа</div><div class="sd">подбор/создание</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="si">👪</div><div class="st">Родитель</div><div class="sd">приглашение/ссылка</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="si">📝</div><div class="st">Договор</div><div class="sd">оферта</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="si">💳</div><div class="st">Оплата</div><div class="sd">3 способа</div></div>
+        <div class="arrow">→</div>
+        <div class="step done"><div class="si">✅</div><div class="st">Активен</div><div class="sd">ACTIVE</div></div>
+      </div>
+      <div class="note"><b>Способы оплаты:</b> онлайн (карта/СБП), наличные (отметка администратором), QR/терминал. Из карточки ученика далее — <b>перевод</b> в другую группу, <b>заморозка</b>, отчисление. Заявки на доступ (разблокировка/заморозка/продление) — в разделе «Ученики».</div>
+    </div>
+
+    <!-- CENTER CARDS (8) -->
+    <div class="grid">
+
+      <div class="card c-green">
+        <div class="h"><span class="ci">👥</span><span class="ct">Ученики</span></div>
+        <ul>
+          <li><span class="li">📋</span><span>Список и <b>карточка</b> ученика</span></li>
+          <li><span class="li">➕</span><span><b>Зачисление</b> (мастер) · ссылка регистрации</span></li>
+          <li><span class="li">🔀</span><span><b>Перевод</b> · ❄️ заморозка</span></li>
+          <li><span class="li">🔑</span><span><b>Заявки на доступ</b></span></li>
+        </ul>
+      </div>
+
+      <div class="card c-blue">
+        <div class="h"><span class="ci">📚</span><span class="ct">Учебный процесс</span></div>
+        <ul>
+          <li><span class="li">👥</span><span><b>Группы</b> — создание, детали</span></li>
+          <li><span class="li">📅</span><span><b>Расписание</b> занятий</span></li>
+          <li><span class="li">✅</span><span><b>Посещаемость</b></span></li>
+          <li><span class="li">🎯</span><span><b>Пробные уроки</b></span></li>
+        </ul>
+      </div>
+
+      <div class="card c-gold">
+        <div class="h"><span class="ci">💰</span><span class="ct">Финансы школы</span></div>
+        <ul>
+          <li><span class="li">💳</span><span><b>Платежи</b> (+ создание)</span></li>
+          <li><span class="li">📝</span><span><b>Договоры</b></span></li>
+          <li><span class="li">📉</span><span><b>Дебиторка</b> · ↩️ возвраты</span></li>
+          <li><span class="li">💵</span><span>Отметка <b>наличной</b> оплаты</span></li>
+        </ul>
+      </div>
+
+      <div class="card c-purple">
+        <div class="h"><span class="ci">👔</span><span class="ct">Персонал</span></div>
+        <ul>
+          <li><span class="li">🧑‍🏫</span><span><b>Кураторы</b> школы</span></li>
+          <li><span class="li">🕒</span><span><b>Табель</b> ⚙</span></li>
+          <li><span class="li">🗓️</span><span><b>Графики работы</b></span></li>
+        </ul>
+      </div>
+
+      <div class="card c-teal">
+        <div class="h"><span class="ci">📊</span><span class="ct">Отчётность</span></div>
+        <ul>
+          <li><span class="li">📈</span><span><b>Отчёты</b> · месячный отчёт</span></li>
+          <li><span class="li">🎯</span><span><b>KPI</b> школы</span></li>
+          <li><span class="li">📜</span><span><b>Сертификаты</b></span></li>
+        </ul>
+      </div>
+
+      <div class="card c-green">
+        <div class="h"><span class="ci">🛍️</span><span class="ct">Магазин</span><span class="ro">🪙 за солары</span></div>
+        <ul>
+          <li><span class="li">📦</span><span><b>Заказы</b> учеников (товары-призы)</span></li>
+          <li><span class="li">🏷️</span><span><b>Остатки</b> / инвентарь · приём от франшизы</span></li>
+          <li><span class="li">📊</span><span><b>Отчёты</b> магазина</span></li>
+        </ul>
+      </div>
+
+      <div class="card c-blue">
+        <div class="h"><span class="ci">📣</span><span class="ct">Коммуникации</span></div>
+        <ul>
+          <li><span class="li">🔔</span><span><b>Уведомления</b> · старт-уведомления</span></li>
+          <li><span class="li">📞</span><span><b>Звонки</b> ⚙</span></li>
+          <li><span class="li">🎥</span><span><b>Встречи</b> / созвоны</span></li>
+        </ul>
+      </div>
+
+      <div class="card c-purple">
+        <div class="h"><span class="ci">✔️</span><span class="ct">Задачи и связь</span></div>
+        <ul>
+          <li><span class="li">✔️</span><span><b>Задачи</b> · 📆 органайзер ⚙</span></li>
+          <li><span class="li">💬</span><span><b>Чат</b> · 📄 документы</span></li>
+          <li><span class="li">📨</span><span><b>Шаблоны</b> обратной связи</span></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- CROSS-CABINET HANDOFFS -->
+    <div class="handoffs">
+      <div class="ht">🔗 Связи с другими кабинетами (потоки ценности)</div>
+      <div class="holist">
+        <div class="ho"><span class="role">🏢 Франчайзи</span><span class="ha">→</span><span class="hd">Входит как <b>директор</b> — расширенная аналитика школы</span></div>
+        <div class="ho"><span class="role">🏢 Франчайзи</span><span class="ha">⚙</span><span class="hd"><b>Feature-toggles</b> — вкл/выкл опц. функции школы (табель, звонки, органайзер…)</span></div>
+        <div class="ho"><span class="hd">Назначает <b>группы</b>, табель, <b>KPI</b></span><span class="ha">→</span><span class="role">🧑‍🏫 Куратор</span></div>
+        <div class="ho"><span class="role">🧑‍🏫 Куратор</span><span class="ha">→</span><span class="hd">Отчёты и показатели по группам</span></div>
+        <div class="ho"><span class="role">👪 Родитель</span><span class="ha">→</span><span class="hd">Заявка на <b>возврат</b> → админ рассматривает</span></div>
+        <div class="ho"><span class="hd"><b>Отчёты и KPI</b> школы</span><span class="ha">→</span><span class="role">🎯 Головной офис</span></div>
+      </div>
+    </div>
+
+    <!-- LOGIC + LEGEND -->
+    <div class="bottom">
+      <div class="logic">
+        <div class="lt">🔄 Операционный цикл школы</div>
+        <div class="lflow">
+          <span class="ls">🎯 Набор учеников</span><span class="la">→</span>
+          <span class="ls">📚 Группы и обучение</span><span class="la">→</span>
+          <span class="ls">💰 Финансы и оплаты</span><span class="la">→</span>
+          <span class="ls">👔 Персонал и KPI</span><span class="la">→</span>
+          <span class="ls">📊 Отчёт директору</span><span class="la">↩︎</span>
+          <span class="ls">новый период</span>
+        </div>
+      </div>
+      <div class="legend">
+        <div class="lt">Обозначения</div>
+        <div class="lrow"><span class="lk">→</span> поток операций / навигация</div>
+        <div class="lrow"><span class="lk">↩︎</span> повтор цикла (период)</div>
+        <div class="lrow"><span class="lk">🟠</span> хаб с подразделами</div>
+        <div class="lrow"><span class="lk">⚙</span> опция под feature-toggle франчайзи</div>
+      </div>
+    </div>
+
+    <div class="foot">
+      Кабинет администратора школы ДНМ · экосистема <b>SAMO&nbsp;Global</b> · срез 2026-06-02
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Кабинет менеджера по продажам — ДНМ</title>
+<style>
+  :root{
+    --blue:#0055A7; --blue-d:#003c78; --blue-l:#e9f1fb; --blue-b:#9fc1e4;
+    --green:#00A550; --green-d:#0a6c3c; --green-l:#e4f6ec; --green-b:#a9ddbf;
+    --orange:#F7933C; --orange-d:#9c5a14; --orange-l:#fdeedd; --orange-b:#f0c089;
+    --teal:#0E8E8E; --teal-d:#0a5d5d; --teal-l:#e1f4f4; --teal-b:#9ed6d6;
+    --purple:#7a5cc4; --purple-d:#4f3a8a; --purple-l:#efeafa; --purple-b:#c8b8ec;
+    --gold:#B7791F; --gold-d:#8a5a13; --gold-l:#fbf0d9; --gold-b:#e6c98c;
+    --red:#d64545; --red-d:#9c2b2b; --red-l:#fbeaea; --red-b:#e8a9a9;
+    --slate:#5d6f80; --slate-d:#3a4753; --slate-l:#eef2f6; --slate-b:#cdd9e5;
+    --ink:#16222e; --muted:#5f7081; --line:#cdd9e5; --bg:#eef3f9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:"Roboto","Segoe UI",Arial,sans-serif;}
+  body{background:var(--bg);width:1660px;padding:36px 42px;}
+  .frame{background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px 32px;box-shadow:0 8px 34px rgba(20,50,90,.10);}
+
+  .head{display:flex;align-items:center;gap:16px;border-bottom:3px solid var(--teal);padding-bottom:16px;margin-bottom:18px;}
+  .head .big{width:54px;height:54px;border-radius:14px;background:var(--teal-l);border:2px solid var(--teal);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+  .head h1{font-size:25px;letter-spacing:.5px;color:var(--teal-d);font-weight:800;text-transform:uppercase;line-height:1.1;}
+  .head .sub{font-size:13px;color:var(--muted);font-weight:600;margin-top:4px;}
+  .head .role{margin-left:auto;text-align:right;font-size:11.5px;color:var(--muted);}
+  .head .role b{display:block;font-size:14px;color:var(--teal-d);}
+
+  .secbar{display:flex;gap:9px;flex-wrap:wrap;background:var(--teal-l);border:1.5px solid var(--teal-b);border-radius:14px;padding:12px 14px;margin-bottom:8px;}
+  .secbar .lbl{width:100%;font-size:11px;font-weight:800;color:var(--teal-d);text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px;}
+  .tile{background:#fff;border:1px solid var(--teal-b);border-radius:10px;padding:7px 11px;display:flex;align-items:center;gap:7px;min-width:128px;}
+  .tile .i{font-size:16px;}
+  .tile .t{font-size:12px;font-weight:700;color:#1f3f3f;}
+
+  .flowdown{display:flex;justify-content:center;color:var(--teal);font-size:18px;margin:5px 0;}
+  .flowdown::before{content:"▼";}
+
+  .core{border:2px solid var(--teal);border-radius:16px;padding:15px 18px;background:linear-gradient(180deg,#f1fafa,#fff);margin-bottom:14px;}
+  .core .ct{font-size:15px;font-weight:800;color:var(--teal-d);text-transform:uppercase;letter-spacing:.4px;display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+  .core .ct .badge{margin-left:auto;font-size:10.5px;font-weight:700;color:var(--teal-d);background:var(--teal-l);border:1px solid var(--teal-b);border-radius:7px;padding:3px 9px;text-transform:none;letter-spacing:0;}
+  .chain{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;}
+  .step{background:#fff;border:1.6px solid var(--teal-b);border-radius:11px;padding:10px 12px;min-width:118px;text-align:center;flex:1;}
+  .step .si{font-size:19px;}
+  .step .st{font-size:12.5px;font-weight:800;color:var(--teal-d);margin-top:3px;line-height:1.1;}
+  .step .sd{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.2;}
+  .step.done{border-color:var(--green);background:var(--green-l);} .step.done .st{color:var(--green-d);}
+  .arrow{display:flex;align-items:center;justify-content:center;color:var(--teal);font-size:17px;font-weight:800;padding:0 6px;flex-shrink:0;}
+  .core .note{font-size:11px;color:var(--muted);margin-top:11px;line-height:1.5;background:#f7fafd;border-left:3px solid var(--teal);padding:8px 11px;border-radius:0 8px 8px 0;}
+  .core .note b{color:var(--ink);}
+
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px;}
+  .card{border:1.6px solid;border-radius:14px;padding:13px 14px;display:flex;flex-direction:column;}
+  .card .h{display:flex;align-items:center;gap:9px;margin-bottom:10px;}
+  .card .h .ci{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;background:#fff;flex-shrink:0;}
+  .card .h .ct{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.2px;line-height:1.05;}
+  .card ul{list-style:none;display:flex;flex-direction:column;gap:6px;}
+  .card li{font-size:11.5px;color:#33404c;background:#fff;border:1px solid;border-radius:8px;padding:6px 9px;line-height:1.3;display:flex;gap:7px;align-items:flex-start;}
+  .card li .li{font-size:13px;line-height:1.1;flex-shrink:0;}
+  .card li b{color:var(--ink);}
+
+  .c-green{background:var(--green-l);border-color:var(--green);} .c-green .ci{border:1px solid var(--green-b);} .c-green .ct{color:var(--green-d);} .c-green li{border-color:var(--green-b);}
+  .c-gold{background:var(--gold-l);border-color:var(--gold);} .c-gold .ci{border:1px solid var(--gold-b);} .c-gold .ct{color:var(--gold-d);} .c-gold li{border-color:var(--gold-b);}
+  .c-blue{background:var(--blue-l);border-color:var(--blue);} .c-blue .ci{border:1px solid var(--blue-b);} .c-blue .ct{color:var(--blue-d);} .c-blue li{border-color:var(--blue-b);}
+  .c-purple{background:var(--purple-l);border-color:var(--purple);} .c-purple .ci{border:1px solid var(--purple-b);} .c-purple .ct{color:var(--purple-d);} .c-purple li{border-color:var(--purple-b);}
+
+  .handoffs{border:1.6px dashed var(--teal-b);border-radius:14px;padding:13px 16px;background:var(--teal-l);margin-bottom:14px;}
+  .handoffs .ht{font-size:12.5px;font-weight:800;color:var(--teal-d);text-transform:uppercase;letter-spacing:.4px;margin-bottom:11px;display:flex;align-items:center;gap:8px;}
+  .holist{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .ho{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--teal-b);border-radius:10px;padding:9px 12px;}
+  .ho .role{font-size:11px;font-weight:800;color:var(--teal-d);background:var(--teal-l);border:1px solid var(--teal-b);border-radius:8px;padding:5px 9px;white-space:nowrap;display:flex;align-items:center;gap:5px;}
+  .ho .ha{color:var(--teal);font-size:15px;font-weight:800;flex-shrink:0;}
+  .ho .hd{font-size:11px;color:#33404c;line-height:1.3;}
+  .ho .hd b{color:var(--ink);}
+
+  .bottom{display:grid;grid-template-columns:2.4fr 1fr;gap:14px;}
+  .logic{background:var(--teal-l);border:1.5px solid var(--teal-b);border-radius:14px;padding:12px 15px;}
+  .logic .lt{font-size:12px;font-weight:800;color:var(--teal-d);text-transform:uppercase;letter-spacing:.4px;margin-bottom:9px;}
+  .logic .lflow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .logic .ls{font-size:11px;font-weight:700;color:#1f3f3f;background:#fff;border:1px solid var(--teal-b);border-radius:20px;padding:5px 12px;}
+  .logic .la{color:var(--teal);font-weight:800;}
+  .legend{background:var(--slate-l);border:1.5px solid var(--slate-b);border-radius:14px;padding:12px 15px;}
+  .legend .lt{font-size:12px;font-weight:800;color:var(--slate-d);text-transform:uppercase;letter-spacing:.4px;margin-bottom:9px;}
+  .legend .lrow{display:flex;align-items:center;gap:8px;font-size:11px;color:#42525f;margin-bottom:6px;}
+  .legend .lk{font-weight:800;font-size:14px;width:26px;text-align:center;flex-shrink:0;}
+
+  .foot{text-align:center;font-size:11px;color:var(--muted);margin-top:16px;letter-spacing:.2px;}
+  .foot b{color:var(--slate-d);}
+</style>
+</head>
+<body>
+  <div class="frame">
+
+    <div class="head">
+      <span class="big">💼</span>
+      <div>
+        <h1>Кабинет менеджера по продажам — привлечение и оформление</h1>
+        <div class="sub">Воронка продаж, онбординг лидов и оформление оплаты</div>
+      </div>
+      <div class="role">менеджер по продажам · сотрудник<b>привлечение и оформление</b>экосистема SAMO&nbsp;Global</div>
+    </div>
+
+    <!-- SECTION TILES -->
+    <div class="secbar">
+      <span class="lbl">Разделы кабинета (постоянное меню)</span>
+      <div class="tile"><span class="i">📊</span><span class="t">Мои KPI</span></div>
+      <div class="tile"><span class="i">🎬</span><span class="t">Пробные уроки</span></div>
+      <div class="tile"><span class="i">🔗</span><span class="t">Ссылка регистрации</span></div>
+      <div class="tile"><span class="i">🎥</span><span class="t">Созвоны</span></div>
+      <div class="tile"><span class="i">✉️</span><span class="t">Сообщения</span></div>
+      <div class="tile"><span class="i">📝</span><span class="t">Заявки на рассрочку</span></div>
+      <div class="tile"><span class="i">💰</span><span class="t">Рассрочка</span></div>
+      <div class="tile"><span class="i">📉</span><span class="t">Дебиторка</span></div>
+      <div class="tile"><span class="i">💵</span><span class="t">Наличная оплата</span></div>
+      <div class="tile"><span class="i">↩️</span><span class="t">Возвраты</span></div>
+      <div class="tile"><span class="i">✔️</span><span class="t">Задачи</span></div>
+      <div class="tile"><span class="i">💬</span><span class="t">Чат</span></div>
+      <div class="tile"><span class="i">🔔</span><span class="t">Уведомления</span></div>
+    </div>
+
+    <div class="flowdown"></div>
+
+    <!-- CORE: SALES FUNNEL -->
+    <div class="core">
+      <div class="ct">🎯 Воронка продаж и онбординг <span class="badge">от лида до зачисления</span></div>
+      <div class="chain">
+        <div class="step"><div class="si">🎯</div><div class="st">Лид</div><div class="sd">родитель</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="si">🎬</div><div class="st">Пробное занятие</div><div class="sd">40–60 мин</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="si">🔗</div><div class="st">Регистрация</div><div class="sd">по ссылке</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="si">📝</div><div class="st">Договор</div><div class="sd">оферта · подписывает родитель</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="si">💳</div><div class="st">Оплата</div><div class="sd">наличные / рассрочка</div></div>
+        <div class="arrow">→</div>
+        <div class="step done"><div class="si">✅</div><div class="st">Зачисление в школу</div><div class="sd">мастер админа школы</div></div>
+      </div>
+      <div class="note"><b>Менеджер ведёт воронку продаж</b> (Мои KPI): привлекает лида, проводит пробное занятие, выдаёт ссылку регистрации, договор-оферту и оформляет оплату. <b>Одобряет заявки на рассрочку</b> и фиксирует наличную оплату; следит за дебиторкой и возвратами.</div>
+    </div>
+
+    <!-- CENTER CARDS (4) -->
+    <div class="grid">
+
+      <div class="card c-green">
+        <div class="h"><span class="ci">🎯</span><span class="ct">Привлечение и онбординг</span></div>
+        <ul>
+          <li><span class="li">🎬</span><span><b>Пробные уроки</b> — календарь, слоты</span></li>
+          <li><span class="li">🔗</span><span><b>Ссылка регистрации</b> (онбординг)</span></li>
+          <li><span class="li">✉️</span><span><b>Шаблоны сообщений</b> + журнал отправок</span></li>
+        </ul>
+      </div>
+
+      <div class="card c-gold">
+        <div class="h"><span class="ci">💳</span><span class="ct">Оплаты и рассрочка</span></div>
+        <ul>
+          <li><span class="li">📝</span><span><b>Заявки на рассрочку</b> — одобрение</span></li>
+          <li><span class="li">💰</span><span><b>Планы рассрочки</b></span></li>
+          <li><span class="li">💵</span><span><b>Наличная оплата</b> — отметка</span></li>
+          <li><span class="li">↩️</span><span><b>Возвраты</b></span></li>
+        </ul>
+      </div>
+
+      <div class="card c-blue">
+        <div class="h"><span class="ci">📊</span><span class="ct">Воронка и дебиторка</span></div>
+        <ul>
+          <li><span class="li">📈</span><span><b>Мои KPI</b> — лиды → пробные → договоры, конверсии, выручка</span></li>
+          <li><span class="li">📉</span><span><b>Дебиторка</b> — просроченные платежи</span></li>
+        </ul>
+      </div>
+
+      <div class="card c-purple">
+        <div class="h"><span class="ci">✔️</span><span class="ct">Обучение, задачи, связь</span></div>
+        <ul>
+          <li><span class="li">🎥</span><span><b>Обучающие созвоны</b> (от куратора франшиз)</span></li>
+          <li><span class="li">✔️</span><span><b>Задачи</b></span></li>
+          <li><span class="li">💬</span><span><b>Чат</b> + контакты · 🔔 уведомления</span></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- CROSS-CABINET HANDOFFS -->
+    <div class="handoffs">
+      <div class="ht">🔗 Связи с другими кабинетами (потоки ценности)</div>
+      <div class="holist">
+        <div class="ho"><span class="role">👪 Лид / Родитель</span><span class="ha">→</span><span class="hd">Ведёт <b>онбординг</b>: пробное → регистрация → оплата</span></div>
+        <div class="ho"><span class="hd">Передаёт <b>оплаченного клиента</b> на зачисление</span><span class="ha">→</span><span class="role">🏫 Админ школы</span></div>
+        <div class="ho"><span class="role">👪 Родитель</span><span class="ha">→</span><span class="hd">Заявка на <b>рассрочку</b> → менеджер одобряет (создаёт план)</span></div>
+        <div class="ho"><span class="hd"><b>Дебиторка</b> и оплаты по сети</span><span class="ha">→</span><span class="role">📊 Финансист</span></div>
+        <div class="ho"><span class="role">🤝 Куратор франшиз</span><span class="ha">→</span><span class="hd">Обучающие <b>созвоны</b> для менеджеров</span></div>
+        <div class="ho"><span class="hd"><b>KPI и воронка</b> продаж</span><span class="ha">→</span><span class="role">🎯 Головной офис</span></div>
+      </div>
+    </div>
+
+    <!-- LOGIC + LEGEND -->
+    <div class="bottom">
+      <div class="logic">
+        <div class="lt">🔄 Финансовое сопровождение оплаты (после зачисления)</div>
+        <div class="lflow">
+          <span class="ls">💳 Оплата / рассрочка</span><span class="la">→</span>
+          <span class="ls">📅 График платежей</span><span class="la">→</span>
+          <span class="ls">📉 Контроль дебиторки</span><span class="la">→</span>
+          <span class="ls">🔔 Напоминания</span><span class="la">→</span>
+          <span class="ls">✅ Закрытие долга</span><span class="la">↩︎</span>
+          <span class="ls">следующий период</span>
+        </div>
+      </div>
+      <div class="legend">
+        <div class="lt">Обозначения</div>
+        <div class="lrow"><span class="lk">→</span> поток продаж / навигация</div>
+        <div class="lrow"><span class="lk">✅</span> успешный итог (зачисление / закрытие долга)</div>
+        <div class="lrow"><span class="lk">↩︎</span> повтор цикла (период)</div>
+      </div>
+    </div>
+
+    <div class="foot">
+      Кабинет менеджера по продажам ДНМ · экосистема <b>SAMO&nbsp;Global</b> · срез 2026-06-02
+    </div>
+
+  </div>
+</body>
+</html>

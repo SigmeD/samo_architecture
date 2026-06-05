@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Кабинет ученика — ДНМ</title>
+<style>
+  :root{
+    --blue:#0055A7; --blue-d:#003c78; --blue-l:#e9f1fb; --blue-b:#9fc1e4;
+    --green:#00A550; --green-d:#0a6c3c; --green-l:#e4f6ec; --green-b:#a9ddbf;
+    --orange:#F7933C; --orange-d:#9c5a14; --orange-l:#fdeedd; --orange-b:#f0c089;
+    --teal:#0E8E8E; --teal-d:#0a5d5d; --teal-l:#e1f4f4; --teal-b:#9ed6d6;
+    --purple:#7a5cc4; --purple-d:#4f3a8a; --purple-l:#efeafa; --purple-b:#c8b8ec;
+    --gold:#B7791F; --gold-d:#8a5a13; --gold-l:#fbf0d9; --gold-b:#e6c98c;
+    --red:#d64545; --red-d:#9c2b2b; --red-l:#fbeaea; --red-b:#e8a9a9;
+    --slate:#5d6f80; --slate-d:#3a4753; --slate-l:#eef2f6; --slate-b:#cdd9e5;
+    --ink:#16222e; --muted:#5f7081; --line:#cdd9e5; --bg:#eef3f9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:"Roboto","Segoe UI",Arial,sans-serif;}
+  body{background:var(--bg);width:1660px;padding:36px 42px;}
+  .frame{background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px 32px;box-shadow:0 8px 34px rgba(20,50,90,.10);}
+
+  /* header */
+  .head{display:flex;align-items:center;gap:16px;border-bottom:3px solid var(--green);padding-bottom:16px;margin-bottom:18px;}
+  .head .big{width:54px;height:54px;border-radius:14px;background:var(--green-l);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+  .head h1{font-size:27px;letter-spacing:.5px;color:var(--green-d);font-weight:800;text-transform:uppercase;line-height:1.1;}
+  .head .sub{font-size:13px;color:var(--muted);font-weight:600;margin-top:4px;}
+  .head .role{margin-left:auto;text-align:right;font-size:11.5px;color:var(--muted);}
+  .head .role b{display:block;font-size:14px;color:var(--green-d);}
+
+  /* section tiles bar */
+  .secbar{display:flex;gap:9px;flex-wrap:wrap;background:var(--green-l);border:1.5px solid var(--green-b);border-radius:14px;padding:12px 14px;margin-bottom:8px;}
+  .secbar .lbl{width:100%;font-size:11px;font-weight:800;color:var(--green-d);text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px;}
+  .tile{background:#fff;border:1px solid var(--green-b);border-radius:10px;padding:7px 11px;display:flex;align-items:center;gap:7px;min-width:118px;}
+  .tile .i{font-size:16px;}
+  .tile .t{font-size:12px;font-weight:700;color:#1f3a2c;}
+
+  .flowdown{display:flex;justify-content:center;color:var(--green);font-size:18px;margin:5px 0;}
+  .flowdown::before{content:"▼";}
+
+  /* core lesson cycle */
+  .core{border:2px solid var(--green);border-radius:16px;padding:15px 18px;background:linear-gradient(180deg,#f3fbf6,#fff);margin-bottom:14px;}
+  .core .ct{font-size:15px;font-weight:800;color:var(--green-d);text-transform:uppercase;letter-spacing:.4px;display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+  .core .ct .badge{margin-left:auto;font-size:10.5px;font-weight:700;color:var(--orange-d);background:var(--orange-l);border:1px solid var(--orange-b);border-radius:7px;padding:3px 9px;text-transform:none;letter-spacing:0;}
+  .chain{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;}
+  .step{background:#fff;border:1.6px solid var(--green-b);border-radius:11px;padding:9px 13px;min-width:120px;text-align:center;flex:1;}
+  .step .si{font-size:19px;}
+  .step .st{font-size:12.5px;font-weight:800;color:var(--green-d);margin-top:3px;}
+  .step .sd{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.25;}
+  .step.exam{border-color:var(--blue-b);background:var(--blue-l);} .step.exam .st{color:var(--blue-d);}
+  .step.cert{border-color:var(--green);background:var(--green-l);}
+  .arrow{display:flex;align-items:center;justify-content:center;color:var(--green);font-size:19px;font-weight:800;padding:0 6px;flex-shrink:0;}
+  .arrow.loop{color:var(--orange);}
+  .core .note{font-size:11px;color:var(--muted);margin-top:11px;line-height:1.5;background:#f7fafd;border-left:3px solid var(--green);padding:8px 11px;border-radius:0 8px 8px 0;}
+  .core .note b{color:var(--ink);}
+
+  /* grid of center cards */
+  .grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;margin-bottom:14px;}
+  .card{border:1.6px solid;border-radius:14px;padding:13px 14px;display:flex;flex-direction:column;}
+  .card .h{display:flex;align-items:center;gap:9px;margin-bottom:10px;}
+  .card .h .ci{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;background:#fff;flex-shrink:0;}
+  .card .h .ct{font-size:13.5px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;line-height:1.1;}
+  .card ul{list-style:none;display:flex;flex-direction:column;gap:6px;}
+  .card li{font-size:11.5px;color:#33404c;background:#fff;border:1px solid;border-radius:8px;padding:6px 9px;line-height:1.3;display:flex;gap:7px;align-items:flex-start;}
+  .card li .li{font-size:13px;line-height:1.1;flex-shrink:0;}
+  .card li b{color:var(--ink);}
+
+  .c-green{background:var(--green-l);border-color:var(--green);} .c-green .ci{border:1px solid var(--green-b);} .c-green .ct{color:var(--green-d);} .c-green li{border-color:var(--green-b);}
+  .c-gold{background:var(--gold-l);border-color:var(--gold);} .c-gold .ci{border:1px solid var(--gold-b);} .c-gold .ct{color:var(--gold-d);} .c-gold li{border-color:var(--gold-b);}
+  .c-purple{background:var(--purple-l);border-color:var(--purple);} .c-purple .ci{border:1px solid var(--purple-b);} .c-purple .ct{color:var(--purple-d);} .c-purple li{border-color:var(--purple-b);}
+  .c-blue{background:var(--blue-l);border-color:var(--blue);} .c-blue .ci{border:1px solid var(--blue-b);} .c-blue .ct{color:var(--blue-d);} .c-blue li{border-color:var(--blue-b);}
+
+  .gate{margin-top:8px;display:flex;flex-direction:column;gap:5px;}
+  .gate .gt{font-size:10px;font-weight:800;color:var(--red-d);text-transform:uppercase;letter-spacing:.4px;}
+  .gate .grow{display:flex;gap:5px;flex-wrap:wrap;}
+  .gate span{font-size:10.5px;background:var(--red-l);border:1px solid var(--red-b);color:var(--red-d);border-radius:7px;padding:3px 8px;font-weight:600;}
+
+  /* cross-cabinet handoffs */
+  .handoffs{border:1.6px dashed var(--blue-b);border-radius:14px;padding:13px 16px;background:var(--blue-l);margin-bottom:14px;}
+  .handoffs .ht{font-size:12.5px;font-weight:800;color:var(--blue-d);text-transform:uppercase;letter-spacing:.4px;margin-bottom:11px;display:flex;align-items:center;gap:8px;}
+  .holist{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .ho{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--blue-b);border-radius:10px;padding:9px 12px;}
+  .ho .role{font-size:11.5px;font-weight:800;color:var(--blue-d);background:var(--blue-l);border:1px solid var(--blue-b);border-radius:8px;padding:5px 9px;white-space:nowrap;display:flex;align-items:center;gap:5px;}
+  .ho .ha{color:var(--blue);font-size:15px;font-weight:800;flex-shrink:0;}
+  .ho .hd{font-size:11px;color:#33404c;line-height:1.3;}
+  .ho .hd b{color:var(--ink);}
+
+  /* logic strip + legend */
+  .bottom{display:grid;grid-template-columns:2.4fr 1fr;gap:14px;}
+  .logic{background:var(--green-l);border:1.5px solid var(--green-b);border-radius:14px;padding:12px 15px;}
+  .logic .lt{font-size:12px;font-weight:800;color:var(--green-d);text-transform:uppercase;letter-spacing:.4px;margin-bottom:9px;}
+  .logic .lflow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .logic .ls{font-size:11px;font-weight:700;color:#1f3a2c;background:#fff;border:1px solid var(--green-b);border-radius:20px;padding:5px 12px;}
+  .logic .la{color:var(--green);font-weight:800;}
+  .legend{background:var(--slate-l);border:1.5px solid var(--slate-b);border-radius:14px;padding:12px 15px;}
+  .legend .lt{font-size:12px;font-weight:800;color:var(--slate-d);text-transform:uppercase;letter-spacing:.4px;margin-bottom:9px;}
+  .legend .lrow{display:flex;align-items:center;gap:8px;font-size:11px;color:#42525f;margin-bottom:6px;}
+  .legend .lk{font-weight:800;font-size:14px;width:26px;text-align:center;flex-shrink:0;}
+
+  .foot{text-align:center;font-size:11px;color:var(--muted);margin-top:16px;letter-spacing:.2px;}
+  .foot b{color:var(--slate-d);}
+</style>
+</head>
+<body>
+  <div class="frame">
+
+    <div class="head">
+      <span class="big">🎓</span>
+      <div>
+        <h1>Кабинет ученика — мой путь обучения</h1>
+        <div class="sub">Что видит и делает ребёнок в системе ДНМ</div>
+      </div>
+      <div class="role">ребёнок 10–17 лет<b>потребитель · «свои данные»</b>экосистема SAMO&nbsp;Global</div>
+    </div>
+
+    <!-- SECTION TILES -->
+    <div class="secbar">
+      <span class="lbl">Разделы кабинета (постоянное меню)</span>
+      <div class="tile"><span class="i">🏠</span><span class="t">Главная</span></div>
+      <div class="tile"><span class="i">📚</span><span class="t">Уроки</span></div>
+      <div class="tile"><span class="i">📈</span><span class="t">Прогресс</span></div>
+      <div class="tile"><span class="i">✅</span><span class="t">Оценки</span></div>
+      <div class="tile"><span class="i">📅</span><span class="t">Расписание</span></div>
+      <div class="tile"><span class="i">✨</span><span class="t">Дневник успеха</span></div>
+      <div class="tile"><span class="i">🏆</span><span class="t">Рейтинг</span></div>
+      <div class="tile"><span class="i">✍️</span><span class="t">Эссе</span></div>
+      <div class="tile"><span class="i">💼</span><span class="t">Бизнес-проект*</span></div>
+      <div class="tile"><span class="i">💬</span><span class="t">Чат группы</span></div>
+      <div class="tile"><span class="i">🛍️</span><span class="t">Магазин</span></div>
+      <div class="tile"><span class="i">📄</span><span class="t">Документы</span></div>
+      <div class="tile"><span class="i">🔔</span><span class="t">Уведомления</span></div>
+      <div class="tile"><span class="i">👤</span><span class="t">Профиль</span></div>
+    </div>
+
+    <div class="flowdown"></div>
+
+    <!-- CORE LESSON CYCLE -->
+    <div class="core">
+      <div class="ct">📖 Учебный цикл — ядро продукта <span class="badge">главный путь ученика</span></div>
+      <div class="chain">
+        <div class="step"><div class="si">🎬</div><div class="st">Видео</div><div class="sd">урок-материал</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="si">📝</div><div class="st">Классная работа</div><div class="sd">на занятии</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="si">📤</div><div class="st">Домашнее задание</div><div class="sd">проверяет куратор</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="si">🧪</div><div class="st">Тест</div><div class="sd">до 10 попыток · 70%</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="si">🎓</div><div class="st">Семестровый экзамен</div><div class="sd">после всех уроков</div></div>
+        <div class="arrow">→</div>
+        <div class="step cert"><div class="si">📜</div><div class="st">Сертификат</div><div class="sd">в «Документы»</div></div>
+      </div>
+      <div class="note"><b>Тест не блокирует</b> переход к следующему уроку (проходится во время урока). Следующий урок может быть 🔒 до выполнения текущего. <b>Возрастная ветка:</b> младшая 10–13 — игровая тема; старшая 14–17 — спокойная тема + бизнес-проект.</div>
+    </div>
+
+    <!-- CENTER CARDS -->
+    <div class="grid">
+
+      <div class="card c-blue">
+        <div class="h"><span class="ci">🏠</span><span class="ct">Главная (дашборд)</span></div>
+        <ul>
+          <li><span class="li">🦸</span><span><b>Герой</b> и ближайший урок</span></li>
+          <li><span class="li">🪙</span><span><b>HUD</b> соларов и уровня</span></li>
+          <li><span class="li">🎯</span><span><b>Квесты</b> и награды уровня</span></li>
+          <li><span class="li">🏆</span><span>Лента <b>рейтинга</b></span></li>
+          <li><span class="li">🔔</span><span>Виджет <b>уведомлений</b></span></li>
+        </ul>
+      </div>
+
+      <div class="card c-gold">
+        <div class="h"><span class="ci">🪙</span><span class="ct">Геймификация</span></div>
+        <ul>
+          <li><span class="li">🪙</span><span><b>Солары</b> — до 1140 за семестр</span></li>
+          <li><span class="li">🎚️</span><span><b>Уровни</b> = солары/100 + 1</span></li>
+          <li><span class="li">🏅</span><span><b>Достижения</b> и значки</span></li>
+          <li><span class="li">🏆</span><span><b>Рейтинг</b> и лидерборд</span></li>
+          <li><span class="li">🛍️</span><span><b>Магазин призов</b> → мои покупки (за солары)</span></li>
+        </ul>
+      </div>
+
+      <div class="card c-purple">
+        <div class="h"><span class="ci">🚀</span><span class="ct">Развитие</span></div>
+        <ul>
+          <li><span class="li">✨</span><span><b>Дневник успеха</b>: дневник, блокнот, привычки, планнер</span></li>
+          <li><span class="li">✍️</span><span><b>Эссе</b> — творческие работы</span></li>
+          <li><span class="li">💼</span><span><b>Бизнес-проект*</b> — старшая группа</span></li>
+        </ul>
+      </div>
+
+      <div class="card c-green">
+        <div class="h"><span class="ci">📡</span><span class="ct">Доступ и связь</span></div>
+        <ul>
+          <li><span class="li">📅</span><span><b>Расписание</b> занятий</span></li>
+          <li><span class="li">💬</span><span><b>Чат группы</b> с куратором</span></li>
+          <li><span class="li">📄</span><span><b>Документы</b> и сертификаты</span></li>
+          <li><span class="li">🔔</span><span><b>Уведомления</b></span></li>
+          <li><span class="li">👤</span><span><b>Профиль</b> ученика</span></li>
+        </ul>
+        <div class="gate">
+          <span class="gt">Контроль доступа (гейтинг)</span>
+          <div class="grow"><span>⛔ заморожен</span><span>⏳ не открыт</span><span>⌛ истёк</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CROSS-CABINET HANDOFFS -->
+    <div class="handoffs">
+      <div class="ht">🔗 Связи с другими кабинетами (потоки ценности)</div>
+      <div class="holist">
+        <div class="ho"><span class="role">💳 Родитель</span><span class="ha">→</span><span class="hd"><b>Оплата</b> открывает доступ к кабинету (снимает гейтинг)</span></div>
+        <div class="ho"><span class="hd"><b>ДЗ и классные</b> уходят на проверку</span><span class="ha">→</span><span class="role">🧑‍🏫 Куратор</span></div>
+        <div class="ho"><span class="role">🧑‍🏫 Куратор</span><span class="ha">⇒</span><span class="hd">Начисляет <b>солары</b> и <b>оценку</b> за работы</span></div>
+        <div class="ho"><span class="hd"><b>Прогресс, оценки, отчёт</b> куратора видны</span><span class="ha">→</span><span class="role">👪 Родитель</span></div>
+      </div>
+    </div>
+
+    <!-- LOGIC + LEGEND -->
+    <div class="bottom">
+      <div class="logic">
+        <div class="lt">🔄 Цикл вовлечения — что удерживает ученика</div>
+        <div class="lflow">
+          <span class="ls">📚 Учёба и задания</span><span class="la">⇒</span>
+          <span class="ls">🪙 Солары за результат</span><span class="la">→</span>
+          <span class="ls">🎚️ Рост уровня и 🏆 рейтинга</span><span class="la">→</span>
+          <span class="ls">🛍️ Магазин и 🏅 достижения</span><span class="la">↩︎</span>
+          <span class="ls">мотивация учиться дальше</span>
+        </div>
+      </div>
+      <div class="legend">
+        <div class="lt">Обозначения</div>
+        <div class="lrow"><span class="lk">→</span> поток обучения / навигация</div>
+        <div class="lrow"><span class="lk">⇒</span> начисление / награда (солары)</div>
+        <div class="lrow"><span class="lk">↩︎</span> петля вовлечения (возврат к учёбе)</div>
+        <div class="lrow"><span class="lk">🔒</span> блокировка до выполнения</div>
+        <div class="lrow"><span class="lk">*</span> только старшая группа (14–17)</div>
+      </div>
+    </div>
+
+    <div class="foot">
+      Кабинет ученика ДНМ · экосистема <b>SAMO&nbsp;Global</b> · срез 2026-06-02
+    </div>
+
+  </div>
+</body>
+</html>

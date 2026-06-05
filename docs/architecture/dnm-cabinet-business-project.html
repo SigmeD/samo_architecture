@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Бизнес-проект — из ученика в предпринимателя — ДНМ</title>
+<style>
+  :root{
+    --blue:#0055A7; --blue-d:#003c78; --blue-l:#e9f1fb; --blue-b:#9fc1e4;
+    --green:#00A550; --green-d:#0a6c3c; --green-l:#e4f6ec; --green-b:#a9ddbf;
+    --orange:#F7933C; --orange-d:#9c5a14; --orange-l:#fdeedd; --orange-b:#f0c089;
+    --teal:#0E8E8E; --teal-d:#0a5d5d; --teal-l:#e1f4f4; --teal-b:#9ed6d6;
+    --purple:#7a5cc4; --purple-d:#4f3a8a; --purple-l:#efeafa; --purple-b:#c8b8ec;
+    --gold:#B7791F; --gold-d:#8a5a13; --gold-l:#fbf0d9; --gold-b:#e6c98c;
+    --red:#d64545; --red-d:#9c2b2b; --red-l:#fbeaea; --red-b:#e8a9a9;
+    --slate:#5d6f80; --slate-d:#3a4753; --slate-l:#eef2f6; --slate-b:#cdd9e5;
+    --ink:#16222e; --muted:#5f7081; --line:#cdd9e5; --bg:#eef3f9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:"Roboto","Segoe UI",Arial,sans-serif;}
+  body{background:var(--bg);width:1660px;padding:36px 42px;}
+  .frame{background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px 32px;box-shadow:0 8px 34px rgba(20,50,90,.10);}
+
+  /* header */
+  .head{display:flex;align-items:center;gap:16px;border-bottom:3px solid var(--blue);padding-bottom:16px;margin-bottom:16px;}
+  .head .big{width:54px;height:54px;border-radius:14px;background:var(--blue-l);border:2px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+  .head h1{font-size:26px;letter-spacing:.4px;color:var(--blue-d);font-weight:800;text-transform:uppercase;line-height:1.1;}
+  .head .sub{font-size:13px;color:var(--muted);font-weight:600;margin-top:4px;}
+  .head .role{margin-left:auto;text-align:right;font-size:11.5px;color:var(--muted);}
+  .head .role b{display:block;font-size:14px;color:var(--blue-d);}
+
+  /* north-star strip */
+  .north{display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,var(--blue-l),#fff);border:1.5px solid var(--blue-b);border-left:5px solid var(--blue);border-radius:12px;padding:11px 16px;margin-bottom:14px;}
+  .north .ni{font-size:22px;flex-shrink:0;}
+  .north .nt{font-size:12.5px;color:#27384a;line-height:1.45;}
+  .north .nt b{color:var(--blue-d);}
+
+  /* arc core */
+  .arc{border:2px solid var(--blue);border-radius:16px;padding:15px 18px;background:linear-gradient(180deg,#f3f8fe,#fff);margin-bottom:14px;}
+  .arc .ct{font-size:15px;font-weight:800;color:var(--blue-d);text-transform:uppercase;letter-spacing:.4px;display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+  .arc .ct .badge{margin-left:auto;font-size:10.5px;font-weight:700;color:var(--orange-d);background:var(--orange-l);border:1px solid var(--orange-b);border-radius:7px;padding:3px 9px;text-transform:none;letter-spacing:0;}
+
+  /* mindset ribbon */
+  .ribbon{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-bottom:14px;}
+  .ribbon .rc{font-size:11.5px;font-weight:800;border-radius:20px;padding:6px 14px;border:1.5px solid;white-space:nowrap;}
+  .ribbon .rc.start{background:var(--slate-l);border-color:var(--slate-b);color:var(--slate-d);}
+  .ribbon .rc.mid{background:var(--blue-l);border-color:var(--blue-b);color:var(--blue-d);}
+  .ribbon .rc.end{background:var(--green);border-color:var(--green-d);color:#fff;box-shadow:0 3px 10px rgba(0,165,80,.3);}
+  .ribbon .ra{color:var(--blue);font-size:16px;font-weight:800;}
+
+  /* phases */
+  .phases{display:flex;align-items:stretch;gap:0;}
+  .phase{flex:1;display:flex;flex-direction:column;gap:7px;min-width:0;}
+  .parrow{display:flex;align-items:center;justify-content:center;color:var(--blue);font-size:20px;font-weight:800;padding:0 6px;flex-shrink:0;}
+  .phead{background:var(--blue);color:#fff;border-radius:10px 10px 4px 4px;padding:7px 10px;text-align:center;}
+  .phead .pn{font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;opacity:.85;}
+  .phead .pt{font-size:13px;font-weight:800;line-height:1.15;margin-top:1px;}
+  .phase.last .phead{background:var(--green);}
+
+  .tier{border:1.4px solid;border-radius:9px;padding:7px 9px;background:#fff;}
+  .tier .tl{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;display:flex;align-items:center;gap:5px;margin-bottom:3px;}
+  .tier .tx{font-size:10.5px;color:#33404c;line-height:1.32;}
+  .tier .tx b{color:var(--ink);}
+  .t-step{border-color:var(--blue-b);background:var(--blue-l);} .t-step .tl{color:var(--blue-d);}
+  .t-psy{border-color:var(--purple-b);background:var(--purple-l);} .t-psy .tl{color:var(--purple-d);}
+  .t-ped{border-color:var(--gold-b);background:var(--gold-l);} .t-ped .tl{color:var(--gold-d);}
+
+  .arc .note{font-size:11px;color:var(--muted);margin-top:13px;line-height:1.5;background:#f7fafd;border-left:3px solid var(--blue);padding:8px 11px;border-radius:0 8px 8px 0;}
+  .arc .note b{color:var(--ink);}
+  .arc .note .ok{color:var(--green-d);font-weight:700;}
+
+  /* support team */
+  .support{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;}
+  .scard{border:1.6px solid;border-radius:14px;padding:13px 14px;}
+  .scard .sh{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
+  .scard .sh .si{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;background:#fff;flex-shrink:0;}
+  .scard .sh .stt{font-size:13.5px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;line-height:1.1;}
+  .scard ul{list-style:none;display:flex;flex-direction:column;gap:5px;}
+  .scard li{font-size:11px;color:#33404c;line-height:1.32;display:flex;gap:7px;align-items:flex-start;}
+  .scard li::before{content:"•";font-weight:800;flex-shrink:0;}
+  .scard li b{color:var(--ink);}
+  .s-teal{background:var(--teal-l);border-color:var(--teal);} .s-teal .si{border:1px solid var(--teal-b);} .s-teal .stt{color:var(--teal-d);} .s-teal li::before{color:var(--teal);}
+  .s-purple{background:var(--purple-l);border-color:var(--purple);} .s-purple .si{border:1px solid var(--purple-b);} .s-purple .stt{color:var(--purple-d);} .s-purple li::before{color:var(--purple);}
+  .s-gold{background:var(--gold-l);border-color:var(--gold);} .s-gold .si{border:1px solid var(--gold-b);} .s-gold .stt{color:var(--gold-d);} .s-gold li::before{color:var(--gold);}
+
+  /* two-column: glossary + questions */
+  .duo{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;margin-bottom:14px;}
+  .box{border:1.6px solid;border-radius:14px;padding:13px 15px;}
+  .box .bt{font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;margin-bottom:11px;display:flex;align-items:center;gap:8px;}
+  .glos{background:var(--gold-l);border-color:var(--gold-b);}
+  .glos .bt{color:var(--gold-d);}
+  .gterms{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+  .gt{background:#fff;border:1px solid var(--gold-b);border-radius:8px;padding:6px 9px;font-size:10.5px;line-height:1.3;color:#33404c;}
+  .gt b{color:var(--gold-d);display:block;font-size:11px;}
+  .ask{background:var(--teal-l);border-color:var(--teal-b);}
+  .ask .bt{color:var(--teal-d);}
+  .ask .arow{display:flex;align-items:flex-start;gap:8px;background:#fff;border:1px solid var(--teal-b);border-radius:8px;padding:6px 9px;font-size:11px;color:#33404c;margin-bottom:6px;line-height:1.3;}
+  .ask .arow .ai{font-size:14px;flex-shrink:0;}
+  .ask .principle{font-size:11px;font-weight:700;color:var(--teal-d);background:#fff;border:1px dashed var(--teal);border-radius:8px;padding:7px 10px;line-height:1.35;margin-top:2px;}
+
+  /* handoffs */
+  .handoffs{border:1.6px dashed var(--blue-b);border-radius:14px;padding:13px 16px;background:var(--blue-l);margin-bottom:14px;}
+  .handoffs .ht{font-size:12.5px;font-weight:800;color:var(--blue-d);text-transform:uppercase;letter-spacing:.4px;margin-bottom:11px;display:flex;align-items:center;gap:8px;}
+  .holist{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .ho{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--blue-b);border-radius:10px;padding:9px 12px;}
+  .ho .rl{font-size:11px;font-weight:800;color:var(--blue-d);background:var(--blue-l);border:1px solid var(--blue-b);border-radius:8px;padding:5px 9px;white-space:nowrap;display:flex;align-items:center;gap:5px;}
+  .ho .ha{color:var(--blue);font-size:15px;font-weight:800;flex-shrink:0;}
+  .ho .hd{font-size:11px;color:#33404c;line-height:1.3;}
+  .ho .hd b{color:var(--ink);}
+  .ho .rl.solar{color:var(--gold-d);background:var(--gold-l);border-color:var(--gold-b);}
+  .ho .rl.win{color:var(--green-d);background:var(--green-l);border-color:var(--green-b);}
+
+  /* logic + legend */
+  .bottom{display:grid;grid-template-columns:2.4fr 1fr;gap:14px;}
+  .logic{background:var(--blue-l);border:1.5px solid var(--blue-b);border-radius:14px;padding:12px 15px;}
+  .logic .lt{font-size:12px;font-weight:800;color:var(--blue-d);text-transform:uppercase;letter-spacing:.4px;margin-bottom:9px;}
+  .logic .lflow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .logic .ls{font-size:11px;font-weight:700;color:#1f3145;background:#fff;border:1px solid var(--blue-b);border-radius:20px;padding:5px 12px;}
+  .logic .ls.gold{color:var(--gold-d);border-color:var(--gold-b);background:var(--gold-l);}
+  .logic .ls.win{color:var(--green-d);border-color:var(--green-b);background:var(--green-l);}
+  .logic .la{color:var(--blue);font-weight:800;}
+  .legend{background:var(--slate-l);border:1.5px solid var(--slate-b);border-radius:14px;padding:12px 15px;}
+  .legend .lt{font-size:12px;font-weight:800;color:var(--slate-d);text-transform:uppercase;letter-spacing:.4px;margin-bottom:9px;}
+  .legend .lrow{display:flex;align-items:center;gap:8px;font-size:11px;color:#42525f;margin-bottom:6px;}
+  .legend .lk{font-weight:800;font-size:14px;width:26px;text-align:center;flex-shrink:0;}
+
+  .foot{text-align:center;font-size:11px;color:var(--muted);margin-top:16px;letter-spacing:.2px;}
+  .foot b{color:var(--slate-d);}
+</style>
+</head>
+<body>
+  <div class="frame">
+
+    <div class="head">
+      <span class="big">💼</span>
+      <div>
+        <h1>Бизнес-проект — из ученика в предпринимателя</h1>
+        <div class="sub">Финальный модуль старшей группы · что проживает подросток в системе ДНМ</div>
+      </div>
+      <div class="role">старшая группа 14–17 · по желанию<b>семестр 4 · финальный модуль</b>экосистема SAMO&nbsp;Global</div>
+    </div>
+
+    <!-- NORTH STAR -->
+    <div class="north">
+      <span class="ni">🎯</span>
+      <div class="nt">
+        <b>Цель модуля — не «сдать форму», а прожить путь владельца дела:</b> своя идея → своя экономика → своя защита → реализация.
+        Психолог снимает страх на каждом шаге, педагог переводит «взрослые» термины на язык подростка.
+      </div>
+    </div>
+
+    <!-- ARC CORE -->
+    <div class="arc">
+      <div class="ct">🚀 Арка трансформации — ядро модуля <span class="badge">сдвиг самоощущения «ученик → предприниматель»</span></div>
+
+      <div class="ribbon">
+        <span class="rc start">🧩 «Я ученик»</span><span class="ra">→</span>
+        <span class="rc mid">💡 «Есть идея»</span><span class="ra">→</span>
+        <span class="rc mid">🧮 «Считаю деньги»</span><span class="ra">→</span>
+        <span class="rc mid">🎁 «Упаковываю»</span><span class="ra">→</span>
+        <span class="rc mid">🤝 «Веду команду»</span><span class="ra">→</span>
+        <span class="rc end">🏆 «Я предприниматель»</span>
+      </div>
+
+      <div class="phases">
+
+        <!-- Ф1 -->
+        <div class="phase">
+          <div class="phead"><div class="pn">Фаза 1</div><div class="pt">💡 Есть идея</div></div>
+          <div class="tier t-step">
+            <div class="tl">🏗 Шаг в системе</div>
+            <div class="tx"><b>Идея.</b> Тип (индивид./групповой), название, «идея в одном предложении», описание. Создаётся <b>черновик</b>.</div>
+          </div>
+          <div class="tier t-psy">
+            <div class="tl">🧠 Психолог</div>
+            <div class="tx">Барьер «<b>моя идея глупая, засмеют</b>» → черновик виден только мне, переписать можно сколько угодно.</div>
+          </div>
+          <div class="tier t-ped">
+            <div class="tl">🎓 Педагог</div>
+            <div class="tx">Вводит <b>ценностное предложение</b>: кому помогаем / что даём / чем отличаемся. Даёт рыбу-пример.</div>
+          </div>
+        </div>
+        <div class="parrow">→</div>
+
+        <!-- Ф2 -->
+        <div class="phase">
+          <div class="phead"><div class="pn">Фаза 2</div><div class="pt">🧮 Считаю деньги</div></div>
+          <div class="tier t-step">
+            <div class="tl">🏗 Шаг в системе</div>
+            <div class="tx"><b>Финансовая модель.</b> Стартовый капитал, выручка, расходы, прибыль, окупаемость, период (в тенге).</div>
+          </div>
+          <div class="tier t-psy">
+            <div class="tl">🧠 Психолог</div>
+            <div class="tx">«<b>Я не математик, цифры страшно</b>» → поля по одному, авто-подсказка: прибыль = выручка − расходы.</div>
+          </div>
+          <div class="tier t-ped">
+            <div class="tl">🎓 Педагог</div>
+            <div class="tx">Объясняет термины капитала / выручки / расходов / прибыли / окупаемости + наглядный пример расчёта.</div>
+          </div>
+        </div>
+        <div class="parrow">→</div>
+
+        <!-- Ф3 -->
+        <div class="phase">
+          <div class="phead"><div class="pn">Фаза 3</div><div class="pt">🎁 Упаковываю</div></div>
+          <div class="tier t-step">
+            <div class="tl">🏗 Шаг в системе</div>
+            <div class="tx"><b>Презентация.</b> Шаблон бизнес-плана, обязательные слайды, блок <b>POAS</b>, файл PPT/PDF до 50 МБ.</div>
+          </div>
+          <div class="tier t-psy">
+            <div class="tl">🧠 Психолог</div>
+            <div class="tx">«<b>Не умею делать презентации</b>» → готовый шаблон и чек-лист слайдов снимают «чистый лист».</div>
+          </div>
+          <div class="tier t-ped">
+            <div class="tl">🎓 Педагог</div>
+            <div class="tx">Термины: <b>бизнес-план</b>, <b>защита</b>, <b>POAS</b> (Plan of Action Summary) — структура слайдов как леса.</div>
+          </div>
+        </div>
+        <div class="parrow">→</div>
+
+        <!-- Ф4 -->
+        <div class="phase">
+          <div class="phead"><div class="pn">Фаза 4 · групповой*</div><div class="pt">🤝 Веду команду</div></div>
+          <div class="tier t-step">
+            <div class="tl">🏗 Шаг в системе</div>
+            <div class="tx"><b>Команда.</b> Лидер приглашает одногруппников (до 5). *Для индивид. проекта — «сам себе лидер».</div>
+          </div>
+          <div class="tier t-psy">
+            <div class="tl">🧠 Психолог</div>
+            <div class="tx">Страх конфликта / «<b>меня не возьмут</b>» → роли понятны, лидер распределяет, вклад каждого виден.</div>
+          </div>
+          <div class="tier t-ped">
+            <div class="tl">🎓 Педагог</div>
+            <div class="tx">Термины: <b>команда</b>, <b>лидер</b>, <b>роли</b>, <b>делегирование</b> — первый опыт управления.</div>
+          </div>
+        </div>
+        <div class="parrow">→</div>
+
+        <!-- Ф5 -->
+        <div class="phase last">
+          <div class="phead"><div class="pn">Фаза 5</div><div class="pt">🏆 Защищаю</div></div>
+          <div class="tier t-step">
+            <div class="tl">🏗 Шаг в системе</div>
+            <div class="tx"><b>Защита.</b> Чек-лист готовности → отправка куратору → решение. Принят → <b>+200 соларов</b>.</div>
+          </div>
+          <div class="tier t-psy">
+            <div class="tl">🧠 Психолог</div>
+            <div class="tx">Страх сцены и «<b>вернули = провал</b>» → доработка это <b>норма пути</b>, наставник на твоей стороне.</div>
+          </div>
+          <div class="tier t-ped">
+            <div class="tl">🎓 Педагог</div>
+            <div class="tx">Термины: <b>питч</b>, <b>обратная связь</b>, <b>итерация</b>. «Пройдёшь — поможем реализовать по-настоящему».</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="note">
+        <b>Жизненный цикл проекта:</b> черновик → на проверке → <b>доработка ↔ принят</b>. Возврат на доработку всегда <b>с комментарием куратора</b> — это часть обучения, а не приговор.
+        За принятый проект ученику начисляется <span class="ok">+200 соларов «за предприимчивость»</span>.
+      </div>
+    </div>
+
+    <!-- SUPPORT TEAM -->
+    <div class="support">
+      <div class="scard s-teal">
+        <div class="sh"><span class="si">🧑‍🏫</span><span class="stt">Куратор-наставник</span></div>
+        <ul>
+          <li>Ведёт ученика по фазам, отвечает в чате группы</li>
+          <li>Проверяет проект, <b>возвращает на доработку с комментарием</b> или принимает</li>
+          <li>После принятия — <b>помогает реализовать</b> идею в жизни</li>
+        </ul>
+      </div>
+      <div class="scard s-purple">
+        <div class="sh"><span class="si">🧠</span><span class="stt">Психолог</span></div>
+        <ul>
+          <li>Работает со страхом ошибки, сцены и сравнения с другими</li>
+          <li>Установка: <b>«ошибка = опыт», «доработка = часть пути»</b></li>
+          <li>Поддержка при тревоге и выгорании в финальном модуле</li>
+        </ul>
+      </div>
+      <div class="scard s-gold">
+        <div class="sh"><span class="si">🎓</span><span class="stt">Педагог</span></div>
+        <ul>
+          <li>Переводит «взрослый» бизнес-язык на язык подростка</li>
+          <li>Даёт примеры, рыбы-шаблоны и пошаговые леса</li>
+          <li>Следит, что каждый новый термин объяснён до того, как нужен</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- GLOSSARY + ASK -->
+    <div class="duo">
+      <div class="box glos">
+        <div class="bt">📖 «Куча терминов» → словарь предпринимателя</div>
+        <div class="gterms">
+          <div class="gt"><b>Стартовый капитал</b>деньги, чтобы начать дело</div>
+          <div class="gt"><b>Выручка</b>сколько всего получили от продаж</div>
+          <div class="gt"><b>Расходы</b>сколько потратили на дело</div>
+          <div class="gt"><b>Прибыль</b>выручка минус расходы</div>
+          <div class="gt"><b>Окупаемость</b>за сколько месяцев вернём вложенное</div>
+          <div class="gt"><b>Бизнес-план</b>документ-карта твоего дела</div>
+          <div class="gt"><b>Защита / питч</b>короткий рассказ о проекте куратору</div>
+          <div class="gt"><b>POAS</b>слайд-план действий (Plan of Action Summary)</div>
+          <div class="gt"><b>Идея в 1 предложении</b>кому / что / чем отличаемся</div>
+          <div class="gt"><b>Индивид. / групповой</b>один или команда до 5 человек</div>
+        </div>
+      </div>
+      <div class="box ask">
+        <div class="bt">❔ «Куча вопросов» → куда идти</div>
+        <div class="arow"><span class="ai">💬</span><span><b>Чат группы</b> с куратором — быстрый вопрос</span></div>
+        <div class="arow"><span class="ai">🧑‍🏫</span><span><b>Наставник 1:1</b> — разобрать сложное</span></div>
+        <div class="arow"><span class="ai">❔</span><span><b>Подсказки прямо в форме</b> у каждого поля</span></div>
+        <div class="arow"><span class="ai">📄</span><span><b>Шаблон и пример</b> бизнес-плана</span></div>
+        <div class="arow"><span class="ai">🧠</span><span><b>Психолог</b> — если тревожно или «не тяну»</span></div>
+        <div class="principle">Спросить — это по-предпринимательски, а не стыдно.</div>
+      </div>
+    </div>
+
+    <!-- HANDOFFS -->
+    <div class="handoffs">
+      <div class="ht">🔗 Связи с другими кабинетами (потоки проверки и награды)</div>
+      <div class="holist">
+        <div class="ho"><span class="rl">🧩 Ученик</span><span class="ha">→</span><span class="hd">Отправляет проект <b>на проверку</b> куратору</span></div>
+        <div class="ho"><span class="rl">🧑‍🏫 Куратор</span><span class="ha">⇒</span><span class="hd">Решение: <b>доработка</b> (с комментарием) ↔ <b>принят</b></span></div>
+        <div class="ho"><span class="rl win">✅ Принят</span><span class="ha">⇒</span><span class="rl solar">🪙 +200 соларов</span></div>
+        <div class="ho"><span class="hd"><b>Старший куратор / руководитель ДНМ</b> видят проекты, могут решать и архивировать</span><span class="ha">→</span><span class="rl">🧑‍💼 Надзор</span></div>
+      </div>
+    </div>
+
+    <!-- LOGIC + LEGEND -->
+    <div class="bottom">
+      <div class="logic">
+        <div class="lt">🔄 Петля мотивации — как растёт мышление предпринимателя</div>
+        <div class="lflow">
+          <span class="ls">💡 Идея</span><span class="la">→</span>
+          <span class="ls">🧮 Экономика</span><span class="la">→</span>
+          <span class="ls">🏆 Защита</span><span class="la">⇒</span>
+          <span class="ls win">✅ Принят</span><span class="la">+</span>
+          <span class="ls gold">🪙 +200 соларов</span><span class="la">→</span>
+          <span class="ls">«я создал настоящий бизнес-артефакт»</span><span class="la">↩︎</span>
+          <span class="ls">уверенность и взгляд владельца</span>
+        </div>
+      </div>
+      <div class="legend">
+        <div class="lt">Обозначения</div>
+        <div class="lrow"><span class="lk">→</span> путь трансформации / навигация</div>
+        <div class="lrow"><span class="lk">🧠</span> опора психолога на фазе</div>
+        <div class="lrow"><span class="lk">🎓</span> опора педагога на фазе</div>
+        <div class="lrow"><span class="lk">⇒</span> решение куратора / награда</div>
+        <div class="lrow"><span class="lk">*</span> только групповой проект</div>
+      </div>
+    </div>
+
+    <div class="foot">
+      Бизнес-проект ДНМ · превращение «ученик → предприниматель» · экосистема <b>SAMO&nbsp;Global</b> · срез 2026-06-03
+    </div>
+
+  </div>
+</body>
+</html>

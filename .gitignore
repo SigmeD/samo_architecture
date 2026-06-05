@@ -1,0 +1,27 @@
+# --- Secrets (НЕ коммитить) ---
+.mcp.json
+.env
+.env.*
+!.env.example
+
+# --- Node / Next.js (атлас-приложение, добавится позже) ---
+node_modules/
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# --- Vercel ---
+.vercel/
+
+# --- OS / редакторы ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json

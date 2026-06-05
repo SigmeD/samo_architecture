@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>ДНМ — клиентский постер V2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700&display=swap');
+
+  :root{
+    --blue:#0055A7; --blue-d:#013a72; --blue-dd:#01284f; --blue-2:#2f7fc9; --blue-3:#6aa6db;
+    --blue-l:#e9f1fb; --blue-l2:#f2f7fc; --blue-b:#c3d8ef;
+    --orange:#F7933C; --orange-d:#b9670f; --orange-l:#fdefdf; --orange-b:#f4cb98;
+    --green:#00A550; --green-d:#0a6c3c; --green-l:#e6f6ec; --green-b:#a9ddbf;
+    --ink:#11202e; --muted:#5b6e80; --faint:#8597a8; --line:#dbe4ef;
+    --bg1:#e6edf6; --bg2:#f5f9fc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{font-family:"Roboto","Segoe UI",Arial,sans-serif;color:var(--ink);}
+  body{
+    width:1720px;padding:46px;
+    background:
+      radial-gradient(1200px 560px at 85% -10%, rgba(247,147,60,.10), transparent 60%),
+      radial-gradient(1400px 700px at 5% 2%, rgba(0,85,167,.13), transparent 56%),
+      linear-gradient(162deg,var(--bg1),var(--bg2));
+  }
+  .frame{position:relative;background:#fff;border:1px solid var(--line);border-radius:30px;
+    box-shadow:0 30px 80px -26px rgba(8,40,80,.4),0 5px 16px rgba(8,40,80,.06);overflow:hidden;}
+  .frame::before{content:"";position:absolute;inset:0 0 auto 0;height:8px;
+    background:linear-gradient(90deg,var(--blue),var(--blue-2) 55%,var(--green));z-index:5;}
+
+  .ic{width:1em;height:1em;stroke:currentColor;stroke-width:1.8;fill:none;
+    stroke-linecap:round;stroke-linejoin:round;display:inline-block;vertical-align:middle;}
+
+  /* status badges */
+  .st{font-size:9px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;border-radius:5px;
+    padding:1px 6px;display:inline-flex;align-items:center;gap:3px;vertical-align:middle;white-space:nowrap;}
+  .st .ic{width:9px;height:9px;stroke-width:2.4;}
+  .st.done{color:var(--green-d);background:var(--green-l);border:1px solid var(--green-b);}
+  .st.wip{color:var(--orange-d);background:var(--orange-l);border:1px solid var(--orange-b);}
+
+  /* ===== HERO ===== */
+  .hero{display:grid;grid-template-columns:1.5fr 1fr;gap:0;background:
+      radial-gradient(circle at 1px 1px, rgba(0,85,167,.06) 1px, transparent 0) 0 0/24px 24px,
+      linear-gradient(180deg,#f7fafd,#fff);border-bottom:1px solid var(--line);}
+  .hero .left{padding:38px 40px 34px;}
+  .brandbar{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+  .logo{font-family:"Fira Sans";font-weight:900;font-size:24px;letter-spacing:1px;color:#fff;
+    background:linear-gradient(135deg,var(--blue),var(--blue-d));padding:6px 14px;border-radius:10px;box-shadow:0 6px 16px -6px rgba(0,85,167,.6);}
+  .brandbar .ac{font-family:"Fira Sans";font-size:13px;font-weight:600;color:var(--muted);line-height:1.25;}
+  .brandbar .ac b{color:var(--blue);}
+  h1{font-family:"Fira Sans";font-weight:800;font-size:43px;line-height:1.06;color:var(--blue-d);letter-spacing:-.6px;}
+  h1 em{font-style:normal;color:var(--blue);}
+  .lead{font-size:15.5px;color:#3a4d5e;font-weight:500;margin-top:14px;max-width:760px;line-height:1.5;}
+  .trust{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px;}
+  .trust .t{font-size:12px;font-weight:600;color:var(--blue-d);background:#fff;border:1px solid var(--blue-b);
+    border-radius:9px;padding:6px 13px;display:flex;align-items:center;gap:7px;}
+  .trust .t .ic{width:15px;height:15px;color:var(--blue);}
+
+  .hero .right{background:linear-gradient(150deg,var(--blue) 0%,var(--blue-d) 70%,var(--blue-dd) 100%);
+    color:#fff;padding:34px 36px;display:flex;flex-direction:column;justify-content:center;gap:5px;position:relative;overflow:hidden;}
+  .hero .right::after{content:"";position:absolute;right:-60px;top:-70px;width:300px;height:300px;border-radius:50%;
+    background:radial-gradient(circle,rgba(247,147,60,.28),transparent 64%);}
+  .prooflab{font-family:"Fira Sans";font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#a9c8ea;display:flex;align-items:center;gap:8px;}
+  .proofnum{font-family:"Fira Sans";font-weight:900;font-size:62px;line-height:1;letter-spacing:-1px;margin:6px 0 2px;}
+  .proofnum span{color:var(--orange);}
+  .proofsub{font-size:14px;font-weight:600;color:#dbe9f7;line-height:1.4;}
+  .proofcase{margin-top:14px;display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:600;
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);border-radius:9px;padding:7px 12px;width:max-content;}
+  .proofcase .tag{font-size:8.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;background:var(--orange);color:#3a2206;border-radius:4px;padding:1px 6px;}
+
+  /* ===== body / sections ===== */
+  .body{padding:24px 40px 0;}
+  .sec{display:flex;align-items:center;gap:15px;margin:28px 0 15px;}
+  .sec .no{font-family:"Fira Sans";font-size:13px;font-weight:800;color:#fff;background:var(--blue);
+    min-width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px -3px rgba(0,85,167,.5);}
+  .sec h2{font-family:"Fira Sans";font-size:23px;font-weight:800;color:var(--blue-d);white-space:nowrap;}
+  .sec .cap{font-size:12.5px;color:var(--muted);font-weight:500;}
+  .sec .rule{flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent);}
+
+  /* ===== funnel ===== */
+  .funnel{display:flex;align-items:stretch;gap:0;background:#fbfcfe;border:1px solid var(--line);border-radius:18px;padding:18px 20px;}
+  .fstep{flex:1;background:#fff;border:1px solid var(--blue-b);border-radius:13px;padding:11px 13px;margin-right:30px;position:relative;
+    display:flex;flex-direction:column;gap:4px;box-shadow:0 4px 12px -8px rgba(8,40,80,.5);}
+  .fstep:last-child{margin-right:0;}
+  .fstep::after{content:"";position:absolute;right:-22px;top:50%;width:14px;height:14px;transform:translateY(-50%) rotate(45deg);
+    border-top:2.4px solid var(--blue-2);border-right:2.4px solid var(--blue-2);}
+  .fstep:last-child::after{display:none;}
+  .fstep .fh{display:flex;align-items:center;gap:7px;color:var(--blue);}
+  .fstep .fh .ic{width:17px;height:17px;}
+  .fstep .k{font-family:"Fira Sans";font-size:11.5px;font-weight:800;color:var(--blue-d);letter-spacing:.2px;}
+  .fstep .v{font-size:10.7px;color:#42566a;line-height:1.28;font-weight:500;}
+  .fstep.key{border-color:var(--orange);border-width:2px;background:var(--orange-l);box-shadow:0 8px 20px -10px rgba(247,147,60,.7);}
+  .fstep.key .fh,.fstep.key .k{color:var(--orange-d);} .fstep.key::after{border-color:var(--orange);}
+  .fstep.win{border-color:var(--green);background:var(--green-l);}
+  .fstep.win .fh,.fstep.win .k{color:var(--green-d);} .fstep.win::after{border-color:var(--green);}
+  .conv{position:absolute;top:-14px;right:-14px;background:var(--orange);color:#fff;font-family:"Fira Sans";
+    font-weight:800;font-size:13px;border-radius:9px;padding:4px 9px;box-shadow:0 6px 14px -4px rgba(247,147,60,.8);z-index:3;white-space:nowrap;}
+  .loopnote{margin-top:11px;display:flex;align-items:center;gap:10px;font-size:12px;color:var(--green-d);font-weight:600;}
+  .loopnote .arc{flex:1;height:0;border-top:2px dashed var(--green-b);position:relative;}
+  .loopnote .lbl{background:var(--green-l);border:1px solid var(--green-b);border-radius:8px;padding:4px 11px;display:inline-flex;align-items:center;gap:7px;}
+  .loopnote .lbl .ic{width:15px;height:15px;}
+
+  /* ===== role tiers ===== */
+  .tier{border-radius:16px;border:1px solid var(--line);margin-bottom:14px;overflow:hidden;}
+  .tier .th{display:flex;align-items:center;gap:11px;padding:9px 18px;color:#fff;}
+  .tier .th .ic{width:17px;height:17px;}
+  .tier .th .tt{font-family:"Fira Sans";font-size:14px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;}
+  .tier .th .ts{font-size:11px;font-weight:500;opacity:.85;margin-left:auto;}
+  .tier.t1 .th{background:linear-gradient(90deg,var(--blue-3),var(--blue-2));}
+  .tier.t2 .th{background:linear-gradient(90deg,var(--blue-2),var(--blue));}
+  .tier.t3 .th{background:linear-gradient(90deg,var(--blue),var(--blue-d));}
+  .tier .cards{display:grid;gap:14px;padding:14px;background:var(--blue-l2);}
+  .t1 .cards{grid-template-columns:1fr 1fr;}
+  .t2 .cards{grid-template-columns:repeat(5,1fr);}
+  .t3 .cards{grid-template-columns:repeat(3,1fr);}
+
+  .rc{background:#fff;border:1px solid var(--line);border-radius:13px;padding:13px 14px;position:relative;box-shadow:0 5px 14px -10px rgba(8,40,80,.5);}
+  .rc::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:4px;border-radius:4px;background:var(--blue);}
+  .rc .rh{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+  .rc .ric{width:38px;height:38px;border-radius:10px;background:var(--blue-l);border:1px solid var(--blue-b);
+    display:flex;align-items:center;justify-content:center;color:var(--blue);flex-shrink:0;}
+  .rc .ric .ic{width:20px;height:20px;}
+  .rc .rn{font-family:"Fira Sans";font-size:14.5px;font-weight:800;color:var(--blue-d);line-height:1.1;}
+  .rc .rr{font-size:10.5px;color:var(--muted);font-weight:500;display:block;margin-top:2px;}
+  .rc ul{list-style:none;display:flex;flex-direction:column;gap:5px;}
+  .rc li{font-size:11.3px;color:#3a4d5e;line-height:1.3;padding-left:14px;position:relative;}
+  .rc li::before{content:"";position:absolute;left:1px;top:5px;width:5px;height:5px;border-radius:1.5px;background:var(--blue-2);}
+  .rc li b{color:var(--ink);font-weight:700;}
+  .rc .more{font-size:10px;color:var(--faint);font-weight:600;padding-left:14px;margin-top:1px;}
+  /* hero accents */
+  .rc.acc-green::before{background:var(--green);} .rc.acc-green .ric{background:var(--green-l);border-color:var(--green-b);color:var(--green-d);} .rc.acc-green .rn{color:var(--green-d);} .rc.acc-green li::before{background:var(--green);}
+  .rc.acc-orange::before{background:var(--orange);} .rc.acc-orange .ric{background:var(--orange-l);border-color:var(--orange-b);color:var(--orange-d);} .rc.acc-orange .rn{color:var(--orange-d);} .rc.acc-orange li::before{background:var(--orange);}
+
+  /* ===== franchisee assets ===== */
+  .assets{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;}
+  .asset{background:linear-gradient(180deg,#fff,#f7fafd);border:1px solid var(--line);border-radius:14px;padding:16px 14px;text-align:left;box-shadow:0 6px 16px -12px rgba(8,40,80,.5);position:relative;}
+  .asset .aic{width:46px;height:46px;border-radius:12px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:11px;box-shadow:0 8px 18px -8px rgba(0,85,167,.7);}
+  .asset .aic .ic{width:24px;height:24px;stroke-width:1.7;}
+  .asset.hot .aic{background:linear-gradient(135deg,var(--orange),var(--orange-d));box-shadow:0 8px 18px -8px rgba(247,147,60,.8);}
+  .asset .at{font-family:"Fira Sans";font-size:14px;font-weight:800;color:var(--blue-d);line-height:1.15;margin-bottom:5px;}
+  .asset.hot .at{color:var(--orange-d);}
+  .asset .ad{font-size:11.3px;color:#46596b;line-height:1.35;font-weight:500;}
+
+  /* ===== result + service ===== */
+  .result{display:flex;align-items:center;gap:20px;background:linear-gradient(120deg,var(--green-l),#d2eddc 50%,var(--blue-l));
+    border:1.5px solid var(--green-b);border-radius:18px;padding:20px 28px;margin-top:24px;box-shadow:0 16px 34px -22px rgba(0,120,70,.6);}
+  .result .ric{width:56px;height:56px;border-radius:14px;background:#fff;border:1px solid var(--green-b);display:flex;align-items:center;justify-content:center;color:var(--green-d);flex-shrink:0;}
+  .result .ric .ic{width:30px;height:30px;}
+  .result .rt{font-family:"Fira Sans";font-size:22px;font-weight:800;color:var(--green-d);line-height:1.12;}
+  .result .rs{font-size:13px;color:#2c5a44;font-weight:500;margin-top:4px;}
+  .result .pill{margin-left:auto;text-align:center;background:#fff;border:1px solid var(--green-b);border-radius:14px;padding:12px 20px;flex-shrink:0;}
+  .result .pill .n{font-family:"Fira Sans";font-weight:900;font-size:26px;color:var(--green-d);line-height:1;}
+  .result .pill .l{font-size:10.5px;color:var(--muted);font-weight:600;margin-top:3px;}
+
+  .service{margin:16px 0 0;background:#f4f7fb;border:1px solid var(--line);border-radius:14px;padding:13px 18px;}
+  .service .sl{font-size:9.5px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--faint);margin-bottom:8px;}
+  .service .row{display:flex;gap:18px;flex-wrap:wrap;align-items:center;}
+  .service .grp{font-size:11.5px;color:#41566a;}
+  .service .grp b{color:var(--blue-d);font-family:"Fira Sans";font-weight:800;}
+  .service .chips{display:flex;gap:7px;flex-wrap:wrap;}
+  .service .chips span{font-size:10.5px;font-weight:600;color:#41566a;background:#fff;border:1px solid var(--line);border-radius:7px;padding:4px 9px;}
+
+  .legend{display:flex;gap:14px;align-items:center;margin-left:auto;font-size:10.5px;color:var(--muted);font-weight:600;}
+
+  .foot{padding:16px 40px 30px;text-align:center;font-size:11px;color:var(--muted);line-height:1.6;}
+  .foot b{color:var(--blue-d);font-weight:700;}
+  .foot .sep{color:var(--line);margin:0 5px;}
+</style>
+</head>
+<body>
+<svg style="position:absolute;width:0;height:0" aria-hidden="true"><defs>
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="M12 4 22 9 12 14 2 9z"/><path d="M6 11v5c0 1.2 2.7 2.5 6 2.5s6-1.3 6-2.5v-5"/><path d="M22 9v5"/></symbol>
+  <symbol id="i-parent" viewBox="0 0 24 24"><circle cx="8" cy="7" r="3"/><circle cx="17" cy="8.5" r="2.3"/><path d="M3 20v-1c0-2.8 2.2-5 5-5s5 2.2 5 5v1"/><path d="M14.5 20v-.5c0-2.4 1.6-4 3.5-4 1.4 0 2.6.8 3.2 2"/></symbol>
+  <symbol id="i-curator" viewBox="0 0 24 24"><circle cx="12" cy="6" r="3"/><path d="M6 21v-2c0-2.5 2.7-4 6-4s6 1.5 6 4v2"/><rect x="3" y="2.5" width="18" height="0" /></symbol>
+  <symbol id="i-senior" viewBox="0 0 24 24"><circle cx="12" cy="6.5" r="3"/><path d="M6 21v-2c0-2.5 2.7-4 6-4s6 1.5 6 4v2"/><path d="M12 1.5l.8 1.6 1.7.2-1.2 1.2.3 1.7-1.6-.8-1.6.8.3-1.7L9.5 3.3l1.7-.2z" transform="translate(6.5 -0.5) scale(0.6)"/></symbol>
+  <symbol id="i-admin" viewBox="0 0 24 24"><path d="M4 21V8l8-4 8 4v13"/><path d="M4 21h16"/><rect x="9" y="13" width="6" height="8"/><path d="M8 9h2M14 9h2"/></symbol>
+  <symbol id="i-sales" viewBox="0 0 24 24"><path d="M3 12l4-4 5 2 4-4 5 4"/><path d="M3 12v6h18v-8"/><circle cx="8" cy="15" r="1.2"/></symbol>
+  <symbol id="i-finance" viewBox="0 0 24 24"><path d="M4 20V10M9 20V5M14 20v-7M19 20V8"/><path d="M3 20h18"/></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="18" r="2.4"/><path d="M6 8.5V13c0 2 1.5 3 3.5 3H14c2 0 3.5-1 3.5-3"/></symbol>
+  <symbol id="i-network" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.3"/><circle cx="5" cy="18" r="2.3"/><circle cx="19" cy="18" r="2.3"/><path d="M12 7.3 6.5 16M12 7.3 17.5 16M7 18h10"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></symbol>
+  <symbol id="i-ai" viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 4v4M12 4l-1.5-1.5M12 4l1.5-1.5"/><circle cx="9.5" cy="13" r="1.2"/><circle cx="14.5" cy="13" r="1.2"/><path d="M9.5 16.5h5"/></symbol>
+  <symbol id="i-funnel" viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5l5 5 11-12"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5c0-1 1-1.5 3-1.5S11 4 12 5c1-1 3-1.5 5-1.5S20 4 20 5v13c0 1-1 1.5-3 1.5S13 18 12 17c-1 1-3 1.5-5 1.5S4 19 4 18z"/><path d="M12 5v12"/></symbol>
+  <symbol id="i-crm" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11"/></symbol>
+  <symbol id="i-coins" viewBox="0 0 24 24"><ellipse cx="9" cy="6.5" rx="6" ry="2.6"/><path d="M3 6.5v5c0 1.4 2.7 2.6 6 2.6s6-1.2 6-2.6v-5"/><path d="M15 11.5c2.8.2 6 1.3 6 2.8 0 1.5-2.7 2.6-6 2.6-1 0-2-.1-2.8-.3"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7 4h10v4a5 5 0 0 1-10 0z"/><path d="M7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3"/><path d="M12 13v4M8 20h8M9 20v-1.5c0-.8.7-1.5 1.5-1.5h3c.8 0 1.5.7 1.5 1.5V20"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 3 2 3H5"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5z"/><path d="M3 13l9 5 9-5"/></symbol>
+</defs></svg>
+
+<div class="frame">
+
+  <!-- ===== HERO ===== -->
+  <div class="hero">
+    <div class="left">
+      <div class="brandbar">
+        <span class="logo">SAMO</span>
+        <span class="ac">Экосистема SAMO Global · образовательный модуль<br><b>Детская Бизнес Академия Саидмурода Давлатова</b></span>
+      </div>
+      <h1>Готовая школа финансовой грамотности&nbsp;— <em>под ключ и под контролем</em></h1>
+      <div class="lead">Единая платформа ведёт <b>ученика</b> от первого касания до результата, а <b>франчайзи</b> — от одной школы до управляемой сети. Финграмотность и предпринимательство для детей 10–17 лет.</div>
+      <div class="trust">
+        <span class="t"><svg class="ic"><use href="#i-layers"/></svg>11 кабинетов · 3 контура</span>
+        <span class="t"><svg class="ic"><use href="#i-book"/></svg>4 семестра · непрерывный набор</span>
+        <span class="t"><svg class="ic"><use href="#i-globe"/></svg>ru · kz · tj · uz</span>
+      </div>
+    </div>
+    <div class="right">
+      <div class="prooflab"><svg class="ic" style="width:13px;height:13px"><use href="#i-trophy"/></svg>Работающая модель</div>
+      <div class="proofnum"><span>$270k</span> / год</div>
+      <div class="proofsub">школа-партнёр в Актюбинске:<br>140+ учеников в городе ~300 тыс.</div>
+      <div class="proofcase"><span class="tag">кейс</span>конверсия пробного урока <b style="margin-left:4px">70–80%</b></div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- 01 FUNNEL -->
+    <div class="sec"><span class="no">01</span><h2>Сквозной путь: от лида до результата</h2><span class="cap">как школа привлекает, продаёт и удерживает</span><span class="rule"></span></div>
+    <div class="funnel">
+      <div class="fstep"><div class="fh"><svg class="ic"><use href="#i-funnel"/></svg></div><div class="k">Маркетинг → лид</div><div class="v">таргет · органика · рекомендация; источник виден</div></div>
+      <div class="fstep"><div class="fh"><svg class="ic"><use href="#i-crm"/></svg></div><div class="k">Менеджер · CRM</div><div class="v">квалификация лида, запись на пробный</div></div>
+      <div class="fstep"><div class="fh"><svg class="ic"><use href="#i-cap"/></svg></div><div class="k">Гость · 3 урока</div><div class="v">вход по телефону, доступ к 3 демо-урокам (~1 ч)</div></div>
+      <div class="fstep key"><div class="conv">конв. 70–80%*</div><div class="fh"><svg class="ic"><use href="#i-curator"/></svg></div><div class="k">Пробный урок — КУРАТОР</div><div class="v">проводит и формирует ценность у родителя</div></div>
+      <div class="fstep"><div class="fh"><svg class="ic"><use href="#i-sales"/></svg></div><div class="k">Дожим — продавец</div><div class="v">закрывает сделку (WhatsApp), запись беседы</div></div>
+      <div class="fstep win"><div class="fh"><svg class="ic"><use href="#i-check"/></svg></div><div class="k">Договор → оплата</div><div class="v">логин/пароль ребёнку, доступ открыт</div></div>
+    </div>
+    <div class="loopnote">
+      <span class="lbl"><svg class="ic"><use href="#i-route"/></svg>Обучение → результат → <b>пролонгация (повторная выручка)</b></span>
+      <span class="arc"></span>
+      <span style="font-size:10.5px;color:var(--faint);font-weight:500">* целевой ориентир, настраивается</span>
+    </div>
+
+    <!-- 02 ROLES -->
+    <div class="sec"><span class="no">02</span><h2>Три контура управления</h2><span class="cap">11 кабинетов · scope-изоляция «свои / своя школа / сеть»</span><span class="rule"></span></div>
+
+    <div class="tier t1">
+      <div class="th"><svg class="ic"><use href="#i-cap"/></svg><span class="tt">Потребители</span><span class="ts">ученик и родитель — ради них всё</span></div>
+      <div class="cards">
+        <div class="rc acc-green">
+          <div class="rh"><span class="ric"><svg class="ic"><use href="#i-cap"/></svg></span><span><span class="rn">Ученик</span><span class="rr">ребёнок 10–17 · продукт академии</span></span></div>
+          <ul>
+            <li><b>Уроки:</b> смотрит заранее → разбор фрагментов с куратором</li>
+            <li><b>СУ + бизнес-проект</b> · звёздочки → солары · уровни, рейтинг</li>
+            <li>Сертификат-ритуал · ИИ-аватар Довлатова <span class="st wip"><svg class="ic"><use href="#i-gear"/></svg>в работе</span></li>
+          </ul>
+          <div class="more">+ магазин соларов, расписание, чат, «Зачем учиться»</div>
+        </div>
+        <div class="rc">
+          <div class="rh"><span class="ric"><svg class="ic"><use href="#i-parent"/></svg></span><span><span class="rn">Родитель</span><span class="rr">контроль и оплата · отдельный аккаунт</span></span></div>
+          <ul>
+            <li><b>Центр контроля:</b> мгновенное уведомление о непосещении</li>
+            <li>Договор → оплата, рассрочка, график · отчёты куратора</li>
+            <li>Статусы <b>активен / не активен / ждёт оплаты</b> · реф-ссылка</li>
+          </ul>
+          <div class="more">+ расторжение договора <span class="st wip"><svg class="ic"><use href="#i-gear"/></svg>в работе</span>, «поблагодарить», опросы, чаты</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tier t2">
+      <div class="th"><svg class="ic"><use href="#i-admin"/></svg><span class="tt">Команда школы</span><span class="ts">операционка одной школы</span></div>
+      <div class="cards">
+        <div class="rc">
+          <div class="rh"><span class="ric"><svg class="ic"><use href="#i-curator"/></svg></span><span><span class="rn">Куратор</span><span class="rr">учит + продаёт</span></span></div>
+          <ul>
+            <li>Уроки по методике · проводит <b>пробный</b> (продажа)</li>
+            <li>3 цикла: ДЗ/эссе/проекты — <b>принято/не принято</b></li>
+            <li>Рейтинг, <b>топ-3 значок</b> · Академия куратора <span class="st wip"><svg class="ic"><use href="#i-gear"/></svg></span></li>
+          </ul>
+          <div class="more">+ KPI, отчёт родителю, задачи</div>
+        </div>
+        <div class="rc">
+          <div class="rh"><span class="ric"><svg class="ic"><use href="#i-senior"/></svg></span><span><span class="rn">Старший куратор</span><span class="rr">играющий тренер</span></span></div>
+          <ul>
+            <li>Свои группы + аналитика подчинённых</li>
+            <li>Обучение новых · <b>лидерборд кураторов</b></li>
+            <li>Приём месячных отчётов</li>
+          </ul>
+        </div>
+        <div class="rc">
+          <div class="rh"><span class="ric"><svg class="ic"><use href="#i-admin"/></svg></span><span><span class="rn">Администратор</span><span class="rr">все операции школы</span></span></div>
+          <ul>
+            <li><b>Маркетинг + Продажи</b> <span class="st wip"><svg class="ic"><use href="#i-gear"/></svg></span> · цепочка зачисления</li>
+            <li>Учебный процесс · посещаемость · дебиторка</li>
+            <li><b>Отдел качества</b> · штатка + оргструктура</li>
+          </ul>
+          <div class="more">+ аналитика CRM, табель</div>
+        </div>
+        <div class="rc">
+          <div class="rh"><span class="ric"><svg class="ic"><use href="#i-sales"/></svg></span><span><span class="rn">Менеджер продаж</span><span class="rr">привлечение и сделка</span></span></div>
+          <ul>
+            <li>Лиды и воронка · 3 пути регистрации</li>
+            <li>Доступ к 3 урокам → запись на пробный</li>
+            <li>Дожим WhatsApp · рассрочка · KPI</li>
+          </ul>
+        </div>
+        <div class="rc">
+          <div class="rh"><span class="ric"><svg class="ic"><use href="#i-finance"/></svg></span><span><span class="rn">Финансист</span><span class="rr">конфиденциально</span></span></div>
+          <ul>
+            <li>P&amp;L/ОПиУ · валовая − себестоимость</li>
+            <li><b>Роялти 20%</b> · выплаты Фикса+Бонус−Штраф</li>
+            <li>Видят <b>владелец+бухгалтер</b>; админ — лишь дебиторка</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="tier t3">
+      <div class="th"><svg class="ic"><use href="#i-network"/></svg><span class="tt">Сеть и управление</span><span class="ts">франшиза и головной офис</span></div>
+      <div class="cards">
+        <div class="rc">
+          <div class="rh"><span class="ric"><svg class="ic"><use href="#i-route"/></svg></span><span><span class="rn">Куратор франшиз</span><span class="rr">закреплённые школы</span></span></div>
+          <ul>
+            <li>Обучение кураторов и менеджеров школ</li>
+            <li>Созвоны + отчёты руководителю · учеников не ведёт</li>
+          </ul>
+        </div>
+        <div class="rc acc-orange">
+          <div class="rh"><span class="ric"><svg class="ic"><use href="#i-network"/></svg></span><span><span class="rn">Франчайзи / директор</span><span class="rr">владелец бизнеса</span></span></div>
+          <ul>
+            <li>Видит как директор: <b>расширенная аналитика</b></li>
+            <li><b>2 модели оргструктуры</b> (1 школа / сеть)</li>
+            <li>Вкл/выкл функций, права, ценовые диапазоны</li>
+          </ul>
+        </div>
+        <div class="rc">
+          <div class="rh"><span class="ric"><svg class="ic"><use href="#i-target"/></svg></span><span><span class="rn">Руководитель проекта</span><span class="rr">вся сеть школ</span></span></div>
+          <ul>
+            <li>Сводный дашборд всех школ · <b>конструктор программы</b></li>
+            <li>Магазин мерча · документы франшизы · KPI школа→ГО</li>
+          </ul>
+          <div class="more">+ руководитель подразделения (опц., регион)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 WHAT FRANCHISEE GETS -->
+    <div class="sec"><span class="no">03</span><h2>Что получает франчайзи-партнёр</h2><span class="cap">бизнес под ключ, а не просто платформа</span><span class="rule"></span></div>
+    <div class="assets">
+      <div class="asset"><span class="aic"><svg class="ic"><use href="#i-book"/></svg></span><div class="at">Методика и контент</div><div class="ad">Готовая программа 4 семестра, цикл урока, СУ и бизнес-проект, сертификаты.</div></div>
+      <div class="asset hot"><span class="aic"><svg class="ic"><use href="#i-ai"/></svg></span><div class="at">ИИ-аватар Давлатова <span class="st wip"><svg class="ic"><use href="#i-gear"/></svg></span></div><div class="ad">Уникальный актив: личный наставник для ученика, родителя и куратора.</div></div>
+      <div class="asset"><span class="aic"><svg class="ic"><use href="#i-crm"/></svg></span><div class="at">CRM, воронка, аналитика</div><div class="ad">Лиды, пробные уроки, веб-счётчик, путь ученика, план наполнения.</div></div>
+      <div class="asset"><span class="aic"><svg class="ic"><use href="#i-target"/></svg></span><div class="at">Управление и KPI</div><div class="ad">2 модели оргструктуры, штатка, рейтинги-«матрёшка», отдел качества.</div></div>
+      <div class="asset"><span class="aic"><svg class="ic"><use href="#i-coins"/></svg></span><div class="at">Управляемая экономика</div><div class="ad">Роялти 20% от валовой, прозрачный учёт детей, рассрочка, финконтроль.</div></div>
+    </div>
+
+    <!-- RESULT -->
+    <div class="result">
+      <span class="ric"><svg class="ic"><use href="#i-trophy"/></svg></span>
+      <div>
+        <div class="rt">Финансово грамотный ребёнок и управляемая сеть школ</div>
+        <div class="rs">непрерывный набор групп = постоянная выручка · обучение, которое доводят до результата и продлевают</div>
+      </div>
+      <div class="pill"><div class="n">$270k</div><div class="l">кейс школы / год</div></div>
+    </div>
+
+    <!-- SERVICE STRIP -->
+    <div class="service">
+      <div class="row">
+        <span class="sl">Технический масштаб (для приёмки)</span>
+        <span class="legend"><span class="st done"><svg class="ic"><use href="#i-check"/></svg>реализовано</span><span class="st wip"><svg class="ic"><use href="#i-gear"/></svg>в работе</span></span>
+      </div>
+      <div class="row" style="margin-top:9px">
+        <span class="grp"><b>11</b> кабинетов · <b>73</b> модуля · <b>108</b> моделей данных · стек NestJS / Prisma / PostgreSQL · интеграции SAMO (IAM · CRM · FIN · Франчайзинг · NTF · MKT)</span>
+      </div>
+      <div class="row" style="margin-top:9px">
+        <div class="chips">
+          <span>✓ Кабинеты и роли</span><span>✓ Геймификация (солары, рейтинги, магазин)</span><span>✓ Финансы / P&amp;L / KPI-выплаты</span><span>✓ Реф-регистрация и оплата</span>
+          <span>⟳ ИИ-аватар</span><span>⟳ Маркетинг / Продажи (админ)</span><span>⟳ Расторжение договора</span><span>⟳ Методика урока</span><span>⟳ Автоэквайринг</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="foot">
+    Экосистема <b>SAMO</b> <span class="sep">·</span> автономный образовательный модуль «Дети на миллион» <span class="sep">·</span> клиентский постер V2 <span class="sep">·</span> по канону <b>samo-docs</b> и встречам ДНМ 04.06.2026 <span class="sep">·</span> срез 2026-06-04
+  </div>
+
+</div>
+</body>
+</html>
