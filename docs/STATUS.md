@@ -18,10 +18,17 @@
   - [x] Task 9–13 — дженерик-компоненты (`components/atlas/*`)
   - [x] Task 14–17 — маршруты L0/L1/L2 (Next 15 async params; 17 статических страниц)
   - [x] Task 18 — Playwright e2e (3 функц. ✓) + baseline screenshot
-  - [ ] Task 19 — деплой Vercel (требует авторизации владельца)
+  - [x] Task 19 — деплой Vercel (production: https://samoarchitecture.vercel.app)
   - [ ] Финал: code-review всего среза → merge `feature/curator-vertical-slice` → `main`
 
-**Проверено:** `npm run build` (17 страниц) · `npm run test` 18/18 · `npm run typecheck` 0 ошибок · e2e канон-инварианты (нет «7 этапов»/«0–100%», ядро = процедура урока, badge «расхождение с каноном»).
+**Проверено:** `npm run build` (17 страниц) · `npm run test` 18/18 · `npm run typecheck` 0 ошибок · e2e канон-инварианты · **живой сайт** https://samoarchitecture.vercel.app рендерит кабинет Куратора (процедура урока, divergent-бейджи, без «7 этапов»/«0–100%»).
+
+## Финальный code-review (READY TO MERGE)
+Critical — нет; канон-верность подтверждена end-to-end; build/test/typecheck зелёные. Follow-ups:
+- [ ] (Important, до кабинета №2) data-driven Zod-тест по всем `CABINETS` + `getAllModulePairs()`
+- [ ] (Important, до кабинета №2) тест целостности: каждый `crossLink.toCabinet` резолвится через `getCabinet`
+- [ ] (Minor) убрать неиспользуемый `clsx`; решить судьбу поля `actors`; починить/убрать `next lint`
+- [ ] (Minor) `.gitignore`: `test-results/`, `playwright-report/`; index-ключи; дубли заголовков (a11y); font-vars
 
 ## Не покрыто / отложено
 - [ ] Кабинеты, кроме Куратора (Фазы 2..N) — навигируемые стабы
