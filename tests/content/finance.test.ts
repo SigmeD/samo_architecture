@@ -25,9 +25,9 @@ describe("кабинет финансиста (finance)", () => {
     expect(blob).toMatch(/НЕ принимает оплату/);
     expect(blob).toMatch(/[Рр]асторжени/);
   });
-  it("указание владельца: доля Довлатова (50%) НЕ отображается", () => {
+  it("указание владельца: доля основателя (50%) НЕ отображается", () => {
     const blob = JSON.stringify(finance);
-    expect(blob).not.toMatch(/Давлатов/);
+    expect(blob).not.toMatch(/Д[оа]влат/);
     expect(blob).not.toMatch(/50%/);
   });
   it("все связи резолвятся в реестре", () => {

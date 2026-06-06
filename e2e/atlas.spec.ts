@@ -89,3 +89,23 @@ test("визуальный снимок кабинета куратора (basel
   await page.goto("/cabinet/curator/");
   await expect(page).toHaveScreenshot("cabinet-curator.png", { fullPage: true });
 });
+
+test("кабинет куратора франшиз: постер-рендер, purple-зона, обезличено, доступы к ЛК", async ({ page }) => {
+  await page.goto("/cabinet/franchise-curator/");
+  await expect(page.getByRole("heading", { level: 1, name: /Куратор франшиз/ })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Домены и функции" })).toBeVisible();
+  // обезличено: никаких персональных имён и доли роялти
+  await expect(page.locator("body")).not.toContainText(/Д[оа]влат/);
+  await expect(page.locator("body")).not.toContainText("50%");
+  // ключевые требования владельца: доступы к ЛК партнёров + рейтинг по числу учеников
+  await expect(page.getByText(/доступами к ЛК франчайзи-партнёров/).first()).toBeVisible();
+  await expect(page.getByText(/по числу учеников/).first()).toBeVisible();
+  // связь во франчайзи кликабельна
+  await page.getByRole("link", { name: /Франчайзи/ }).first().click();
+  await expect(page).toHaveURL(/\/cabinet\/franchise/);
+});
+
+test("кабинет куратора франшиз: визуальный снимок (baseline)", async ({ page }) => {
+  await page.goto("/cabinet/franchise-curator/");
+  await expect(page).toHaveScreenshot("cabinet-franchise-curator.png", { fullPage: true });
+});

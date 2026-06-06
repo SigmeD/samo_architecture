@@ -3,6 +3,7 @@ import { curator } from "@/content/cabinets/curator";
 import { child } from "@/content/cabinets/child";
 import { parent } from "@/content/cabinets/parent";
 import { finance } from "@/content/cabinets/finance";
+import { franchiseCurator } from "@/content/cabinets/franchise-curator";
 
 const stub = (slug: string, title: string, code: string, emoji: string, zone: ZoneKey): CabinetSpec => ({
   slug, role: { code, title, emoji }, zone, implStatus: "planned", isStub: true,
@@ -18,7 +19,7 @@ export const CABINETS: Record<string, CabinetSpec> = {
   franchise:        stub("franchise", "Франчайзи / директор", "pr2-franchayzi-dnm", "🏢", "purple"),
   lead:             stub("lead", "Руководитель проекта", "br7-rukovoditel-dnm", "🎯", "blue"),
   "senior-curator": stub("senior-curator", "Старший куратор", "op-starshiy-kurator-dnm", "🧑‍💼", "teal"),
-  "franchise-curator": stub("franchise-curator", "Куратор франшиз", "op-kurator-franshiz-dnm", "🤝", "purple"),
+  "franchise-curator": franchiseCurator,
   sales:            stub("sales", "Менеджер по продажам", "op-menedzher-prodazh-dnm", "💼", "teal"),
   marketer:         stub("marketer", "Маркетолог (СММ + Таргет)", "op-marketolog-dnm", "📣", "orange"),
   finance,
