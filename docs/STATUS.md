@@ -33,7 +33,8 @@
   - [x] Task 13 — e2e: функц. L0 (секции, состав, инварианты) + golden `overview-l0.png`; удалены орфаны (`poster-hero`, `funnel-flow`, `role-tier`)
   - [x] **vision-first-ui gate 2**: L0 снят на 1320 и 390 px, сверен с эталоном `dnm-architecture-poster.html` — постер-стилистика воспроизведена, адаптив ок
   - [x] **Аудит полноты против 3 стенограмм** (workflow, 7 агентов, 166 пунктов): вердикт ~80% важного выведено. Применены правки: надсистема UDI Group→SAMO Global (eyebrow/dataLayer); лимит группы — требование франшизы (до 5–8); двусторонняя отчётность куратор↔ст.куратор; антифрод-сверка видео с отметками; отд. аналитика пробных уроков; `sales`/`lead` помечены «после Bitrix»/«в переработке»; маркетплейс «Глобал Само»; путь экосистемы в result.sub; «напр.» к плану 250/120. Golden L0 перегенерён. `Фикс+Бонус−Штраф` оставлен (канон `SPEC-KPI-PAYOUT-001`, не выдумка — аудит видел только встречи)
-  - [ ] Финал: code-review L0 → merge → деплой preview
+  - [x] **Запушено + задеплоено в production** (06.06, по команде владельца): ветка `feature/poster-style-redesign` → `origin` (github.com/SigmeD/samo_architecture); `vercel deploy --prod` → **live `samoarchitecture.vercel.app`** (18 страниц, READY, проверено — кабинеты рендерятся). Ветка в `main` НЕ смёржена (прод задеплоен с ветки по решению владельца).
+  - [ ] Финал: code-review → merge `feature/poster-style-redesign` → `main`
 
 **Проверено (L0):** `npm run typecheck` 0 ошибок · `npm run test` 30/30 · `npm run build` 18 страниц · `npm run e2e` 5/5 (вкл. перегенер. golden L0). Console — только `favicon.ico 404` (безвредно).
 
