@@ -22,6 +22,13 @@ pnpm-debug.log*
 # --- Vercel ---
 .vercel/
 
+# --- Тестовые артефакты Playwright (golden в e2e/__screenshots__ — коммитим) ---
+test-results/
+playwright-report/
+.playwright-mcp/
+# временные dev-снимки в корне (vision-first-ui scratch)
+/l0-*.png
+
 # --- OS / редакторы ---
 .DS_Store
 Thumbs.db
