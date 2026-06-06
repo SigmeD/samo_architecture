@@ -4,6 +4,7 @@ import { child } from "@/content/cabinets/child";
 import { parent } from "@/content/cabinets/parent";
 import { finance } from "@/content/cabinets/finance";
 import { franchiseCurator } from "@/content/cabinets/franchise-curator";
+import { franchise } from "@/content/cabinets/franchise";
 
 const stub = (slug: string, title: string, code: string, emoji: string, zone: ZoneKey): CabinetSpec => ({
   slug, role: { code, title, emoji }, zone, implStatus: "planned", isStub: true,
@@ -16,7 +17,7 @@ export const CABINETS: Record<string, CabinetSpec> = {
   child,
   parent,
   "school-admin":   stub("school-admin", "Администратор школы", "op-admin-shkoly-dnm", "🏫", "orange"),
-  franchise:        stub("franchise", "Франчайзи / директор", "pr2-franchayzi-dnm", "🏢", "purple"),
+  franchise,
   lead:             stub("lead", "Руководитель проекта", "br7-rukovoditel-dnm", "🎯", "blue"),
   "senior-curator": stub("senior-curator", "Старший куратор", "op-starshiy-kurator-dnm", "🧑‍💼", "teal"),
   "franchise-curator": franchiseCurator,
