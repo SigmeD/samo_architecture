@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+  /* === brand (существующие — НЕ менять значения: завязан golden cabinet-curator.png) === */
   --color-samo-blue: #0055A7;
   --color-samo-blue-d: #003D7A;
   --color-samo-orange: #F7933C;
@@ -14,6 +15,28 @@
   --color-zone-teal: #0E9CA6;
   --color-zone-gold: #C8901E;
   --color-status-divergent: #9c2b2b;
+
+  /* === poster redesign (добавлено) === */
+  /* brand light/border/2 для лент, чипов, баннеров */
+  --color-samo-blue-2: #1f72c4;
+  --color-samo-blue-l: #e9f1fb;
+  --color-samo-blue-b: #bcd5ef;
+  --color-samo-orange-l: #fdefdf;
+  --color-samo-orange-b: #f1c894;
+  --color-samo-green-l: #e6f6ec;
+  --color-samo-green-b: #aee0c1;
+  /* нейтрали постера */
+  --color-ink: #14212e;
+  --color-ink-soft: #33485c;
+  --color-muted: #62748a;
+  --color-faint: #8497a8;
+  --color-line: #d8e2ee;
+  /* мягкие поверхности (вынос hex из компонентов) */
+  --color-surface-soft: #fbfcfe;
+  --color-surface-tint: #f5f8fc;
+  --color-green-soft: #2c5a44;
+
+  /* fonts */
   --font-sans: "Roboto", system-ui, sans-serif;
   --font-display: "Fira Sans", system-ui, sans-serif;
 }
@@ -22,3 +45,21 @@
 body { font-family: var(--font-sans); color: #1f2937; background: #fff; }
 *:focus-visible { outline: 3px solid var(--color-samo-blue); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* === poster surfaces — сложные фоны живут здесь, чтобы в компонентах не было hex === */
+.poster-page-bg {
+  background:
+    radial-gradient(1100px 520px at 82% -8%, color-mix(in srgb, var(--color-samo-orange) 10%, transparent), transparent 60%),
+    radial-gradient(1300px 680px at 8% 4%, color-mix(in srgb, var(--color-samo-blue) 12%, transparent), transparent 58%),
+    linear-gradient(160deg, #e8eef6, #f4f8fc);
+}
+.poster-top-bar {
+  background: linear-gradient(90deg, var(--color-samo-blue) 0%, var(--color-samo-blue-2) 45%, var(--color-zone-teal) 70%, var(--color-samo-green) 100%);
+}
+.poster-header-tex {
+  background:
+    radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--color-samo-blue) 7%, transparent) 1px, transparent 0) 0 0 / 22px 22px,
+    linear-gradient(180deg, #f7fafd, #ffffff);
+}
+.core-band-bg { background: linear-gradient(120deg, var(--color-samo-blue) 0%, var(--color-samo-blue-d) 100%); }
+.result-band-bg { background: linear-gradient(120deg, var(--color-samo-green-l), #d4eede 55%, var(--color-samo-blue-l)); }

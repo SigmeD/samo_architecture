@@ -16,6 +16,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# --- Brainstorm visual companion (per-user, не коммитить) ---
+.superpowers/
+
 # --- Vercel ---
 .vercel/
 
@@ -25,3 +28,5 @@ Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+.vercel

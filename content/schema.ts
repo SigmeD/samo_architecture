@@ -29,3 +29,26 @@ export const ModuleSchema = z.object({
 
 export function validateCabinet(x: unknown) { return CabinetSchema.parse(x); }
 export function validateModule(x: unknown) { return ModuleSchema.parse(x); }
+
+// === L0 overview (poster redesign) ===
+const MetaChip = z.object({ label: z.string(), value: z.string().optional(), unverified: z.boolean().optional() });
+const OverviewCabinet = z.object({
+  slug: z.string(), emoji: z.string(), name: z.string(), roleCaption: z.string(),
+  zone: ZoneKey, hero: z.boolean().optional(), highlights: z.array(z.string()).min(1),
+});
+const FlowStepL0 = z.object({ k: z.string(), v: z.string(), variant: z.enum(["alt", "end"]).optional() });
+const FlowBandL0 = z.object({
+  emoji: z.string(), title: z.string(), note: z.string().optional(),
+  steps: z.array(FlowStepL0).min(1), branch: z.array(FlowStepL0).optional(),
+});
+
+export const OverviewSchema = z.object({
+  header: z.object({ eyebrow: z.string(), title: z.string(), lead: z.string(), meta: z.array(MetaChip) }),
+  core: z.object({ emoji: z.string(), title: z.string(), feats: z.array(z.string()).min(1) }),
+  tiers: z.array(z.object({ title: z.string(), cabinets: z.array(OverviewCabinet).min(1) })).min(1),
+  processes: z.array(FlowBandL0),
+  crossModules: z.array(z.object({ label: z.string(), zone: ZoneKey })),
+  dataLayer: z.array(z.object({ label: z.string(), items: z.array(z.string()) })),
+  result: z.object({ emoji: z.string(), title: z.string(), sub: z.string() }),
+});
+export function validateOverview(x: unknown) { return OverviewSchema.parse(x); }
