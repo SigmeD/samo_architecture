@@ -1,0 +1,18 @@
+# Секрет — НИКОГДА не загружать на Vercel
+.mcp.json
+
+# Dev-only, не нужно для сборки статического атласа
+docs
+e2e
+tests
+*.test.ts
+*.test.tsx
+vitest.config.ts
+vitest.setup.ts
+playwright.config.ts
+
+# Локальное
+node_modules
+.next
+out
+.git
