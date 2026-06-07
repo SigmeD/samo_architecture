@@ -148,3 +148,22 @@ test("кабинет администратора школы: визуальны
   await page.goto("/cabinet/school-admin/");
   await expect(page).toHaveScreenshot("cabinet-school-admin.png", { fullPage: true });
 });
+
+test("кабинет старшего куратора: постер-рендер, blue-зона, двойная роль, обезличено", async ({ page }) => {
+  await page.goto("/cabinet/senior-curator/");
+  await expect(page.getByRole("heading", { level: 1, name: /Старший куратор/ })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Домены и функции" })).toBeVisible();
+  // двойная роль «играющий тренер»: преподаёт сам + разделение контроль/коучинг
+  await expect(page.getByText(/Моё преподавание/).first()).toBeVisible();
+  await expect(page.getByText(/снять шляпу оценщика/).first()).toBeVisible();
+  await expect(page.locator("body")).not.toContainText("50%");
+  await expect(page.locator("body")).not.toContainText(/Д[оа]влат/);
+  // связь в родителя кликабельна
+  await page.getByRole("link", { name: /Родитель/ }).first().click();
+  await expect(page).toHaveURL(/\/cabinet\/parent/);
+});
+
+test("кабинет старшего куратора: визуальный снимок (baseline)", async ({ page }) => {
+  await page.goto("/cabinet/senior-curator/");
+  await expect(page).toHaveScreenshot("cabinet-senior-curator.png", { fullPage: true });
+});
