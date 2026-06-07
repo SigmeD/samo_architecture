@@ -63,7 +63,7 @@ export const curator: CabinetSpec = {
   sources: [
     { id: "REG-DNM-LESSON-001", version: "1.0" }, { id: "REG-DNM-CURATOR-001", version: "1.0" },
     { id: "REG-DNM-CURATOR-PARENTS-001", version: "1.0" }, { id: "SPEC-DNM-TZ-001", version: "3.8" },
-    { id: "SPEC-M3-DNM-001", version: "2.6" }, { id: "SPEC-DNM-FUNC-001", version: "2.2" },
+    { id: "SPEC-M3-DNM-001", version: "2.6" }, { id: "SPEC-DNM-FUNC-001", version: "2.3" },
     { id: "SPEC-KPI-PAYOUT-001", version: "1.1" }, { id: "REG-DNM-SOLARS-001", version: "1.0" },
     { id: "CONV-RBAC-DNM-001", version: "1.4" }, { id: "CONV-ROLES-DNM-001", version: "1.3" },
     { id: "CONV-ROLE-HIERARCHY-001", version: "1.7" },

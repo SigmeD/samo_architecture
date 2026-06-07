@@ -2,7 +2,7 @@ import type { CabinetSpec } from "@/content/types";
 
 /**
  * Кабинет родителя ДНМ (роль cr5-roditel-dnm).
- * Источники: канон (локальный клон samo-docs) — SPEC-DNM-TZ-001 v3.8, SPEC-DNM-REG-001 v1.1, SPEC-DNM-FUNC-001 v2.2,
+ * Источники: канон (локальный клон samo-docs) — SPEC-DNM-TZ-001 v3.8, SPEC-DNM-REG-001 v1.1, SPEC-DNM-FUNC-001 v2.3,
  * SPEC-M3-DNM-001 v2.6, CONV-RBAC-DNM-001 v1.4 — + встреча 04.06 (раздел «Кабинет родителя»). См. docs/STATUS.md.
  * Зона blue (управление/операции). Ядро — «Центр контроля над ребёнком».
  * Инварианты: ДЗ «принято/на доработку» без баллов; родитель ДЗ/тесты НЕ сдаёт (программа read-only);
@@ -71,7 +71,7 @@ export const parent: CabinetSpec = {
   ],
   sources: [
     { id: "SPEC-DNM-TZ-001", version: "3.8" }, { id: "SPEC-DNM-REG-001", version: "1.1" },
-    { id: "SPEC-DNM-FUNC-001", version: "2.2" }, { id: "SPEC-M3-DNM-001", version: "2.6" },
+    { id: "SPEC-DNM-FUNC-001", version: "2.3" }, { id: "SPEC-M3-DNM-001", version: "2.6" },
     { id: "CONV-RBAC-DNM-001", version: "1.4" },
   ],
 };
