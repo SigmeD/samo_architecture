@@ -46,7 +46,7 @@
   - [x] **Правка ярлыка роли в контенте (решение владельца):** «руководитель франшизы» → «руководитель проекта ДНМ» (отдельная роль) в `curator.ts`, `finance.ts`, `lesson-journal.ts` — исправляет ошибочный маппинг обезличивания (имя руководителя проекта ДНМ было смаплено как «руководитель франшизы»). typecheck/test 83/83/e2e 13/13 зелёные.
   - [ ] Следующее по очереди: остальные кабинеты из стабов (school-admin, senior-curator, sales, marketer, lead, guest) тем же путём (канон + встречи + эталон).
 
-- **L0 постер-редизайн** (ветка `feature/poster-style-redesign`) — **собран, не смёржен**
+- **L0 постер-редизайн** (ветка `feature/poster-style-redesign`) — **смёржен в `main` (PR #1, 07.06)**
   - [x] Дизайн-система постер-стиля: токены + 9 дженерик-компонентов (`components/atlas/*`) + контент-модель `OverviewSpec` (типы + Zod) — TDD (`77d0ea2`)
   - [x] Task 9 — канон-верификация фактов L0 (см. ниже); вывод: канон-реестр устарел, авторитет — встречи 04–05.06
   - [x] Task 8/10/11 — `content/overview.ts` переписан под новую модель: 3 этажа / 12 кабинетов (добавлен **Маркетолог**, убран не-канонный кабинет «Качество»), ядро, 3 процесс-ленты, сквозные модули, данные — из встреч + канон-фактов
@@ -55,8 +55,8 @@
   - [x] Task 13 — e2e: функц. L0 (секции, состав, инварианты) + golden `overview-l0.png`; удалены орфаны (`poster-hero`, `funnel-flow`, `role-tier`)
   - [x] **vision-first-ui gate 2**: L0 снят на 1320 и 390 px, сверен с эталоном `dnm-architecture-poster.html` — постер-стилистика воспроизведена, адаптив ок
   - [x] **Аудит полноты против 3 стенограмм** (workflow, 7 агентов, 166 пунктов): вердикт ~80% важного выведено. Применены правки: надсистема UDI Group→SAMO Global (eyebrow/dataLayer); лимит группы — требование франшизы (до 5–8); двусторонняя отчётность куратор↔ст.куратор; антифрод-сверка видео с отметками; отд. аналитика пробных уроков; `sales`/`lead` помечены «после Bitrix»/«в переработке»; маркетплейс «Глобал Само»; путь экосистемы в result.sub; «напр.» к плану 250/120. Golden L0 перегенерён. `Фикс+Бонус−Штраф` оставлен (канон `SPEC-KPI-PAYOUT-001`, не выдумка — аудит видел только встречи)
-  - [x] **Запушено + задеплоено в production** (06.06, по команде владельца): ветка `feature/poster-style-redesign` → `origin` (github.com/SigmeD/samo_architecture); `vercel deploy --prod` → **live `samoarchitecture.vercel.app`** (18 страниц, READY, проверено — кабинеты рендерятся). Ветка в `main` НЕ смёржена (прод задеплоен с ветки по решению владельца).
-  - [ ] Финал: code-review → merge `feature/poster-style-redesign` → `main`
+  - [x] **Запушено + задеплоено в production** (06.06, по команде владельца): ветка `feature/poster-style-redesign` → `origin` (github.com/SigmeD/samo_architecture); `vercel deploy --prod` → **live `samoarchitecture.vercel.app`** (18 страниц, READY, проверено — кабинеты рендерятся).
+  - [x] **Финал (07.06):** code-review (`feature-dev:code-reviewer`, critical нет) → 1 фикс (`overview.ts` под канон v1.3, `ae00a69`) → **PR #1 смёржен в `main`** (`36b3aea`, Vercel-check SUCCESS, MERGEABLE/CLEAN). origin/main пересоздан из базы перед merge.
 
 **Проверено (L0):** `npm run typecheck` 0 ошибок · `npm run test` 30/30 · `npm run build` 18 страниц · `npm run e2e` 5/5 (вкл. перегенер. golden L0). Console — только `favicon.ico 404` (безвредно).
 

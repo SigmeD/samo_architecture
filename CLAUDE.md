@@ -280,7 +280,7 @@ Path: `~/.claude/projects/D--Projects-samo-architecture/memory/`
 
 **Не сделано / блокеры:**
 - [ ] Кабинеты-стабы (rollout — следующие фазы): school-admin, senior-curator, sales, marketer, lead, guest (готовы: Куратор/Ученик/Родитель/Финансист/Куратор франшиз/Франчайзи)
-- [ ] Финал: code-review → merge `feature/poster-style-redesign` → `main` (прод задеплоен с ветки по решению владельца)
+- [x] **Финал (07.06):** code-review (critical нет) → PR #1 **смёржен в `main`** (`36b3aea`). Прод live `samoarchitecture.vercel.app`.
 
 **Открытые вопросы** (показываются в атласе как «на подтверждении», полный список — спека §12, канон-сверка — `docs/STATUS.md`):
 - Процедура урока: 3-фаза `REG-DNM-LESSON-001` vs 9-этапная методичка `REG-DNM-CURATOR-001` — руководитель франшизы (br7)
