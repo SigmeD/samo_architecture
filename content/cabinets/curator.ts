@@ -38,7 +38,7 @@ export const curator: CabinetSpec = {
     { toCabinet: "child", direction: "both", label: "Проводит уроки, проверяет ДЗ/эссе/проекты (принято/на доработку), начисляет солары, подтверждает посещаемость, ведёт групповой чат; безоценочная ОС «Бутерброд»", source: "SPEC-M3-DNM-001 v2.7" },
     { toCabinet: "parent", direction: "both", label: "Отчёты + ежемесячный видеоотзыв; мессенджер/видеозвонок; родитель может «Поблагодарить» (вклад в рейтинг)", source: "REG-DNM-CURATOR-PARENTS-001 v1.0" },
     { toCabinet: "school-admin", direction: "both", label: "Автоуведомление о переносе; админ ведёт табель, выдаёт физтовары, обрабатывает непосещение (не куратор)", source: "SPEC-DNM-TZ-001 v3.8 §4.4" },
-    { toCabinet: "senior-curator", direction: "in", label: "Вышестоящая роль по scope школы: обучает кураторов, ведёт лидерборд, перераспределяет группы, принимает месячный отчёт", source: "CONV-ROLE-HIERARCHY-001 v1.7; CONV-RBAC-DNM-001 v1.4" },
+    { toCabinet: "senior-curator", direction: "in", label: "Вышестоящая роль по scope школы: обучает кураторов, ведёт лидерборд, перераспределяет группы, принимает месячный отчёт", source: "CONV-ROLE-HIERARCHY-001 v1.8; CONV-RBAC-DNM-001 v1.4" },
     { toCabinet: "lead", direction: "in", label: "Руководитель проекта ДНМ: видит KPI/чек-листы, согласует выплаты, ведёт конструктор программы", source: "SPEC-KPI-PAYOUT-001 v1.1" },
     { toCabinet: "finance", direction: "out", label: "Бухгалтер (быв. Финансист, id op-finansist-dnm) получает согласованные суммы выплат; куратор финансы не видит", source: "CONV-RBAC-DNM-001 v1.4" },
     { toCabinet: "franchise", direction: "in", label: "Франчайзи/директор настраивает KPI-планы/проценты, фиче-тоглы; видит дашборд кураторов своей школы", source: "SPEC-DNM-TZ-001 v3.8" },
@@ -66,6 +66,6 @@ export const curator: CabinetSpec = {
     { id: "SPEC-M3-DNM-001", version: "2.7" }, { id: "SPEC-DNM-FUNC-001", version: "2.3" },
     { id: "SPEC-KPI-PAYOUT-001", version: "1.1" }, { id: "REG-DNM-SOLARS-001", version: "1.0" },
     { id: "CONV-RBAC-DNM-001", version: "1.4" }, { id: "CONV-ROLES-DNM-001", version: "1.3" },
-    { id: "CONV-ROLE-HIERARCHY-001", version: "1.7" },
+    { id: "CONV-ROLE-HIERARCHY-001", version: "1.8" },
   ],
 };

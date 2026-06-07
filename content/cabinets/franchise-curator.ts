@@ -2,7 +2,7 @@ import type { CabinetSpec } from "@/content/types";
 
 /**
  * Кабинет «Куратор франшиз» ДНМ (роль op-kurator-franshiz-dnm).
- * Источники: канон (MCP) — CONV-ROLES-DNM-001 v1.3, CONV-ROLE-HIERARCHY-001 v1.7, CONV-USER-ROLES-001 v1.3 (§9.3),
+ * Источники: канон (MCP) — CONV-ROLES-DNM-001 v1.3, CONV-ROLE-HIERARCHY-001 v1.8, CONV-USER-ROLES-001 v1.3 (§9.3),
  * CONV-RBAC-DNM-001 v1.4, SPEC-M3-DNM-001 v2.7 (§3.12 FR-M3-110…114), SPEC-DNM-TZ-001 v3.8, SPEC-DNM-RATING-001 v1.2 —
  * + проектный документ «ЛК Куратор франшиз» (06.06) и встречи 04–05.06 (см. docs/STATUS.md, спека franchise-curator §7).
  * Зона purple. Ядро — «Цикл курирования франчайзи» (Анализ → Созвон → Фиксация → Действие → Контроль → Развитие).
@@ -135,7 +135,7 @@ export const franchiseCurator: CabinetSpec = {
   ],
   sources: [
     { id: "CONV-ROLES-DNM-001", version: "1.3" },
-    { id: "CONV-ROLE-HIERARCHY-001", version: "1.7" },
+    { id: "CONV-ROLE-HIERARCHY-001", version: "1.8" },
     { id: "CONV-USER-ROLES-001", version: "1.3", section: "§9.3" },
     { id: "CONV-RBAC-DNM-001", version: "1.4" },
     { id: "SPEC-M3-DNM-001", version: "2.7", section: "§3.12" },

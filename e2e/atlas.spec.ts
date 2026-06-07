@@ -129,3 +129,22 @@ test("кабинет франчайзи/директора: визуальный
   await page.goto("/cabinet/franchise/");
   await expect(page).toHaveScreenshot("cabinet-franchise.png", { fullPage: true });
 });
+
+test("кабинет администратора школы: постер-рендер, orange-зона, граница финансов, обезличено", async ({ page }) => {
+  await page.goto("/cabinet/school-admin/");
+  await expect(page.getByRole("heading", { level: 1, name: /Администратор школы/ })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Домены и функции" })).toBeVisible();
+  // ядро — зачисление-мастер; граница финансов; обезличено
+  await expect(page.getByText(/Зачисление ученика/).first()).toBeVisible();
+  await expect(page.getByText(/только владельцу и бухгалтеру/).first()).toBeVisible();
+  await expect(page.locator("body")).not.toContainText("50%");
+  await expect(page.locator("body")).not.toContainText(/Д[оа]влат/);
+  // связь в родителя кликабельна
+  await page.getByRole("link", { name: /Родитель/ }).first().click();
+  await expect(page).toHaveURL(/\/cabinet\/parent/);
+});
+
+test("кабинет администратора школы: визуальный снимок (baseline)", async ({ page }) => {
+  await page.goto("/cabinet/school-admin/");
+  await expect(page).toHaveScreenshot("cabinet-school-admin.png", { fullPage: true });
+});
