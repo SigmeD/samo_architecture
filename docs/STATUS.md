@@ -72,6 +72,8 @@
     - **Блок «Вскрытые нестыковки»** (3 расхождения → canon-proposals L1/L2) + **(03) Карта передач** (4 потока: продажи/зачисление, обучение/качество, управление сетью, финансы).
     - Новые: типы+Zod `SystemMap`, `content/system-map.ts`, компоненты `hierarchy-bands`/`access-matrix`/`handoff-flows`, роут `app/map/page.tsx` (force-static), линк-баннер с L0 overview. Бренд-токены (без hex), Roboto/Fira (не Manrope). Обезличено; без доли 50% (роялти 20% — как в каноне).
     - Тест `tests/content/system-map.test.ts` (+7); e2e `/map` (nav с L0 + клик в кабинет) + golden `map.png`; `overview-l0.png` перегенерён (баннер). typecheck 0 · **test 128/128** · build (route `/map`) · **e2e 23/23** · vision gate 2 ✓ vs reference HTML.
+  - [x] **`update_08_06` смёржен в `main` + выкат на прод** (08.06, PR #2, merge `b8d7101`): публичный `samoarchitecture.vercel.app` отдаёт весь пакет — кабинет руководителя, механизм New, UX-редизайн L1, `/map` (проверено live: `/map` 5 секций, `/cabinet/lead` с New, без «50%»). Vercel prod-деплой из `main` — success.
+  - [ ] **Отложено (решение владельца):** метки **New ОСТАВЛЕНЫ на проде** для показа клиента — отступление от правила «снять при мердже в master». Снять отдельным коммитом по готовности: sweep `isNew: true` в `content/cabinets/lead.ts` + правка `lead.test.ts` (инвариант New) + e2e `/cabinet/lead` (ассерты `[data-new]`/легенды) + регенерация `cabinet-lead.png`.
   - [ ] Следующее по очереди: оставшиеся кабинеты-стабы (sales, marketer, guest) тем же путём (канон + встречи + эталон).
 
 - **L0 постер-редизайн** (ветка `feature/poster-style-redesign`) — **смёржен в `main` (PR #1, 07.06)**
