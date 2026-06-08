@@ -191,3 +191,24 @@ test("кабинет руководителя проекта: визуальны
   await page.goto("/cabinet/lead/");
   await expect(page).toHaveScreenshot("cabinet-lead.png", { fullPage: true });
 });
+
+test("сводная карта системы: переход с L0, иерархия, матрица, нестыковки, клик в кабинет", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: /Сводная карта системы/ }).click();
+  await expect(page).toHaveURL(/\/map/);
+  await expect(page.getByRole("heading", { level: 1, name: /Сводная карта системы/ })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Иерархия ролей" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: /Матрица/ })).toBeVisible();
+  await expect(page.getByText(/Вскрытые нестыковки/).first()).toBeVisible();
+  // обезличено + без доли роялти 50%
+  await expect(page.locator("body")).not.toContainText("50%");
+  await expect(page.locator("body")).not.toContainText(/Д[оа]влат/);
+  // карточка роли в иерархии кликабельна в кабинет
+  await page.getByRole("link", { name: /Руководитель проекта/ }).first().click();
+  await expect(page).toHaveURL(/\/cabinet\/lead/);
+});
+
+test("сводная карта системы: визуальный снимок (baseline)", async ({ page }) => {
+  await page.goto("/map/");
+  await expect(page).toHaveScreenshot("map.png", { fullPage: true });
+});

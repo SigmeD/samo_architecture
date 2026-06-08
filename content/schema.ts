@@ -53,3 +53,26 @@ export const OverviewSchema = z.object({
   result: z.object({ emoji: z.string(), title: z.string(), sub: z.string() }),
 });
 export function validateOverview(x: unknown) { return OverviewSchema.parse(x); }
+
+// === Сводная карта системы (L0 /map) ===
+const AccessLevel = z.enum(["full", "partial", "view", "toggle", "none"]);
+const MatrixCell = z.object({ level: AccessLevel, divergent: z.boolean().optional(), note: z.string().optional() });
+const Cell = z.union([AccessLevel, MatrixCell]);
+const MatrixRow = z.object({ role: z.string(), slug: z.string().optional(), offCanon: z.boolean().optional(), cells: z.array(Cell) });
+const HierRole = z.object({ title: z.string(), caption: z.string(), slug: z.string().optional(), dashed: z.boolean().optional(), tag: z.string().optional() });
+const HierTier = z.object({ label: z.string(), zone: ZoneKey, roles: z.array(HierRole).min(1), connector: z.literal("down").optional() });
+const HandoffNode = z.object({ label: z.string(), zone: ZoneKey });
+const HandoffFlow = z.object({ from: HandoffNode, what: z.string(), to: HandoffNode, also: HandoffNode.optional(), suffix: z.string().optional() });
+const HandoffColumn = z.object({ title: z.string(), emoji: z.string(), flows: z.array(HandoffFlow).min(1) });
+
+export const SystemMapSchema = z.object({
+  hierarchy: z.array(HierTier).min(1),
+  hierarchyNote: z.string(),
+  matrix: z.object({ sections: z.array(z.string()).min(1), rows: z.array(MatrixRow).min(1) })
+    .refine((m) => m.rows.every((r) => r.cells.length === m.sections.length), { message: "каждая строка матрицы должна иметь по ячейке на раздел" }),
+  matrixNote: z.string(),
+  divergences: z.array(z.object({ title: z.string(), detail: z.string() })),
+  handoffs: z.array(HandoffColumn).min(1),
+  sources: z.array(Source),
+});
+export function validateSystemMap(x: unknown) { return SystemMapSchema.parse(x); }

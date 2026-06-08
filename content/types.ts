@@ -53,3 +53,36 @@ export interface ModuleSpec {
   purpose?: string; process?: ProcessFlow; domains?: DomainSpec[];
   crossLinks?: CrossLink[]; sources: SourceCitation[]; note?: string;
 }
+
+// === Сводная карта системы (L0 /map): иерархия + матрица RBAC + карта передач ===
+
+/** Уровень доступа в матрице «роль × раздел × право». ● полный · ◐ частичный · 👁 просмотр · ⚙ feature-toggle · — нет. */
+export type AccessLevel = "full" | "partial" | "view" | "toggle" | "none";
+/** Ячейка матрицы: уровень + опц. флаг расхождения с текущим каноном (новое намерение ≠ RBAC v1.4). */
+export interface MatrixCell { level: AccessLevel; divergent?: boolean; note?: string }
+export interface MatrixRow {
+  role: string; slug?: string;
+  /** Роль спроектирована, но в RBAC v1.4 не внесена (напр. маркетолог). */
+  offCanon?: boolean;
+  /** Ровно `AccessMatrix.sections.length` ячеек: строка-код уровня или объект с флагом. */
+  cells: (AccessLevel | MatrixCell)[];
+}
+export interface AccessMatrix { sections: string[]; rows: MatrixRow[] }
+
+export interface HierarchyRole { title: string; caption: string; slug?: string; dashed?: boolean; tag?: string }
+export interface HierarchyTier { label: string; zone: ZoneKey; roles: HierarchyRole[]; connector?: "down" }
+
+export interface HandoffNode { label: string; zone: ZoneKey }
+export interface HandoffFlow { from: HandoffNode; what: string; to: HandoffNode; also?: HandoffNode; suffix?: string }
+export interface HandoffColumn { title: string; emoji: string; flows: HandoffFlow[] }
+
+export interface SystemMap {
+  hierarchy: HierarchyTier[];
+  hierarchyNote: string;
+  matrix: AccessMatrix;
+  matrixNote: string;
+  /** Вскрытые нестыковки «намерение ↔ канон» — сводка под матрицей. */
+  divergences: { title: string; detail: string }[];
+  handoffs: HandoffColumn[];
+  sources: SourceCitation[];
+}
