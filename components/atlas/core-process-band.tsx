@@ -25,7 +25,7 @@ export function CoreProcessBand({ flow, zone }: { flow: ProcessFlow; zone: ZoneK
           return (
             <Fragment key={s.n}>
               <li
-                className="flex flex-1 flex-col gap-1 rounded-xl border bg-white p-2.5"
+                className="flex min-w-0 flex-1 flex-col gap-1 rounded-xl border bg-white p-2.5"
                 style={isEnd
                   ? { borderColor: `color-mix(in srgb, ${c} 55%, white)`, background: `color-mix(in srgb, ${c} 10%, white)` }
                   : { borderColor: "var(--color-line)" }}
