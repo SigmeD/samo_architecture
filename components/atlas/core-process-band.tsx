@@ -37,7 +37,7 @@ export function CoreProcessBand({ flow, zone }: { flow: ProcessFlow; zone: ZoneK
                 </span>
                 <span className="text-[11px] leading-snug text-ink-soft">{s.desc}</span>
                 {s.gamification && <span className="text-[10px] font-semibold text-samo-orange-d">⇒ {s.gamification}</span>}
-                {s.source && <span className="mt-0.5 font-mono text-[9px] text-faint">{s.source}</span>}
+                {s.source && <span className="mt-0.5 block truncate font-mono text-[9px] text-faint" title={s.source}>{s.source}</span>}
               </li>
               {!isEnd && (
                 <span className="flex shrink-0 items-center justify-center px-1 font-display text-base font-extrabold" style={{ color: c }} aria-hidden="true">

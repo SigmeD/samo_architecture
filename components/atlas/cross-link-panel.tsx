@@ -23,7 +23,7 @@ export function CrossLinkPanel({ link }: { link: CrossLink }) {
           {link.isNew && <NewBadge />}
         </span>
         <span className="text-[11.5px] leading-snug text-ink-soft">{link.label}</span>
-        {link.source && <span className="mt-auto pt-1 font-mono text-[9.5px] text-faint">{link.source}</span>}
+        {link.source && <span className="mt-auto block truncate pt-1 font-mono text-[9px] text-faint" title={link.source}>{link.source}</span>}
       </Link>
     </li>
   );

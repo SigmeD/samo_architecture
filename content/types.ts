@@ -11,7 +11,11 @@ export interface ProcessStep {
   /** Метка «New» (обновление 08.06): блок новый относительно прошлого постера. Снимается при мердже в master. */
   isNew?: boolean;
 }
-export interface ProcessFlow { title: string; badge?: string; steps: ProcessStep[]; note?: string }
+export interface ProcessFlow {
+  title: string; badge?: string; steps: ProcessStep[]; note?: string;
+  /** Опц. компактный цикл-контур (короткие подписи стадий) — рендерится отдельной лентой над детальными шагами. */
+  loop?: string[];
+}
 
 export interface DomainSpec {
   title: string; items: string[]; source?: string;

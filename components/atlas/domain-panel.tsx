@@ -39,7 +39,7 @@ export function DomainPanel({ domain, accent }: { domain: DomainSpec; accent: Zo
           </li>
         ))}
       </ul>
-      {domain.source && <p className="mt-2 font-mono text-[9.5px] text-faint">{domain.source}</p>}
+      {domain.source && <p className="mt-2 truncate font-mono text-[9px] text-faint" title={domain.source}>{domain.source}</p>}
     </article>
   );
 }

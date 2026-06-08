@@ -4,10 +4,12 @@ import { PosterFrame } from "@/components/atlas/poster-frame";
 import { CabinetHeader } from "@/components/atlas/cabinet-header";
 import { SectionHeader } from "@/components/atlas/section-header";
 import { CoreProcessBand } from "@/components/atlas/core-process-band";
+import { ContourLoop } from "@/components/atlas/contour-loop";
 import { DomainPanel } from "@/components/atlas/domain-panel";
 import { CrossLinkPanel } from "@/components/atlas/cross-link-panel";
 import { ModulePanel } from "@/components/atlas/module-panel";
 import { SourceRef } from "@/components/atlas/source-ref";
+import { RoleSummary } from "@/components/atlas/role-summary";
 import { Legend } from "@/components/atlas/legend";
 import { getCabinet, getAllCabinetSlugs } from "@/content/cabinets";
 import { getModuleSlugs } from "@/content/modules";
@@ -42,6 +44,7 @@ export default async function CabinetPage({ params }: { params: Promise<{ slug: 
       <CabinetHeader cabinet={cabinet} nav={nav} />
       <div className="px-6 pt-5 md:px-10">
         <SectionHeader no="01" title="Ядро кабинета" caption={cabinet.coreProcess.title} />
+        {cabinet.coreProcess.loop && <ContourLoop stages={cabinet.coreProcess.loop} zone={cabinet.zone} />}
         <CoreProcessBand flow={cabinet.coreProcess} zone={cabinet.zone} />
 
         {cabinet.domains.length > 0 && (
@@ -72,6 +75,7 @@ export default async function CabinetPage({ params }: { params: Promise<{ slug: 
         )}
 
         <div className="mt-6">
+          <RoleSummary cabinet={cabinet} />
           <SourceRef sources={cabinet.sources} />
           <Legend hasNew={hasNew} />
         </div>
