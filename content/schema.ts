@@ -8,11 +8,12 @@ const Source = z.object({ id: z.string(), version: z.string(), section: z.string
 const Step = z.object({
   n: z.number(), title: z.string(), desc: z.string(),
   actors: z.array(z.string()).optional(), source: z.string().optional(), gamification: z.string().optional(),
+  isNew: z.boolean().optional(),
 });
 const Flow = z.object({ title: z.string(), badge: z.string().optional(), steps: z.array(Step).min(1), note: z.string().optional() });
-const Domain = z.object({ title: z.string(), items: z.array(z.string()), source: z.string().optional(), readOnly: z.boolean().optional(), toggleable: z.boolean().optional() });
-const Cross = z.object({ toCabinet: z.string(), label: z.string(), direction: Direction, source: z.string().optional() });
-const ModuleRef = z.object({ slug: z.string(), title: z.string(), status: ImplStatus, summary: z.string() });
+const Domain = z.object({ title: z.string(), items: z.array(z.string()), source: z.string().optional(), readOnly: z.boolean().optional(), toggleable: z.boolean().optional(), isNew: z.boolean().optional() });
+const Cross = z.object({ toCabinet: z.string(), label: z.string(), direction: Direction, source: z.string().optional(), isNew: z.boolean().optional() });
+const ModuleRef = z.object({ slug: z.string(), title: z.string(), status: ImplStatus, summary: z.string(), isNew: z.boolean().optional() });
 
 export const CabinetSchema = z.object({
   slug: z.string(), role: z.object({ code: z.string(), title: z.string(), emoji: z.string() }),

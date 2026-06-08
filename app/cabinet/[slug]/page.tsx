@@ -30,6 +30,12 @@ export default async function CabinetPage({ params }: { params: Promise<{ slug: 
   if (!cabinet) notFound();
   const drill = new Set(getModuleSlugs(cabinet.slug));
   const nav = cabinet.domains.map((d) => d.title);
+  // метка «New» (обновление 08.06): пояснение в легенде только если в кабинете есть новые блоки
+  const hasNew =
+    cabinet.coreProcess.steps.some((s) => s.isNew) ||
+    cabinet.domains.some((d) => d.isNew) ||
+    cabinet.crossLinks.some((l) => l.isNew) ||
+    cabinet.modules.some((m) => m.isNew);
 
   return (
     <PosterFrame>
@@ -67,7 +73,7 @@ export default async function CabinetPage({ params }: { params: Promise<{ slug: 
 
         <div className="mt-6">
           <SourceRef sources={cabinet.sources} />
-          <Legend />
+          <Legend hasNew={hasNew} />
         </div>
       </div>
     </PosterFrame>

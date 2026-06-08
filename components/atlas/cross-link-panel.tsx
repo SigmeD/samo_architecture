@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { CrossLink, ZoneKey } from "@/content/types";
 import { getCabinet } from "@/content/cabinets";
 import { zoneColor } from "@/content/zones";
+import { NewBadge } from "@/components/atlas/new-badge";
 
 const GLYPH: Record<CrossLink["direction"], string> = { in: "←", out: "→", both: "⇄" };
 
@@ -19,6 +20,7 @@ export function CrossLinkPanel({ link }: { link: CrossLink }) {
       >
         <span className="flex items-center gap-2 font-display text-[13px] font-extrabold" style={{ color: accent }}>
           <span aria-hidden="true" className="text-muted">{GLYPH[link.direction]}</span>{name}
+          {link.isNew && <NewBadge />}
         </span>
         <span className="text-[11.5px] leading-snug text-ink-soft">{link.label}</span>
         {link.source && <span className="mt-auto pt-1 font-mono text-[9.5px] text-faint">{link.source}</span>}

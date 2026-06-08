@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import type { ProcessFlow, ZoneKey } from "@/content/types";
 import { zoneColor } from "@/content/zones";
 import { splitIcon } from "@/components/atlas/split-icon";
+import { NewBadge } from "@/components/atlas/new-badge";
 
 /** Постер-лента ядра кабинета: нумерованные шаги-цепочка со стрелками (последний — end-акцент зоны). */
 export function CoreProcessBand({ flow, zone }: { flow: ProcessFlow; zone: ZoneKey }) {
@@ -32,6 +33,7 @@ export function CoreProcessBand({ flow, zone }: { flow: ProcessFlow; zone: ZoneK
                 <span className="flex items-center gap-1.5">
                   {icon && <span className="text-lg leading-none" aria-hidden="true">{icon}</span>}
                   <span className="font-display text-[11px] font-extrabold leading-tight" style={{ color: c }}>{s.n}. {text}</span>
+                  {s.isNew && <NewBadge />}
                 </span>
                 <span className="text-[11px] leading-snug text-ink-soft">{s.desc}</span>
                 {s.gamification && <span className="text-[10px] font-semibold text-samo-orange-d">⇒ {s.gamification}</span>}

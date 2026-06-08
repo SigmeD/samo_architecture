@@ -8,17 +8,27 @@ export interface SourceCitation { id: string; version: string; section?: string 
 export interface ProcessStep {
   n: number; title: string; desc: string;
   actors?: string[]; source?: string; gamification?: string;
+  /** Метка «New» (обновление 08.06): блок новый относительно прошлого постера. Снимается при мердже в master. */
+  isNew?: boolean;
 }
 export interface ProcessFlow { title: string; badge?: string; steps: ProcessStep[]; note?: string }
 
 export interface DomainSpec {
   title: string; items: string[]; source?: string;
   readOnly?: boolean; toggleable?: boolean;
+  /** Метка «New» (обновление 08.06): домен новый относительно прошлого постера. Снимается при мердже в master. */
+  isNew?: boolean;
 }
 export interface CrossLink {
   toCabinet: string; label: string; direction: Direction; source?: string;
+  /** Метка «New» (обновление 08.06): связь новая относительно прошлого постера. Снимается при мердже в master. */
+  isNew?: boolean;
 }
-export interface ModuleRef { slug: string; title: string; status: ImplStatus; summary: string }
+export interface ModuleRef {
+  slug: string; title: string; status: ImplStatus; summary: string;
+  /** Метка «New» (обновление 08.06): модуль новый относительно прошлого постера. Снимается при мердже в master. */
+  isNew?: boolean;
+}
 
 export interface CabinetSpec {
   slug: string;

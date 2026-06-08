@@ -1,13 +1,17 @@
 import Link from "next/link";
 import type { ModuleRef } from "@/content/types";
 import { ImplStatusBadge } from "@/components/atlas/impl-status-badge";
+import { NewBadge } from "@/components/atlas/new-badge";
 
 /** Постер-карточка модуля кабинета: статус-бейдж + drilldown (если есть страница модуля). */
 export function ModulePanel({ cabinetSlug, module, hasDrilldown }: { cabinetSlug: string; module: ModuleRef; hasDrilldown: boolean }) {
   const inner = (
     <>
       <div className="flex items-start justify-between gap-2">
-        <h3 className="font-display text-[13px] font-extrabold leading-tight text-ink">{module.title}</h3>
+        <h3 className="font-display text-[13px] font-extrabold leading-tight text-ink">
+          {module.title}
+          {module.isNew && <> <NewBadge /></>}
+        </h3>
         <ImplStatusBadge status={module.status} title={module.summary} />
       </div>
       <p className="mt-1.5 text-[11.5px] leading-snug text-ink-soft">{module.summary}</p>
