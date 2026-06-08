@@ -1,0 +1,63 @@
+import { describe, it, expect } from "vitest";
+import { marketer } from "@/content/cabinets/marketer";
+import { CabinetSchema } from "@/content/schema";
+import { getCabinet } from "@/content/cabinets";
+
+describe("кабинет маркетолога (marketer) — 08.06", () => {
+  it("валиден по CabinetSchema", () => {
+    expect(() => CabinetSchema.parse(marketer)).not.toThrow();
+  });
+  it("зона orange, planned, не стаб, роль op-marketolog-dnm", () => {
+    expect(marketer.zone).toBe("orange");
+    expect(marketer.implStatus).toBe("planned");
+    expect(marketer.isStub).toBeFalsy();
+    expect(marketer.role.code).toBe("op-marketolog-dnm");
+  });
+  it("ядро — контур лидогенерации со сквозной атрибуцией (6 шагов)", () => {
+    expect(marketer.coreProcess.title).toMatch(/атрибуци/i);
+    expect(marketer.coreProcess.steps).toHaveLength(6);
+  });
+  it("инвариант: франчайзи-уровень + двухуровневая модель (HQ vs франчайзи)", () => {
+    const blob = JSON.stringify(marketer);
+    expect(blob).toMatch(/франчайзи-уровень|франчайзи-маркетолог/i);
+    expect(blob).toMatch(/двухуровнев\S*/i);
+    expect(blob).toMatch(/закреплённ\S* аккаунт/i);
+  });
+  it("инвариант: передаёт лиды менеджеру, не закрывает сделку", () => {
+    const blob = JSON.stringify(marketer);
+    expect(blob).toMatch(/передаёт лиды|передача менеджеру/i);
+    expect(blob).toMatch(/не закрывает сделку/i);
+  });
+  it("инвариант: сквозная UTM-атрибуция; событие конверсии = подтверждение оплаты бухгалтером → close rate", () => {
+    const blob = JSON.stringify(marketer);
+    expect(blob).toMatch(/UTM/);
+    expect(blob).toMatch(/событие конверсии/i);
+    expect(blob).toMatch(/бухгалтер/i);
+    expect(blob).toMatch(/close rate/i);
+  });
+  it("инвариант: KPI = качество (close rate), не объём; не создаёт брендбук/центральный контент", () => {
+    const blob = JSON.stringify(marketer);
+    expect(blob).toMatch(/не объём|квалифицированные лиды|квалиф\. лиды/i);
+    expect(blob).toMatch(/не создаёт брендбук|центральн\S* контент/i);
+  });
+  it("нет меток New (эталон-постера нет) и scope = школа", () => {
+    const anyNew =
+      marketer.coreProcess.steps.some((s) => s.isNew) ||
+      marketer.domains.some((d) => d.isNew) ||
+      marketer.crossLinks.some((l) => l.isNew) ||
+      marketer.modules.some((m) => m.isNew);
+    expect(anyNew).toBe(false);
+    expect(JSON.stringify(marketer)).toMatch(/вне scope|scope — школа|направление — ШКОЛА/i);
+  });
+  it("ключевая связка: sales (передаёт лиды, both); все связи резолвятся", () => {
+    const s = marketer.crossLinks.find((l) => l.toCabinet === "sales");
+    expect(s).toBeDefined();
+    expect(s?.direction).toBe("both");
+    for (const l of marketer.crossLinks) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
+  });
+  it("обезличено и без доли роялти 50%", () => {
+    const blob = JSON.stringify(marketer);
+    expect(blob).not.toMatch(/Д[оа]влат|Айгерим|Анастас|Сережан|\bПавел\b|Маржан/i);
+    expect(blob).not.toMatch(/50\s*%/);
+  });
+});
