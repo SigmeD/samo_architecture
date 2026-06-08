@@ -1,6 +1,7 @@
 import type { DomainSpec, ZoneKey } from "@/content/types";
 import { zoneColor } from "@/content/zones";
 import { splitIcon } from "@/components/atlas/split-icon";
+import { NewBadge } from "@/components/atlas/new-badge";
 
 /** Постер-карточка домена: цветной акцент (tinted фон + border), икон-тайл, заголовок, буллеты с маркером. */
 export function DomainPanel({ domain, accent }: { domain: DomainSpec; accent: ZoneKey }) {
@@ -23,6 +24,7 @@ export function DomainPanel({ domain, accent }: { domain: DomainSpec; accent: Zo
           <span>{text}</span>
           {domain.toggleable && <span title="feature-toggle" aria-label="feature-toggle">⚙</span>}
           {domain.readOnly && <span title="только просмотр" aria-label="только просмотр">🔒</span>}
+          {domain.isNew && <NewBadge />}
         </h3>
       </div>
       <ul className="flex flex-col gap-1.5">
@@ -37,7 +39,7 @@ export function DomainPanel({ domain, accent }: { domain: DomainSpec; accent: Zo
           </li>
         ))}
       </ul>
-      {domain.source && <p className="mt-2 font-mono text-[9.5px] text-faint">{domain.source}</p>}
+      {domain.source && <p className="mt-2 truncate font-mono text-[9px] text-faint" title={domain.source}>{domain.source}</p>}
     </article>
   );
 }

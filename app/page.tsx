@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { PosterFrame } from "@/components/atlas/poster-frame";
 import { PosterHeader } from "@/components/atlas/poster-header";
 import { SectionHeader } from "@/components/atlas/section-header";
@@ -15,6 +16,16 @@ export default function Home() {
     <PosterFrame>
       <PosterHeader {...o.header} />
       <div className="px-6 pt-5 md:px-10">
+        <Link
+          href="/map"
+          className="group mb-2 flex flex-wrap items-center gap-3 rounded-2xl border border-samo-blue-b bg-samo-blue-l px-4 py-3 transition hover:-translate-y-0.5 hover:shadow-md"
+        >
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-samo-blue-b bg-white text-lg" aria-hidden="true">🗺️</span>
+          <span className="font-display text-sm font-extrabold text-samo-blue-d">Сводная карта системы</span>
+          <span className="text-xs text-muted">иерархия ролей · матрица доступа · карта передач — сверено с каноном</span>
+          <span className="ml-auto font-display text-sm font-extrabold text-samo-blue" aria-hidden="true">→</span>
+        </Link>
+
         <SectionHeader no="01" title="Ядро модуля" caption="общий движок всех кабинетов" />
         <CoreBand core={o.core} />
 

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Сводная карта системы — ДНМ / SAMO Global</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+:root{
+  --hq:#0055A7; --hq-l:#e9f1fb; --hq-b:#9fc1e4;
+  --net:#0E8E8E; --net-l:#e1f4f4; --net-b:#9ed6d6;
+  --own:#B7791F; --own-l:#fbf0d9; --own-b:#e6c98c;
+  --sch:#F7933C; --sch-l:#fdeedd; --sch-b:#f0c089;
+  --sale:#5d6f80; --sale-l:#eef2f6; --sale-b:#cdd9e5;
+  --teach:#00A550; --teach-l:#e4f6ec; --teach-b:#a9ddbf;
+  --cli:#7a5cc4; --cli-l:#efeafa; --cli-b:#c8b8ec;
+  --ink:#15222e; --muted:#5f7081; --line:#d3dde7; --bg:#eef3f8;
+  --ok:#0a8f4d; --part:#0E8E8E; --view:#2f6fb0; --tog:#c97a16; --no:#b8c2cc;
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Manrope',sans-serif;}
+body{background:var(--bg);padding:34px 26px;color:var(--ink);}
+.frame{max-width:1320px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:22px;padding:30px 34px;box-shadow:0 10px 40px rgba(15,45,80,.10);}
+.head{display:flex;align-items:flex-start;gap:16px;border-bottom:3px solid var(--hq);padding-bottom:16px;margin-bottom:22px;}
+.head .ic{width:52px;height:52px;border-radius:14px;background:var(--hq-l);border:2px solid var(--hq);display:flex;align-items:center;justify-content:center;font-size:26px;}
+.head h1{font-size:25px;font-weight:800;letter-spacing:.3px;color:var(--hq);line-height:1.1;text-transform:uppercase;}
+.head .sub{font-size:13px;color:var(--muted);font-weight:600;margin-top:5px;}
+.head .meta{margin-left:auto;text-align:right;font-size:11px;color:var(--muted);}
+.head .meta b{display:block;font-size:13px;color:var(--hq);}
+
+.sec{margin:30px 0;}
+.sec .t{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--ink);display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.sec .t .n{background:var(--hq);color:#fff;font-size:12px;border-radius:7px;padding:3px 9px;}
+.sec .t .h{font-size:11px;font-weight:600;color:var(--muted);text-transform:none;letter-spacing:0;}
+
+/* HIERARCHY BANDS */
+.band{display:flex;align-items:stretch;gap:14px;margin-bottom:0;}
+.band .lbl{width:138px;flex-shrink:0;border-radius:11px;display:flex;flex-direction:column;justify-content:center;padding:10px 12px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;}
+.band .cards{flex:1;display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:9px 0;}
+.rc{border:1.6px solid;border-radius:11px;padding:9px 14px;font-size:13px;font-weight:700;background:#fff;display:flex;flex-direction:column;gap:2px;}
+.rc small{font-size:10.5px;font-weight:500;color:var(--muted);}
+.conn{height:16px;display:flex;justify-content:center;align-items:center;color:var(--muted);font-size:14px;}
+.dashed{border-style:dashed!important;opacity:.92;}
+.tag{display:inline-block;font-size:9.5px;font-weight:700;color:var(--muted);background:#f1f5f9;border:1px solid var(--line);border-radius:6px;padding:1px 6px;margin-left:4px;}
+
+.b-hq .lbl{background:var(--hq-l);color:var(--hq);border:1px solid var(--hq-b);} .b-hq .rc{border-color:var(--hq-b);}
+.b-net .lbl{background:var(--net-l);color:var(--net);border:1px solid var(--net-b);} .b-net .rc{border-color:var(--net-b);}
+.b-own .lbl{background:var(--own-l);color:var(--own);border:1px solid var(--own-b);} .b-own .rc{border-color:var(--own-b);}
+.b-sch .lbl{background:var(--sch-l);color:var(--sch);border:1px solid var(--sch-b);} .b-sch .rc{border-color:var(--sch-b);}
+.b-sale .lbl{background:var(--sale-l);color:var(--sale);border:1px solid var(--sale-b);} .b-sale .rc{border-color:var(--sale-b);}
+.b-teach .lbl{background:var(--teach-l);color:var(--teach);border:1px solid var(--teach-b);} .b-teach .rc{border-color:var(--teach-b);}
+.b-cli .lbl{background:var(--cli-l);color:var(--cli);border:1px solid var(--cli-b);} .b-cli .rc{border-color:var(--cli-b);}
+
+/* MATRIX */
+.mwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;}
+table{border-collapse:collapse;width:100%;font-size:11.5px;min-width:1080px;}
+th,td{border:1px solid #e6edf3;padding:6px 4px;text-align:center;}
+thead th{background:var(--hq-l);color:var(--hq);font-weight:700;font-size:10.5px;line-height:1.15;vertical-align:bottom;padding:8px 4px;}
+tbody th{text-align:left;background:#fafcfe;font-weight:700;font-size:11.5px;padding:7px 10px;white-space:nowrap;position:sticky;left:0;color:var(--ink);}
+.sym{font-weight:800;font-size:13px;}
+.s-ok{color:var(--ok);} .s-part{color:var(--part);} .s-view{color:var(--view);} .s-tog{color:var(--tog);} .s-no{color:var(--no);}
+tbody tr:nth-child(even) td{background:#f7fafc;}
+tbody tr:nth-child(even) th{background:#f3f8fb;}
+
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-size:11.5px;color:#42525f;align-items:center;}
+.legend b{font-size:13px;}
+
+/* HANDOFFS */
+.flowgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.fcol{border:1.6px solid var(--line);border-radius:14px;padding:14px 16px;background:#fafcfe;}
+.fcol h3{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:9px;font-size:11.5px;}
+.pill{font-weight:700;border-radius:8px;padding:4px 9px;border:1px solid;white-space:nowrap;font-size:11px;}
+.fa{color:var(--muted);font-weight:800;}
+.what{font-size:10.5px;color:var(--muted);font-style:italic;}
+.p-hq{background:var(--hq-l);color:var(--hq);border-color:var(--hq-b);}
+.p-net{background:var(--net-l);color:var(--net);border-color:var(--net-b);}
+.p-own{background:var(--own-l);color:var(--own);border-color:var(--own-b);}
+.p-sch{background:var(--sch-l);color:var(--sch);border-color:var(--sch-b);}
+.p-sale{background:var(--sale-l);color:var(--sale);border-color:var(--sale-b);}
+.p-teach{background:var(--teach-l);color:var(--teach);border-color:var(--teach-b);}
+.p-cli{background:var(--cli-l);color:var(--cli);border-color:var(--cli-b);}
+
+.note{font-size:11px;color:var(--muted);background:#f7fafd;border-left:3px solid var(--net);padding:9px 12px;border-radius:0 8px 8px 0;margin-top:14px;line-height:1.5;}
+.note b{color:var(--ink);}
+.foot{text-align:center;font-size:11px;color:var(--muted);margin-top:26px;}
+.foot b{color:var(--sale);}
+@media(max-width:820px){.flowgrid{grid-template-columns:1fr;} .band{flex-direction:column;} .band .lbl{width:100%;}}
+</style>
+</head>
+<body>
+<div class="frame">
+
+  <div class="head">
+    <span class="ic">🗺️</span>
+    <div>
+      <h1>Сводная карта системы — роли, права, потоки</h1>
+      <div class="sub">8 спроектированных ролей · иерархия · матрица доступа · карта передач</div>
+    </div>
+    <div class="meta">проектный документ<b>экосистема SAMO Global / ДНМ</b>фиксация принятых решений</div>
+  </div>
+
+  <!-- 1. HIERARCHY -->
+  <div class="sec">
+    <div class="t"><span class="n">01</span> Иерархия ролей <span class="h">сверху вниз · подчинение и зоны</span></div>
+
+    <div class="band b-hq">
+      <div class="lbl">Головной офис</div>
+      <div class="cards">
+        <div class="rc">Руководитель проекта<small>франчайзер · «все данные» · утверждает программу</small></div>
+        <div class="rc dashed">Финансист<small>финансы сети → руководителю сводно</small></div>
+      </div>
+    </div>
+    <div class="conn">↓</div>
+    <div class="band b-net">
+      <div class="lbl">Сеть</div>
+      <div class="cards">
+        <div class="rc">Куратор франшиз<small>курирует франчайзи · авторит программу <span class="tag">право «методист»</span></small></div>
+      </div>
+    </div>
+    <div class="conn">↓</div>
+    <div class="band b-own">
+      <div class="lbl">Владелец</div>
+      <div class="cards">
+        <div class="rc">Франчайзи-партнёр<small>владелец сети школ · роялти · план/факт</small></div>
+      </div>
+    </div>
+    <div class="conn">↓</div>
+    <div class="band b-sch">
+      <div class="lbl">Управление школой</div>
+      <div class="cards">
+        <div class="rc">Администратор школы<small>операции · директор школы</small></div>
+        <div class="rc dashed">Бухгалтер<small>у франчайзи · подтверждает оплаты</small></div>
+        <div class="rc dashed">РОП + маркетинг<small>в модели сети — под франчайзи</small></div>
+      </div>
+    </div>
+    <div class="conn">↓</div>
+    <div class="band b-sale">
+      <div class="lbl">Продажи · маркетинг</div>
+      <div class="cards">
+        <div class="rc">Менеджер по продажам<small>воронка лида-родителя</small></div>
+        <div class="rc dashed">Маркетолог / Таргетолог<small>лиды, контент <span class="tag">не детализирован</span></small></div>
+      </div>
+    </div>
+    <div class="conn">↓</div>
+    <div class="band b-teach">
+      <div class="lbl">Преподавание</div>
+      <div class="cards">
+        <div class="rc">Старший куратор<small>играющий тренер: преподаёт + менторит</small></div>
+        <div class="conn" style="width:20px">→</div>
+        <div class="rc">Куратор<small>ведёт уроки, проверяет работы</small></div>
+      </div>
+    </div>
+    <div class="conn">↓</div>
+    <div class="band b-cli">
+      <div class="lbl">Клиент</div>
+      <div class="cards">
+        <div class="rc">Ученик<small>проходит программу · Солары</small></div>
+        <div class="conn" style="width:24px">↔</div>
+        <div class="rc">Родитель<small>плательщик · контроль · вовлечение</small></div>
+      </div>
+    </div>
+
+    <div class="note"><b>Модель-зависимость:</b> пунктирные блоки (Бухгалтер, РОП+маркетинг, Маркетолог) перемещаются между уровнями в зависимости от орг-модели франчайзи — в «одной школе» продажи/маркетинг под администратором, в «сети школ» централизованы под франчайзи. Каждая функция переключается отдельно (не единым рубильником).</div>
+  </div>
+
+  <!-- 2. MATRIX -->
+  <div class="sec">
+    <div class="t"><span class="n">02</span> Матрица «роль × раздел × право» <span class="h">кто что видит и может</span></div>
+    <div class="mwrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left">Роль \ Раздел</th>
+            <th>Программа<br>(авторинг)</th>
+            <th>Программа<br>(утвержд.)</th>
+            <th>Финансы<br>сети</th>
+            <th>Финансы<br>школы</th>
+            <th>Аналитика<br>сети</th>
+            <th>Дашборд<br>школы</th>
+            <th>Данные<br>ученика</th>
+            <th>Воронка<br>/ CRM</th>
+            <th>Марке-<br>тинг</th>
+            <th>Мага-<br>зин</th>
+            <th>Ака-<br>демия</th>
+            <th>Права<br>(RBAC)</th>
+            <th>Видео /<br>качество</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th>Руководитель проекта</th>
+            <td><span class="sym s-no">—</span></td><td><span class="sym s-ok">●</span></td><td><span class="sym s-ok">●</span></td><td><span class="sym s-view">👁</span></td><td><span class="sym s-ok">●</span></td><td><span class="sym s-view">👁</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-view">👁</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-ok">●</span></td><td><span class="sym s-ok">●</span></td><td><span class="sym s-ok">●</span></td></tr>
+          <tr><th>Куратор франшиз</th>
+            <td><span class="sym s-ok">●</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-view">👁</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-view">👁</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-view">👁</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-ok">●</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-part">◐</span></td></tr>
+          <tr><th>Франчайзи-партнёр</th>
+            <td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-ok">●</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-ok">●</span></td><td><span class="sym s-view">👁</span></td><td><span class="sym s-view">👁</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-tog">⚙</span></td><td><span class="sym s-view">👁</span></td></tr>
+          <tr><th>Администратор школы</th>
+            <td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-ok">●</span></td><td><span class="sym s-ok">●</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-tog">⚙</span></td><td><span class="sym s-ok">●</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-ok">●</span></td></tr>
+          <tr><th>Старший куратор</th>
+            <td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-view">👁</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-ok">●</span></td></tr>
+          <tr><th>Куратор</th>
+            <td><span class="sym s-view">👁</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-ok">●</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-view">👁</span></td></tr>
+          <tr><th>Менеджер по продажам</th>
+            <td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-view">👁</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-ok">●</span></td><td><span class="sym s-view">👁</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td></tr>
+          <tr><th>Маркетолог / Таргетолог</th>
+            <td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-ok">●</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td></tr>
+          <tr><th>Бухгалтер / Финансист</th>
+            <td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-ok">●</span></td><td><span class="sym s-ok">●</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-view">👁</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-view">👁</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-view">👁</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td></tr>
+          <tr><th>Родитель</th>
+            <td><span class="sym s-view">👁</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-view">👁</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-view">👁</span></td></tr>
+          <tr><th>Ученик</th>
+            <td><span class="sym s-part">◐</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-part">◐</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td><td><span class="sym s-no">—</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="legend">
+      <span><span class="sym s-ok">●</span> полный (создаёт/редактирует)</span>
+      <span><span class="sym s-part">◐</span> частичный (в своей зоне)</span>
+      <span><span class="sym s-view">👁</span> просмотр (read-only)</span>
+      <span><span class="sym s-tog">⚙</span> под feature-toggle</span>
+      <span><span class="sym s-no">—</span> нет доступа</span>
+    </div>
+    <div class="note"><b>Данные ученика</b> (прогресс, сертификаты) видят только куратор, старший куратор, администратор, родитель и сам ученик — <b>руководитель и куратор франшиз их не видят</b>, у них агрегаты по школам. <b>Финансовый дашборд</b> ведёт бухгалтер, а отображается в трёх кабинетах (бухгалтер → франчайзи/куратор франшиз → руководитель) по правам.</div>
+  </div>
+
+  <!-- 3. HANDOFFS -->
+  <div class="sec">
+    <div class="t"><span class="n">03</span> Карта передач <span class="h">кто кому что передаёт</span></div>
+    <div class="flowgrid">
+
+      <div class="fcol">
+        <h3>🎯 Продажи и зачисление</h3>
+        <div class="flow"><span class="pill p-sale">Маркетолог</span><span class="fa">→</span><span class="what">лиды</span><span class="fa">→</span><span class="pill p-sale">Менеджер</span></div>
+        <div class="flow"><span class="pill p-sale">Менеджер</span><span class="fa">→</span><span class="what">демо-доступ + запись</span><span class="fa">→</span><span class="pill p-teach">Куратор</span></div>
+        <div class="flow"><span class="pill p-teach">Куратор</span><span class="fa">→</span><span class="what">результат пробного</span><span class="fa">→</span><span class="pill p-sale">Менеджер</span></div>
+        <div class="flow"><span class="pill p-sale">Менеджер</span><span class="fa">→</span><span class="what">согласившийся клиент</span><span class="fa">→</span><span class="pill p-sch">Администратор</span></div>
+        <div class="flow"><span class="pill p-sch">Администратор</span><span class="fa">→</span><span class="what">договор + оплата</span><span class="fa">→</span><span class="pill p-sch">Бухгалтер</span><span class="what">(подтверждает)</span></div>
+        <div class="flow"><span class="pill p-sch">Администратор</span><span class="fa">→</span><span class="what">доступ после оплаты</span><span class="fa">→</span><span class="pill p-cli">Ученик + Родитель</span></div>
+      </div>
+
+      <div class="fcol">
+        <h3>🎓 Обучение и качество</h3>
+        <div class="flow"><span class="pill p-teach">Куратор</span><span class="fa">→</span><span class="what">отчёты, ОС, прогресс</span><span class="fa">→</span><span class="pill p-cli">Родитель</span></div>
+        <div class="flow"><span class="pill p-teach">Куратор</span><span class="fa">→</span><span class="what">показатели групп</span><span class="fa">→</span><span class="pill p-teach">Старший куратор</span></div>
+        <div class="flow"><span class="pill p-teach">Старший куратор</span><span class="fa">→</span><span class="what">нагрузка + наставничество</span><span class="fa">→</span><span class="pill p-teach">Куратор</span></div>
+        <div class="flow"><span class="pill p-teach">Старший куратор</span><span class="fa">→</span><span class="what">отчёты по кураторам</span><span class="fa">→</span><span class="pill p-sch">Администратор</span></div>
+        <div class="flow"><span class="pill p-cli">Ученик</span><span class="fa">→</span><span class="what">достижения / гордость</span><span class="fa">→</span><span class="pill p-cli">Родитель</span></div>
+        <div class="flow"><span class="pill p-cli">Родитель</span><span class="fa">→</span><span class="what">обращения: заморозка/возврат</span><span class="fa">→</span><span class="pill p-sch">Администратор</span></div>
+      </div>
+
+      <div class="fcol">
+        <h3>🏢 Управление сетью</h3>
+        <div class="flow"><span class="pill p-sch">Администратор</span><span class="fa">→</span><span class="what">отчёты/KPI школы</span><span class="fa">→</span><span class="pill p-own">Франчайзи</span><span class="what">(входит как директор)</span></div>
+        <div class="flow"><span class="pill p-own">Франчайзи</span><span class="fa">→</span><span class="what">KPI, план/факт</span><span class="fa">→</span><span class="pill p-net">Куратор франшиз</span></div>
+        <div class="flow"><span class="pill p-net">Куратор франшиз</span><span class="fa">→</span><span class="what">сводки, статус франчайзи</span><span class="fa">→</span><span class="pill p-hq">Руководитель</span></div>
+        <div class="flow"><span class="pill p-net">Куратор франшиз</span><span class="fa">→</span><span class="what">настройка программы</span><span class="fa">→</span><span class="pill p-hq">Руководитель</span><span class="what">(утверждает)</span></div>
+        <div class="flow"><span class="pill p-hq">Руководитель</span><span class="fa">→</span><span class="what">программа, стандарты, права</span><span class="fa">→</span><span class="pill p-net">вся сеть</span></div>
+      </div>
+
+      <div class="fcol">
+        <h3>💰 Финансы</h3>
+        <div class="flow"><span class="pill p-sch">Бухгалтер франчайзи</span><span class="fa">→</span><span class="what">фин. дашборд (1 в 2 кабинета)</span><span class="fa">→</span><span class="pill p-net">Куратор франшиз</span><span class="fa">+</span><span class="pill p-hq">Руководитель</span></div>
+        <div class="flow"><span class="pill p-hq">Финансист</span><span class="fa">→</span><span class="what">финансы сети сводно</span><span class="fa">→</span><span class="pill p-hq">Руководитель</span></div>
+        <div class="flow"><span class="pill p-own">Франчайзи</span><span class="fa">→</span><span class="what">роялти 20% ежемес.</span><span class="fa">→</span><span class="pill p-hq">Головной офис</span></div>
+        <div class="flow"><span class="pill p-cli">Родитель</span><span class="fa">→</span><span class="what">оплата</span><span class="fa">→</span><span class="pill p-sch">Бухгалтер</span><span class="what">(подтверждает → билет)</span></div>
+        <div class="flow"><span class="pill p-own">Франчайзи</span><span class="fa">→</span><span class="what">взнос</span><span class="fa">→</span><span class="pill p-hq">Маркетинговый фонд</span><span class="what">(перераспределение)</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="foot">Сводная карта системы ДНМ · экосистема <b>SAMO Global</b> · проектный документ · роли, права и потоки</div>
+
+</div>
+</body>
+</html>

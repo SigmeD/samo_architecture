@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { CabinetSpec } from "@/content/types";
-import { zoneColor } from "@/content/zones";
+import { zoneColor, ZONES } from "@/content/zones";
 import { ImplStatusBadge } from "@/components/atlas/impl-status-badge";
 import { splitIcon } from "@/components/atlas/split-icon";
 
@@ -27,7 +27,11 @@ export function CabinetHeader({ cabinet, nav }: { cabinet: CabinetSpec; nav?: st
             <h1 className="font-display text-2xl font-extrabold leading-tight md:text-3xl" style={{ color: accent }}>{cabinet.role.title}</h1>
             <ImplStatusBadge status={cabinet.implStatus} />
           </div>
-          <p className="mt-2 max-w-3xl text-sm leading-relaxed text-ink">{cabinet.purpose}</p>
+          <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
+            <span className="font-display font-bold uppercase tracking-wide" style={{ color: accent }}>{ZONES[cabinet.zone].label}</span>
+            <span aria-hidden="true" className="text-faint">·</span>
+            <span className="font-mono text-faint">{cabinet.role.code}</span>
+          </p>
         </div>
       </div>
       {nav && nav.length > 0 && (

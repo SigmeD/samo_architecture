@@ -35,6 +35,8 @@
   --color-surface-soft: #fbfcfe;
   --color-surface-tint: #f5f8fc;
   --color-green-soft: #2c5a44;
+  /* метка «New» (обновление 08.06): сплошная пилюля, контраст WCAG AA с белым текстом; снимается при мердже */
+  --color-new: #0a6c3c;
 
   /* fonts */
   --font-sans: "Roboto", system-ui, sans-serif;
