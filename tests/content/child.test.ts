@@ -38,4 +38,15 @@ describe("кабинет ученика (child)", () => {
   it("все связи резолвятся в реестре", () => {
     for (const l of child.crossLinks) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
   });
+  it("Эссе и Бизнес-проект — отдельные домены; БП только SENIOR", () => {
+    const titles = child.domains.map((d) => d.title);
+    expect(titles.some((t) => /^✍️ Эссе$/.test(t) || /✍️ Эссе/.test(t))).toBe(true);
+    expect(titles.some((t) => /💼 Бизнес-проект/.test(t))).toBe(true);
+    const blob = JSON.stringify(child);
+    expect(blob).toMatch(/только.*SENIOR|SENIOR.*кульминаци/i);
+    expect(blob).toMatch(/два самостоятельных блока/); // инвариант сохранён
+  });
+  it("в sources[] есть SPEC-DNM-RATING-001", () => {
+    expect(child.sources.some((s) => s.id === "SPEC-DNM-RATING-001")).toBe(true);
+  });
 });
