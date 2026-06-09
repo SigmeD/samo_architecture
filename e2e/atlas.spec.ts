@@ -254,3 +254,25 @@ test("кабинет маркетолога: визуальный снимок (
   await page.goto("/cabinet/marketer/");
   await expect(page).toHaveScreenshot("cabinet-marketer.png", { fullPage: true });
 });
+
+test("кабинет гостя: green-зона, онбординг, поправка (пробное проводит куратор), изолированная роль, обезличено", async ({ page }) => {
+  await page.goto("/cabinet/guest/");
+  await expect(page.getByRole("heading", { level: 1, name: /Гость/ })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Домены и функции" })).toBeVisible();
+  // ядро — онбординг; поправка к постеру: пробный урок проводит куратор
+  await expect(page.getByText(/Онбординг/).first()).toBeVisible();
+  await expect(page.getByText(/проводит куратор/i).first()).toBeVisible();
+  // метка «New» присутствует (новизна vs постер 02.06)
+  await expect(page.locator('[data-new="true"]').first()).toBeVisible();
+  // инварианты: без доли роялти, без имён
+  await expect(page.locator("body")).not.toContainText("50%");
+  await expect(page.locator("body")).not.toContainText(/Д[оа]влат/);
+  // связь в куратора кликабельна (пробное проводит куратор)
+  await page.getByRole("link", { name: /Куратор/ }).first().click();
+  await expect(page).toHaveURL(/\/cabinet\/curator/);
+});
+
+test("кабинет гостя: визуальный снимок (baseline)", async ({ page }) => {
+  await page.goto("/cabinet/guest/");
+  await expect(page).toHaveScreenshot("cabinet-guest.png", { fullPage: true });
+});

@@ -1,4 +1,4 @@
-import type { CabinetSpec, ZoneKey } from "@/content/types";
+import type { CabinetSpec } from "@/content/types";
 import { curator } from "@/content/cabinets/curator";
 import { child } from "@/content/cabinets/child";
 import { parent } from "@/content/cabinets/parent";
@@ -10,12 +10,7 @@ import { seniorCurator } from "@/content/cabinets/senior-curator";
 import { lead } from "@/content/cabinets/lead";
 import { sales } from "@/content/cabinets/sales";
 import { marketer } from "@/content/cabinets/marketer";
-
-const stub = (slug: string, title: string, code: string, emoji: string, zone: ZoneKey): CabinetSpec => ({
-  slug, role: { code, title, emoji }, zone, implStatus: "planned", isStub: true,
-  purpose: "Кабинет в проектировании.", coreProcess: { title: "В разработке", steps: [{ n: 1, title: "—", desc: "Раздел в проектировании." }] },
-  domains: [], crossLinks: [], modules: [], sources: [],
-});
+import { guest } from "@/content/cabinets/guest";
 
 export const CABINETS: Record<string, CabinetSpec> = {
   curator,
@@ -29,7 +24,7 @@ export const CABINETS: Record<string, CabinetSpec> = {
   sales,
   marketer,
   finance,
-  guest:            stub("guest", "Гость (онбординг)", "guest", "🚪", "green"),
+  guest,
 };
 
 export const getCabinet = (slug: string): CabinetSpec | undefined => CABINETS[slug];
