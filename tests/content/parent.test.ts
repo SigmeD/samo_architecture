@@ -67,4 +67,22 @@ describe("кабинет родителя (parent)", () => {
     expect(blob).toMatch(/Global Samo|Само Глобал/i);
     expect(blob).toMatch(/путь клиента/i);
   });
+
+  // === Task 3 (crosslinks one-way + content fix, 09.06) ===
+
+  it("совместное ДЗ/уроки с ребёнком (младшие) + посещаемость по-русски (без EN-кодов)", () => {
+    const blob = JSON.stringify(parent);
+    expect(blob).toMatch(/совместн\S*.*ребёнк|ДЗ.*с ребёнком/i);
+    expect(blob).not.toMatch(/PRESENT|ABSENT|EXCUSED|LATE/);
+  });
+  it("обоюдные (both) связи только child/curator/school-admin/franchise; нет меток New", () => {
+    const both = parent.crossLinks.filter((l) => l.direction === "both").map((l) => l.toCabinet).sort();
+    expect(both).toEqual(["child", "curator", "franchise", "school-admin"]);
+    const anyNew =
+      parent.domains.some((d) => d.isNew) ||
+      parent.crossLinks.some((l) => l.isNew) ||
+      parent.coreProcess.steps.some((s) => s.isNew) ||
+      parent.modules.some((m) => m.isNew);
+    expect(anyNew).toBe(false);
+  });
 });

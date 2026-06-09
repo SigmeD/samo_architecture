@@ -50,13 +50,11 @@ describe("кабинет гостя (guest) — 08.06, последний из 1
     expect(blob).toMatch(/7\s*дн/i);
     expect(blob).toMatch(/cr-gost-dnm\s*[→-]+\s*cr4-rebenok-dnm/i);
   });
-  it("метка «New»: есть новые блоки относительно постера 02.06", () => {
-    const anyNew =
-      guest.coreProcess.steps.some((s) => s.isNew) ||
-      guest.domains.some((d) => d.isNew) ||
-      guest.crossLinks.some((l) => l.isNew) ||
-      guest.modules.some((m) => m.isNew);
-    expect(anyNew).toBe(true);
+  it("менеджер может проводить пробное (роль куратора); нет меток New", () => {
+    const blob = JSON.stringify(guest);
+    expect(blob).toMatch(/менеджер.*провод\S*\s+пробн|роль\S*\s+куратора/i);
+    const anyNew = guest.domains.some(d=>d.isNew)||guest.crossLinks.some(l=>l.isNew)||guest.coreProcess.steps.some(s=>s.isNew)||guest.modules.some(m=>m.isNew);
+    expect(anyNew).toBe(false);
   });
   it("ключевые связи: sales/curator/parent/child/school-admin/finance/marketer резолвятся", () => {
     const targets = guest.crossLinks.map((l) => l.toCabinet);

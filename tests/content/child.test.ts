@@ -120,4 +120,16 @@ describe("кабинет ученика (child)", () => {
     expect(blob).toMatch(/Профиль основателя/i);
     expect(blob).toMatch(/переход.*13.*14|Герой.*Профиль предпринимател/i);
   });
+  it("ДЗ-с-родителем (младшие) + чаты родитель/куратор/админ(SENIOR)", () => {
+    const blob = JSON.stringify(child);
+    expect(blob).toMatch(/вместе с родителем|ДЗ.*с родителем/i);
+    expect(blob).toMatch(/уведомлен\S*\s+родител/i);
+    expect(blob).toMatch(/чат с куратором/i);
+    expect(blob).toMatch(/чат с администратором школы/i);
+    expect(blob).toMatch(/SENIOR/);
+  });
+  it("нет меток New в кабинете ученика", () => {
+    const anyNew = child.coreProcess.steps.some(s=>s.isNew)||child.domains.some(d=>d.isNew)||child.crossLinks.some(l=>l.isNew)||child.modules.some(m=>m.isNew);
+    expect(anyNew).toBe(false);
+  });
 });
