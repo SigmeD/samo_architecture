@@ -55,6 +55,26 @@ describe("кабинет маркетолога (marketer) — 08.06", () => {
     expect(s?.direction).toBe("both");
     for (const l of marketer.crossLinks) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
   });
+  it("C6: интеграции соцсетей/Google Ads через AI/API (автосбор статистики)", () => {
+    const blob = JSON.stringify(marketer);
+    expect(blob).toMatch(/AI\/API|через API/i);
+    expect(blob).toMatch(/Instagram/i);
+    expect(blob).toMatch(/Google Ads/i);
+    expect(blob).toMatch(/автосбор|автозахват/i);
+  });
+  it("C6: домен «Рекомендуемые материалы для продаж» — топ-5 роликов со всей сети", () => {
+    const dom = marketer.domains.find((d) => /рекомендованн\S*|рекомендуемы\S* материал/i.test(d.title));
+    expect(dom, "домен рекомендованных материалов").toBeDefined();
+    const blob = JSON.stringify(marketer);
+    expect(blob).toMatch(/топ-5|топ 5/i);
+    expect(blob).toMatch(/просмотр/i);
+  });
+  it("C6: crossLink на sales несёт поток рекомендованных материалов и резолвится", () => {
+    const s = marketer.crossLinks.find((l) => l.toCabinet === "sales");
+    expect(s).toBeDefined();
+    expect(/рекоменд\S*/i.test(s!.label)).toBe(true);
+    expect(getCabinet("sales")).toBeDefined();
+  });
   it("обезличено и без доли роялти 50%", () => {
     const blob = JSON.stringify(marketer);
     expect(blob).not.toMatch(/Д[оа]влат|Айгерим|Анастас|Сережан|\bПавел\b|Маржан/i);

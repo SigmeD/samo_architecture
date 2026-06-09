@@ -29,4 +29,42 @@ describe("кабинет родителя (parent)", () => {
   it("все связи резолвятся в реестре", () => {
     for (const l of parent.crossLinks) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
   });
+
+  // === Аддитивные правки C2 (gap-анализ 08–09.06) ===
+
+  it("C2: трёхуровневый рейтинг ученика — в группе / в школе / в проекте", () => {
+    const progress = parent.domains.find((d) => /Прогресс/i.test(d.title));
+    expect(progress).toBeDefined();
+    const blob = JSON.stringify(progress);
+    expect(blob).toMatch(/в группе/i);
+    expect(blob).toMatch(/в школе/i);
+    expect(blob).toMatch(/в проекте/i);
+  });
+
+  it("C2: расписание ребёнка по семестру (12 недель ≈ 24 урока, фильтр)", () => {
+    const blob = JSON.stringify(parent);
+    expect(blob).toMatch(/12 недел/i);
+    expect(blob).toMatch(/24 урок/i);
+  });
+
+  it("C2: опросы о школе → отчётность франшизы → куратор франшиз (crossLink out)", () => {
+    const surveys = parent.domains.find((d) => /Опрос/i.test(d.title));
+    expect(surveys).toBeDefined();
+    expect(JSON.stringify(surveys)).toMatch(/франш/i);
+    const link = parent.crossLinks.find((l) => l.toCabinet === "franchise-curator");
+    expect(link, "crossLink на franchise-curator").toBeDefined();
+    expect(link!.direction).toBe("out");
+  });
+
+  it("C2: явный инвариант-запрет — сравнительные рейтинги школ родителю НЕ показываются", () => {
+    const blob = JSON.stringify(parent);
+    expect(blob).toMatch(/рейтинг/i);
+    expect(blob).toMatch(/школ.{0,40}НЕ показыва/i);
+  });
+
+  it("C2: концепция универсального кабинета / Global Samo (на подтверждении)", () => {
+    const blob = JSON.stringify(parent);
+    expect(blob).toMatch(/Global Samo|Само Глобал/i);
+    expect(blob).toMatch(/путь клиента/i);
+  });
 });

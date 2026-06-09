@@ -22,4 +22,33 @@ describe("curator cabinet content", () => {
     expect(curator.crossLinks).toHaveLength(8);
     expect(curator.modules).toHaveLength(14);
   });
+
+  // C3 (08.06): аддитивные правки логики урока и посещаемости
+  it("C3: «отметить участников» — критичный шаг + тиринг (пуш → звонок администратора, не куратора)", () => {
+    const blob = JSON.stringify(curator).toLowerCase();
+    expect(blob).toMatch(/отмет[а-яё]* участник/u);
+    expect(blob).toMatch(/пуш родител/);
+    // повторное непосещение → звонок именно администратора
+    expect(blob).toMatch(/звонок администратор/);
+  });
+  it("C3: видна 11-шаговая последовательность урока (детализация, не замена 3 фаз)", () => {
+    // 3 фазы-инвариант не сломан
+    expect(curator.coreProcess.steps).toHaveLength(3);
+    // 11-шаговый порядок виден как loop-контур
+    expect(curator.coreProcess.loop).toBeDefined();
+    expect(curator.coreProcess.loop).toHaveLength(11);
+    const loopBlob = (curator.coreProcess.loop ?? []).join(" | ").toLowerCase();
+    expect(loopBlob).toMatch(/отмет[а-яё]* участник/u);
+    expect(loopBlob).toMatch(/подтвержд[а-яё]* посещаемост/u);
+  });
+  it("C3: видеофиксация посещаемости — 3–4 снимка с камеры, сверка с отметкой", () => {
+    const blob = JSON.stringify(curator).toLowerCase();
+    expect(blob).toMatch(/видеофиксаци/);
+    expect(blob).toMatch(/3[–\-]4 снимк/);
+  });
+  it("C3: обучение куратора — через сквозную Бизнес-академию (кабинет тренера отдельно НЕ делается)", () => {
+    const blob = JSON.stringify(curator).toLowerCase();
+    expect(blob).toMatch(/сквозн[а-яё]* бизнес-академи/u);
+    expect(blob).toMatch(/кабинет тренера/);
+  });
 });
