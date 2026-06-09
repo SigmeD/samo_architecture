@@ -45,27 +45,41 @@ describe("кабинет методиста (methodist) — 09.06, новая р
     expect(blob).toMatch(/Бизнес-академи/i);
     expect(blob).toMatch(/100 вопрос\S* о дисциплине/i);
   });
-  it("ключевые связи: lead/curator/franchise-curator/child резолвятся", () => {
+  it("дополнено из дока: рубрика значков (merit/gift), мультиязычность ru/en/de, сертификат 13→14, качество (доходимость)", () => {
+    const blob = JSON.stringify(methodist);
+    expect(blob).toMatch(/рубрик\S*\s+значк|каталог значков/i);
+    expect(blob).toMatch(/merit\s*\/?\s*gift|merit.*gift/i);
+    expect(blob).toMatch(/ru\/en\/de/i);
+    expect(blob).toMatch(/13→14|13-14|стал взрослым/i);
+    expect(blob).toMatch(/доходимост/i);
+  });
+  it("границы (док §16): подчиняется куратору франшиз; НЕ преподаёт; единая программа (школы не редактируют)", () => {
+    const blob = JSON.stringify(methodist);
+    expect(blob).toMatch(/подчиня\S*.*куратор\S*\s+франшиз|непосредственн\S*\s+руководител/i);
+    expect(blob).toMatch(/не преподаёт/i);
+    expect(blob).toMatch(/единая программа|школы.*не редактир/i);
+  });
+  it("ключевые связи: lead/curator/franchise-curator/senior-curator/child резолвятся", () => {
     const targets = methodist.crossLinks.map((l) => l.toCabinet);
-    for (const t of ["lead", "curator", "franchise-curator", "child"]) {
+    for (const t of ["lead", "curator", "franchise-curator", "senior-curator", "child"]) {
       expect(targets, t).toContain(t);
     }
     for (const l of methodist.crossLinks) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
   });
-  it("связь на lead = gate подтверждения (both); на franchise-curator = передача права авторинга (both)", () => {
+  it("связь на lead = gate подтверждения (both); КФ = непосредственный руководитель + авторинг выделен (both)", () => {
     const lead = methodist.crossLinks.find((l) => l.toCabinet === "lead");
     expect(lead?.direction).toBe("both");
     expect(lead?.label).toMatch(/подтвержда\S*|утвержда\S*|gate/i);
     const kf = methodist.crossLinks.find((l) => l.toCabinet === "franchise-curator");
     expect(kf?.direction).toBe("both");
-    expect(kf?.label).toMatch(/передач\S*.*авторинг|право\S*\s+авторинг/i);
+    expect(kf?.label).toMatch(/непосредственн\S*\s+руководител|авторинг\s+выделен|право/i);
   });
-  it("5–6 модулей (конструктор видов, цикл утверждения, методконтент Академии)", () => {
-    expect(methodist.modules.length).toBeGreaterThanOrEqual(5);
+  it("модули (≥10): виды/утверждение/методсопровождение/геймификация/мультиязык/сертификаты/версии/качество", () => {
+    expect(methodist.modules.length).toBeGreaterThanOrEqual(10);
     const slugs = methodist.modules.map((m) => m.slug);
-    expect(slugs).toContain("lesson-type-constructor");
-    expect(slugs).toContain("approval-cycle");
-    expect(slugs).toContain("academy-methodics");
+    for (const s of ["lesson-type-constructor", "approval-cycle", "methodics-support", "gamification-methodology", "multilang-content", "certificate-templates", "versioning-publication", "program-quality"]) {
+      expect(slugs, s).toContain(s);
+    }
     for (const m of methodist.modules) expect(m.status).toBe("planned");
   });
   it("обезличено (без имён, «контент основателя») и без доли роялти 50%", () => {
