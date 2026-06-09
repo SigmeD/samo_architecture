@@ -192,14 +192,17 @@ test("кабинет руководителя проекта: визуальны
   await expect(page).toHaveScreenshot("cabinet-lead.png", { fullPage: true });
 });
 
-test("сводная карта системы: переход с L0, иерархия, матрица, нестыковки, клик в кабинет", async ({ page }) => {
+test("сводная карта системы: переход с L0, иерархия, матрица, клик в кабинет, маркеры убраны", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("link", { name: /Сводная карта системы/ }).click();
   await expect(page).toHaveURL(/\/map/);
   await expect(page.getByRole("heading", { level: 1, name: /Сводная карта системы/ })).toBeVisible();
   await expect(page.getByRole("heading", { level: 2, name: "Иерархия ролей" })).toBeVisible();
   await expect(page.getByRole("heading", { level: 2, name: /Матрица/ })).toBeVisible();
-  await expect(page.getByText(/Вскрытые нестыковки/).first()).toBeVisible();
+  // маркеры убраны: нет блока «нестыковки», нет тега «право методист»; есть Маркетолог ГО (Само Глобал)
+  await expect(page.getByText(/Вскрытые нестыковки/)).toHaveCount(0);
+  await expect(page.locator("body")).not.toContainText(/право\s*«?методист/i);
+  await expect(page.getByText(/Маркетолог ГО/).first()).toBeVisible();
   // обезличено + без доли роялти 50%
   await expect(page.locator("body")).not.toContainText("50%");
   await expect(page.locator("body")).not.toContainText(/Д[оа]влат/);

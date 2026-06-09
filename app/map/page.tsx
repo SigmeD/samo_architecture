@@ -39,18 +39,20 @@ export default function MapPage() {
         <SectionHeader no="02" title="Матрица «роль × раздел × право»" caption="кто что видит и может" />
         <AccessMatrix matrix={systemMap.matrix} />
         <p className={`mt-3 ${NOTE}`}>{systemMap.matrixNote}</p>
-        <div className="mt-4 rounded-2xl border border-samo-orange-b bg-samo-orange-l p-4">
-          <h3 className="mb-2 flex items-center gap-2 font-display text-[12px] font-extrabold uppercase tracking-wide text-samo-orange-d">
-            <span aria-hidden="true">⚠</span>Вскрытые нестыковки · намерение ↔ канон
-          </h3>
-          <ul className="flex flex-col gap-2">
-            {systemMap.divergences.map((d) => (
-              <li key={d.title} className="text-[12px] leading-relaxed text-ink-soft">
-                <b className="text-ink">{d.title}.</b> {d.detail}
-              </li>
-            ))}
-          </ul>
-        </div>
+        {systemMap.divergences.length > 0 && (
+          <div className="mt-4 rounded-2xl border border-samo-orange-b bg-samo-orange-l p-4">
+            <h3 className="mb-2 flex items-center gap-2 font-display text-[12px] font-extrabold uppercase tracking-wide text-samo-orange-d">
+              <span aria-hidden="true">⚠</span>Вскрытые нестыковки · намерение ↔ канон
+            </h3>
+            <ul className="flex flex-col gap-2">
+              {systemMap.divergences.map((d) => (
+                <li key={d.title} className="text-[12px] leading-relaxed text-ink-soft">
+                  <b className="text-ink">{d.title}.</b> {d.detail}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         <SectionHeader no="03" title="Карта передач" caption="кто кому что передаёт" />
         <HandoffFlows columns={systemMap.handoffs} />

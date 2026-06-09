@@ -16,19 +16,17 @@ describe("сводная карта системы (system-map)", () => {
       for (const c of r.cells)
         if (typeof c === "object" && c.divergent) expect(c.note, r.role).toBeTruthy();
   });
-  it("есть ≥3 сводных расхождения и ≥1 помеченная ячейка", () => {
-    expect(systemMap.divergences.length).toBeGreaterThanOrEqual(3);
+  it("карта чистая (маркеры убраны): divergences пуст, нет divergent-ячеек и offCanon", () => {
+    expect(systemMap.divergences).toHaveLength(0);
     const flagged = systemMap.matrix.rows.flatMap((r) => r.cells).filter((c) => typeof c === "object" && c.divergent);
-    expect(flagged.length).toBeGreaterThanOrEqual(1);
+    expect(flagged).toHaveLength(0);
+    expect(systemMap.matrix.rows.some((r) => r.offCanon)).toBe(false);
   });
-  it("инвариант: авторинг программы помечен расхождением у руководителя и куратора франшиз", () => {
-    const idx = systemMap.matrix.sections.findIndex((s) => /авторинг/i.test(s));
-    expect(idx).toBeGreaterThanOrEqual(0);
-    for (const role of ["Руководитель проекта", "Куратор франшиз"]) {
-      const row = systemMap.matrix.rows.find((r) => r.role === role)!;
-      const cell = row.cells[idx];
-      expect(typeof cell === "object" && cell.divergent, role).toBe(true);
-    }
+  it("иерархия без tag-маркеров; есть Маркетолог ГО (Само Глобал); у куратора франшиз нет тега «методист»", () => {
+    const allRoles = systemMap.hierarchy.flatMap((t) => t.roles);
+    expect(allRoles.every((r) => !r.tag), "остался tag-маркер").toBe(true);
+    expect(allRoles.some((r) => /Маркетолог ГО/.test(r.title)), "нет Маркетолог ГО").toBe(true);
+    expect(JSON.stringify(systemMap)).not.toMatch(/право\s*«?методист/i);
   });
   it("slug-и иерархии и матрицы резолвятся в реестре кабинетов", () => {
     const slugs = [
