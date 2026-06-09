@@ -7,6 +7,7 @@ import { CoreProcessBand } from "@/components/atlas/core-process-band";
 import { ContourLoop } from "@/components/atlas/contour-loop";
 import { DomainPanel } from "@/components/atlas/domain-panel";
 import { CrossLinkPanel } from "@/components/atlas/cross-link-panel";
+import { OneWayLinks } from "@/components/atlas/one-way-links";
 import { ModulePanel } from "@/components/atlas/module-panel";
 import { SourceRef } from "@/components/atlas/source-ref";
 import { RoleSummary } from "@/components/atlas/role-summary";
@@ -56,14 +57,21 @@ export default async function CabinetPage({ params }: { params: Promise<{ slug: 
           </>
         )}
 
-        {cabinet.crossLinks.length > 0 && (
-          <>
-            <SectionHeader no="03" title="Связи с кабинетами" caption="потоки ценности" />
-            <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-              {cabinet.crossLinks.map((l) => <CrossLinkPanel key={l.toCabinet} link={l} />)}
-            </ul>
-          </>
-        )}
+        {cabinet.crossLinks.length > 0 && (() => {
+          const mutual = cabinet.crossLinks.filter((l) => l.direction === "both");
+          const oneWay = cabinet.crossLinks.filter((l) => l.direction !== "both");
+          return (
+            <>
+              <SectionHeader no="03" title="Связи с кабинетами" caption="кликабельны только обоюдные ⇄" />
+              {mutual.length > 0 && (
+                <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+                  {mutual.map((l) => <CrossLinkPanel key={l.toCabinet} link={l} />)}
+                </ul>
+              )}
+              <OneWayLinks links={oneWay} />
+            </>
+          );
+        })()}
 
         {cabinet.modules.length > 0 && (
           <>

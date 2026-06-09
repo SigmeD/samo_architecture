@@ -59,12 +59,19 @@ describe("кабинет методиста (methodist) — 09.06, новая р
     expect(blob).toMatch(/не преподаёт/i);
     expect(blob).toMatch(/единая программа|школы.*не редактир/i);
   });
-  it("ключевые связи: lead/curator/franchise-curator/senior-curator/child резолвятся", () => {
-    const targets = methodist.crossLinks.map((l) => l.toCabinet);
-    for (const t of ["lead", "curator", "franchise-curator", "senior-curator", "child"]) {
-      expect(targets, t).toContain(t);
-    }
+  it("СТРОГАЯ ВЕРТИКАЛЬ: crossLinks = ровно {lead:both, franchise-curator:both}", () => {
+    const map = Object.fromEntries(methodist.crossLinks.map((l) => [l.toCabinet, l.direction]));
+    expect(map).toEqual({ lead: "both", "franchise-curator": "both" });
     for (const l of methodist.crossLinks) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
+  });
+  it("УБРАНЫ прямые связи curator/senior-curator/child (программа течёт ВНИЗ по вертикали через КФ)", () => {
+    const targets = methodist.crossLinks.map((l) => l.toCabinet);
+    for (const gone of ["curator", "senior-curator", "child"]) {
+      expect(targets, gone).not.toContain(gone);
+    }
+    // программа/виды уроков распространяются вниз по вертикали (не прямой связью)
+    const blob = JSON.stringify(methodist.crossLinks);
+    expect(blob).toMatch(/вниз по вертикали|по вертикали/i);
   });
   it("связь на lead = gate подтверждения (both); КФ = непосредственный руководитель + авторинг выделен (both)", () => {
     const lead = methodist.crossLinks.find((l) => l.toCabinet === "lead");

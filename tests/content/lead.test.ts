@@ -57,4 +57,25 @@ describe("кабинет руководителя проекта (lead) — об
     expect(fc?.isNew).toBe(true);
     for (const l of lead.crossLinks) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
   });
+  it("финлиния ГО: связь finance несёт «напрямую» + «Финансист ГО» (Само Глобал)", () => {
+    const f = lead.crossLinks.find((l) => l.toCabinet === "finance");
+    expect(f?.direction).toBe("in");
+    expect(f?.label).toMatch(/напрямую/i);
+    expect(f?.label).toMatch(/Финансист ГО/);
+    expect(f?.label).toMatch(/Само Глобал/);
+  });
+  it("СТРОГАЯ ВЕРТИКАЛЬ: crossLinks = ровно {franchise-curator:both, methodist:both, finance:in}", () => {
+    const map = Object.fromEntries(lead.crossLinks.map((l) => [l.toCabinet, l.direction]));
+    expect(map).toEqual({
+      "franchise-curator": "both",
+      methodist: "both",
+      finance: "in",
+    });
+  });
+  it("УБРАНЫ обходящие вертикаль связи (school-admin, curator, senior-curator, sales, marketer, franchise)", () => {
+    const targets = lead.crossLinks.map((l) => l.toCabinet);
+    for (const gone of ["school-admin", "curator", "senior-curator", "sales", "marketer", "franchise"]) {
+      expect(targets, gone).not.toContain(gone);
+    }
+  });
 });

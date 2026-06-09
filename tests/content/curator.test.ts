@@ -17,10 +17,41 @@ describe("curator cabinet content", () => {
     expect(bySlug["lesson-journal"]).toBe("divergent");
     expect(bySlug["curator-rating"]).toBe("divergent");
   });
-  it("15 доменов, 8 связей, 14 модулей", () => {
+  it("15 доменов, 4 связи (вертикаль ±1 уровень), 14 модулей", () => {
     expect(curator.domains).toHaveLength(15);
-    expect(curator.crossLinks).toHaveLength(8);
+    expect(curator.crossLinks).toHaveLength(4);
     expect(curator.modules).toHaveLength(14);
+  });
+
+  // Вертикаль 09.06: связи только ±1 уровень + функциональный хендофф sales
+  it("crossLinks РОВНО senior-curator/child/parent/sales — все both; убраны lead/franchise/school-admin/finance", () => {
+    const byTo = Object.fromEntries(curator.crossLinks.map((l) => [l.toCabinet, l.direction]));
+    expect(Object.keys(byTo).sort()).toEqual(["child", "parent", "sales", "senior-curator"]);
+    expect(byTo["senior-curator"]).toBe("both");
+    expect(byTo["child"]).toBe("both");
+    expect(byTo["parent"]).toBe("both");
+    expect(byTo["sales"]).toBe("both");
+    for (const removed of ["lead", "franchise", "school-admin", "finance"]) {
+      expect(byTo[removed], `связь ${removed} должна быть удалена`).toBeUndefined();
+    }
+  });
+
+  // Контент-фикс 09.06: статусы ДЗ по-русски, англ.-коды убраны
+  it("ДЗ-статусы по-русски; нет англ.-кодов PENDING/SUBMITTED/IN_REVIEW/ACCEPTED/REVISION", () => {
+    const blob = JSON.stringify(curator);
+    expect(blob).toMatch(/ожидает сдачи → сдано → на проверке → принято \/ на доработку/u);
+    for (const code of ["PENDING", "SUBMITTED", "IN_REVIEW", "ACCEPTED", "REVISION"]) {
+      expect(blob, `англ.-код ${code} должен быть убран`).not.toContain(code);
+    }
+  });
+
+  // Контент-фикс 09.06: куратор выдаёт значки И начисляет соляры
+  it("куратор выдаёт значки (медальки) И начисляет соляры ученику по рубрике методиста", () => {
+    const blob = JSON.stringify(curator).toLowerCase();
+    expect(blob).toMatch(/значк/);
+    expect(blob).toMatch(/медальк/);
+    expect(blob).toMatch(/нажал на значок/);
+    expect(blob).toMatch(/соляр[а-яё]* начисляются|начисляет соляр/u);
   });
 
   // C3 (08.06): аддитивные правки логики урока и посещаемости

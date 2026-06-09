@@ -23,14 +23,15 @@ describe("кабинет гостя (guest) — 08.06, последний из 1
     expect(blob).toMatch(/не роль RBAC|не строк\S* RBAC/i);
     expect(blob).toMatch(/изолированн\S* роль|ADR-003/i);
   });
-  it("ПОПРАВКА к постеру: пробное проводит КУРАТОР (не менеджер)", () => {
+  it("РЕВЕРС: менеджер ведёт онбординг и пробное сам ИЛИ назначает куратора из расписания", () => {
     const blob = JSON.stringify(guest);
-    expect(blob).toMatch(/пробн\S*\s+(урок\s+)?проводит куратор/i);
-    expect(blob).toMatch(/поправк\S* к постеру/i);
+    expect(blob).toMatch(/менеджер\S*\s+(по продажам\s+)?(ведёт|провод\S*)[^.]*(онбординг|пробн)/i);
+    expect(blob).toMatch(/назнача\S*\s+куратор\S*\s+(из\s+)?расписани|куратор\S*\s+из расписани/i);
   });
-  it("ГРАНИЦА: договор/оплату/рассрочку/зачисление ведёт администратор + финансы; бухгалтер подтверждает payment.confirmed", () => {
+  it("РЕВЕРС: договор оформляет МЕНЕДЖЕР, администратор ПОДТВЕРЖДАЕТ; оплата через бухгалтерию (payment.confirmed у бухгалтера остаётся)", () => {
     const blob = JSON.stringify(guest);
-    expect(blob).toMatch(/администратор\S* школы/i);
+    expect(blob).toMatch(/менеджер\S*[^.]*оформля\S*[^.]*договор|договор\S*[^.]*оформля\S*[^.]*менеджер/i);
+    expect(blob).toMatch(/администратор\S*[^.]*подтвержда\S*|подтвержда\S*[^.]*администратор/i);
     expect(blob).toMatch(/бухгалтер/i);
     expect(blob).toMatch(/payment\.confirmed/i);
   });
@@ -50,13 +51,11 @@ describe("кабинет гостя (guest) — 08.06, последний из 1
     expect(blob).toMatch(/7\s*дн/i);
     expect(blob).toMatch(/cr-gost-dnm\s*[→-]+\s*cr4-rebenok-dnm/i);
   });
-  it("метка «New»: есть новые блоки относительно постера 02.06", () => {
-    const anyNew =
-      guest.coreProcess.steps.some((s) => s.isNew) ||
-      guest.domains.some((d) => d.isNew) ||
-      guest.crossLinks.some((l) => l.isNew) ||
-      guest.modules.some((m) => m.isNew);
-    expect(anyNew).toBe(true);
+  it("постер 02.06 верен (логика менеджера/договора подтверждена каноном); нет меток New", () => {
+    const blob = JSON.stringify(guest);
+    expect(blob).toMatch(/менеджер.*провод\S*\s+пробн|пробн\S*\s+провод\S*\s+менеджер|роль\S*\s+куратора/i);
+    const anyNew = guest.domains.some(d=>d.isNew)||guest.crossLinks.some(l=>l.isNew)||guest.coreProcess.steps.some(s=>s.isNew)||guest.modules.some(m=>m.isNew);
+    expect(anyNew).toBe(false);
   });
   it("ключевые связи: sales/curator/parent/child/school-admin/finance/marketer резолвятся", () => {
     const targets = guest.crossLinks.map((l) => l.toCabinet);

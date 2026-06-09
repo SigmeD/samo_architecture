@@ -3,7 +3,7 @@ import { sales } from "@/content/cabinets/sales";
 import { CabinetSchema } from "@/content/schema";
 import { getCabinet } from "@/content/cabinets";
 
-describe("кабинет менеджера по продажам (sales) — 08.06", () => {
+describe("кабинет менеджера по продажам (sales) — реверс 09.06", () => {
   it("валиден по CabinetSchema", () => {
     expect(() => CabinetSchema.parse(sales)).not.toThrow();
   });
@@ -13,20 +13,49 @@ describe("кабинет менеджера по продажам (sales) — 08
     expect(sales.isStub).toBeFalsy();
     expect(sales.role.code).toBe("op-menedzher-prodazh-dnm");
   });
+  it("role.title — «Менеджер по продажам ДНМ»", () => {
+    expect(sales.role.title).toBe("Менеджер по продажам ДНМ");
+  });
   it("ядро — воронка лида-родителя (6 шагов)", () => {
     expect(sales.coreProcess.title).toMatch(/воронк\S* лида/i);
     expect(sales.coreProcess.steps).toHaveLength(6);
   });
-  it("ПОПРАВКА: пробное проводит КУРАТОР (не менеджер)", () => {
+  it("РЕВЕРС: договор оформляет МЕНЕДЖЕР → администратор ПОДТВЕРЖДАЕТ → оплата через бухгалтерию", () => {
     const blob = JSON.stringify(sales);
-    expect(blob).toMatch(/пробное проводит куратор/i);
-    expect(blob).toMatch(/поправк\S* к постеру/i);
+    // менеджер оформляет договор
+    expect(blob).toMatch(/договор[^"]*менеджер|менеджер[^"]*оформля\S*[^"]*договор/i);
+    // администратор подтверждает
+    expect(blob).toMatch(/админ\S*[^"]*подтвержда/i);
+    // оплата через бухгалтерию
+    expect(blob).toMatch(/оплата через бухгалтер/i);
   });
-  it("ГРАНИЦА: менеджер не оформляет договор/оплату/рассрочку; оплату подтверждает бухгалтер; видит статус read", () => {
+  it("РЕВЕРС: НЕТ старой формулировки «договор/оплату ведёт администратор» и «менеджер только закрывает до передачи»", () => {
     const blob = JSON.stringify(sales);
-    expect(blob).toMatch(/бухгалтер подтвержда/i);
-    expect(blob).toMatch(/администратор\S*\s*\/\s*финансы|у администратора\/финансов|администратор оформляет/i);
-    expect(blob).toMatch(/только просмотр|статус \(read\)|видит статус/i);
+    expect(blob).not.toMatch(/договор и оплату оформляет администратор/i);
+    expect(blob).not.toMatch(/договор[^"]*ведёт администратор/i);
+    expect(blob).not.toMatch(/только закрывает продажу до передачи/i);
+  });
+  it("РЕВЕРС пробного: менеджер проводит сам ИЛИ назначает куратора, под контролем качества ст.куратора", () => {
+    const blob = JSON.stringify(sales);
+    expect(blob).toMatch(/менеджер проводит[^"]*сам|проводит онбординг[^"]*сам/i);
+    expect(blob).toMatch(/назнача\S*[^"]*куратор/i);
+    expect(blob).toMatch(/видеофиксац|контрол\S*[^"]*качеств/i);
+    expect(blob).toMatch(/close-rate|close rate/i);
+    // старого «ПРОБНОЕ ПРОВОДИТ КУРАТОР (не менеджер)» больше нет
+    expect(blob).not.toMatch(/пробное проводит куратор/i);
+  });
+  it("метрика лида «X из 100» в домене Мои KPI", () => {
+    const kpi = sales.domains.find((d) => d.title.includes("Мои KPI"));
+    expect(kpi).toBeDefined();
+    const blob = JSON.stringify(kpi);
+    expect(blob).toMatch(/из 100/i);
+  });
+  it("НОВЫЙ домен «Топ-20 постов» (живые reels для дожима)", () => {
+    const top = sales.domains.find((d) => /Топ-20 постов/i.test(d.title));
+    expect(top).toBeDefined();
+    const blob = JSON.stringify(top);
+    expect(blob).toMatch(/reels|просмотр|охват/i);
+    expect((top?.items.length ?? 0)).toBeGreaterThanOrEqual(2);
   });
   it("инвариант: омниканальный дожим WhatsApp ↔ CRM с аудитом", () => {
     const blob = JSON.stringify(sales);
@@ -39,18 +68,34 @@ describe("кабинет менеджера по продажам (sales) — 08
     expect(blob).toMatch(/только лиды-родител/i);
     expect(blob).toMatch(/Samo Global/i);
   });
-  it("метка «New»: есть новые блоки и есть существовавшие в постере (без метки)", () => {
-    const anyNew = sales.domains.some((d) => d.isNew) || sales.modules.some((m) => m.isNew) || sales.crossLinks.some((l) => l.isNew);
-    expect(anyNew).toBe(true);
-    const kpi = sales.domains.find((d) => d.title.includes("Мои KPI"));
-    expect(kpi?.isNew).toBeFalsy();
+  it("НЕТ ни одного isNew (Screenshot_19)", () => {
+    const anyNew =
+      sales.domains.some((d) => d.isNew) ||
+      sales.modules.some((m) => m.isNew) ||
+      sales.crossLinks.some((l) => l.isNew);
+    expect(anyNew).toBe(false);
   });
-  it("связи marketer и curator помечены New; все связи резолвятся", () => {
-    const mk = sales.crossLinks.find((l) => l.toCabinet === "marketer");
-    const cur = sales.crossLinks.find((l) => l.toCabinet === "curator");
-    expect(mk?.isNew).toBe(true);
-    expect(cur?.isNew).toBe(true);
+  it("crossLink parent — direction both (постоянный чат менеджер↔родитель-лид)", () => {
+    const parent = sales.crossLinks.find((l) => l.toCabinet === "parent");
+    expect(parent).toBeDefined();
+    expect(parent?.direction).toBe("both");
+    expect(parent?.label).toMatch(/чат/i);
+    expect(parent?.label).toMatch(/лид/i);
+  });
+  it("все связи резолвятся", () => {
     for (const l of sales.crossLinks) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
+  });
+  it("crossLink school-admin: менеджер передаёт договор → админ подтверждает", () => {
+    const sa = sales.crossLinks.find((l) => l.toCabinet === "school-admin");
+    expect(sa).toBeDefined();
+    expect(sa?.label).toMatch(/договор/i);
+    expect(sa?.label).toMatch(/подтвержда/i);
+  });
+  it("crossLink curator: пробное менеджер сам ИЛИ назначенный куратор, под контролем качества", () => {
+    const cur = sales.crossLinks.find((l) => l.toCabinet === "curator");
+    expect(cur).toBeDefined();
+    expect(cur?.label).toMatch(/назнача\S*[^"]*куратор|куратор[^"]*расписан/i);
+    expect(cur?.label).toMatch(/контрол\S*[^"]*качеств|видеофиксац/i);
   });
   it("C5 KPI: период созревания лида (3/7/12/30 дн), степень закрытия, время 1-го контакта до 40 мин", () => {
     const kpi = sales.domains.find((d) => d.title.includes("Мои KPI"));
@@ -64,7 +109,6 @@ describe("кабинет менеджера по продажам (sales) — 08
   it("C5 рекомендация совместного урока родитель+ребёнок (исходящий поток)", () => {
     const blob = JSON.stringify(sales);
     expect(blob).toMatch(/совместн\S* урок/i);
-    // визуализируется в кабинетах родителя и ученика — исходящие связи
     const toParent = sales.crossLinks.some((l) => l.toCabinet === "parent");
     const toChild = sales.crossLinks.some((l) => l.toCabinet === "child");
     expect(toParent || toChild).toBe(true);
@@ -79,7 +123,6 @@ describe("кабинет менеджера по продажам (sales) — 08
     const blob = JSON.stringify(sales);
     expect(blob).toMatch(/франчайзи-партн/i);
     expect(blob).toMatch(/РОП|руководител\S*\s*продаж/i);
-    // все связи резолвятся
     for (const l of sales.crossLinks) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
   });
   it("обезличено и без доли роялти 50%", () => {

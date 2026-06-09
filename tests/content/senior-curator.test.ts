@@ -7,11 +7,31 @@ describe("кабинет старшего куратора (senior-curator)", ()
   it("валиден по CabinetSchema", () => {
     expect(() => CabinetSchema.parse(seniorCurator)).not.toThrow();
   });
-  it("зона blue, planned, не стаб, роль op-starshiy-kurator-dnm", () => {
+  it("зона blue, planned, не стаб, роль op-starshiy-kurator-dnm, тайтл «Старший куратор ДНМ»", () => {
     expect(seniorCurator.zone).toBe("blue");
     expect(seniorCurator.implStatus).toBe("planned");
     expect(seniorCurator.isStub).toBeFalsy();
     expect(seniorCurator.role.code).toBe("op-starshiy-kurator-dnm");
+    expect(seniorCurator.role.title).toBe("Старший куратор ДНМ");
+  });
+
+  // Вертикаль 09.06: связи только ±1 уровень; СК — точка сбора отчётов → Админ школы
+  it("crossLinks РОВНО school-admin/curator (both) + child/parent (out, своё преподавание); убраны lead/franchise/franchise-curator/finance", () => {
+    const byTo = Object.fromEntries(seniorCurator.crossLinks.map((l) => [l.toCabinet, l.direction]));
+    expect(Object.keys(byTo).sort()).toEqual(["child", "curator", "parent", "school-admin"]);
+    expect(byTo["school-admin"]).toBe("both");
+    expect(byTo["curator"]).toBe("both");
+    expect(byTo["child"]).toBe("out");
+    expect(byTo["parent"]).toBe("out");
+    for (const removed of ["lead", "franchise", "franchise-curator", "finance"]) {
+      expect(byTo[removed], `связь ${removed} должна быть удалена`).toBeUndefined();
+    }
+  });
+  it("СК — точка сбора отчётов обучения/посещения/ОС → Администратору школы (не напрямую выше); чат с админом", () => {
+    const blob = JSON.stringify(seniorCurator);
+    expect(blob).toMatch(/собирает ВСЕ отчёты|точка сбора/iu);
+    expect(blob).toMatch(/Администратор[ауы]* школы/iu);
+    expect(blob).toMatch(/чат с админ/iu);
   });
   it("ядро — двойная роль «играющий тренер» (6 шагов)", () => {
     expect(seniorCurator.coreProcess.badge).toMatch(/играющий тренер/i);

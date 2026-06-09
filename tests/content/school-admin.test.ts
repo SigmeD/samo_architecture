@@ -27,6 +27,16 @@ describe("кабинет администратора школы (school-admin)"
   it("инвариант scope: своя школа (schoolId)", () => {
     expect(JSON.stringify(schoolAdmin)).toMatch(/schoolId|свою школу|своей школы|одной школы/i);
   });
+  it("РЕВЕРС: админ ПОДТВЕРЖДАЕТ договор (оформляет менеджер), оплата через бухгалтерию", () => {
+    const blob = JSON.stringify(schoolAdmin);
+    // ядро-шаг «Договор-оферта»: подтверждение, не оформление
+    expect(blob).toMatch(/админ\S*[^.]*подтвержда\S*[^.]*договор|договор\S*[^.]*подтвержда\S*[^.]*админ/i);
+    expect(blob).toMatch(/менеджер\S*[^.]*оформля\S*[^.]*договор|договор\S*[^.]*оформля\S*[^.]*менеджер|менеджер\S*\s+передаёт\s+договор/i);
+    expect(blob).toMatch(/бухгалтери|бухгалтер/i);
+    // crossLink sales — менеджер передаёт договор → админ подтверждает
+    const salesLink = schoolAdmin.crossLinks.find((l) => l.toCabinet === "sales");
+    expect(salesLink?.label).toMatch(/передаёт\s+договор|подтвержда\S*/i);
+  });
   it("инвариант: отдел качества = функция администратора; пробные — в продажах; непосещение у админа", () => {
     const blob = JSON.stringify(schoolAdmin);
     expect(blob).toMatch(/Отдел качества/i);
@@ -45,5 +55,44 @@ describe("кабинет администратора школы (school-admin)"
   });
   it("все связи резолвятся в реестре", () => {
     for (const l of schoolAdmin.crossLinks) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
+  });
+
+  it("crossLinks = целевой граф вертикали/чат-хаба (направления)", () => {
+    const dir = Object.fromEntries(schoolAdmin.crossLinks.map((l) => [l.toCabinet, l.direction]));
+    expect(dir).toEqual({
+      franchise: "both",
+      "senior-curator": "both",
+      finance: "both",
+      sales: "both",
+      marketer: "both",
+      parent: "both",
+      child: "both",
+      guest: "in",
+    });
+  });
+
+  it("данные вверх идут через франчайзи, НЕ напрямую руководителю (нет crossLink lead)", () => {
+    const targets = schoolAdmin.crossLinks.map((l) => l.toCabinet);
+    expect(targets).not.toContain("lead");
+    expect(targets).not.toContain("curator");
+    const blob = JSON.stringify(schoolAdmin);
+    expect(blob).toMatch(/Франчайзи\s*→\s*Куратор франшиз\s*→\s*Руководител/i);
+    expect(blob).toMatch(/не напрямую|НЕ напрямую/i);
+  });
+
+  it("все обучающие отчёты приходят от старшего куратора", () => {
+    const sc = schoolAdmin.crossLinks.find((l) => l.toCabinet === "senior-curator");
+    expect(sc?.label).toMatch(/отчёт|обучающ|посещаем/i);
+  });
+
+  it("чат-хаб: прямые чаты со всеми контрагентами; чат с учеником только старшие/SENIOR", () => {
+    const blob = JSON.stringify(schoolAdmin);
+    // чат-хаб как домен
+    expect(blob).toMatch(/чат-хаб|коммуникац|чаты/i);
+    // прямой чат с учеником — только старшие группы, младшие заблокированы
+    const childLink = schoolAdmin.crossLinks.find((l) => l.toCabinet === "child");
+    expect(childLink?.label).toMatch(/старш/i);
+    expect(childLink?.label).toMatch(/SENIOR|младш/i);
+    expect(childLink?.label).toMatch(/заблок/i);
   });
 });

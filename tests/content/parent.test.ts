@@ -47,13 +47,13 @@ describe("кабинет родителя (parent)", () => {
     expect(blob).toMatch(/24 урок/i);
   });
 
-  it("C2: опросы о школе → отчётность франшизы → куратор франшиз (crossLink out)", () => {
+  it("C2: опросы о школе → вверх через школу/админа, НЕ напрямую куратору франшиз (нет crossLink franchise-curator)", () => {
     const surveys = parent.domains.find((d) => /Опрос/i.test(d.title));
     expect(surveys).toBeDefined();
     expect(JSON.stringify(surveys)).toMatch(/франш/i);
+    expect(JSON.stringify(surveys)).toMatch(/через школу\/админа|администратор/i);
     const link = parent.crossLinks.find((l) => l.toCabinet === "franchise-curator");
-    expect(link, "crossLink на franchise-curator").toBeDefined();
-    expect(link!.direction).toBe("out");
+    expect(link, "связь напрямую к куратору франшиз удалена").toBeUndefined();
   });
 
   it("C2: явный инвариант-запрет — сравнительные рейтинги школ родителю НЕ показываются", () => {
@@ -66,5 +66,33 @@ describe("кабинет родителя (parent)", () => {
     const blob = JSON.stringify(parent);
     expect(blob).toMatch(/Global Samo|Само Глобал/i);
     expect(blob).toMatch(/путь клиента/i);
+  });
+
+  // === Task 3 (crosslinks one-way + content fix, 09.06) ===
+
+  it("совместное ДЗ/уроки с ребёнком (младшие) + посещаемость по-русски (без EN-кодов)", () => {
+    const blob = JSON.stringify(parent);
+    expect(blob).toMatch(/совместн\S*.*ребёнк|ДЗ.*с ребёнком/i);
+    expect(blob).not.toMatch(/PRESENT|ABSENT|EXCUSED|LATE/);
+  });
+  it("обоюдные (both) связи: child/curator/school-admin/franchise/sales; нет меток New", () => {
+    const both = parent.crossLinks.filter((l) => l.direction === "both").map((l) => l.toCabinet).sort();
+    expect(both).toEqual(["child", "curator", "franchise", "sales", "school-admin"]);
+    const anyNew =
+      parent.domains.some((d) => d.isNew) ||
+      parent.crossLinks.some((l) => l.isNew) ||
+      parent.coreProcess.steps.some((s) => s.isNew) ||
+      parent.modules.some((m) => m.isNew);
+    expect(anyNew).toBe(false);
+  });
+
+  // === Реверс воронки продаж (09.06): чат менеджер↔родитель-лид ===
+
+  it("связь sales = both и описывает активный ЧАТ менеджера с родителем-лидом", () => {
+    const link = parent.crossLinks.find((l) => l.toCabinet === "sales");
+    expect(link, "связь к менеджеру по продажам").toBeDefined();
+    expect(link!.direction).toBe("both");
+    expect(link!.label).toMatch(/чат/i);
+    expect(link!.label).toMatch(/лид/i);
   });
 });
