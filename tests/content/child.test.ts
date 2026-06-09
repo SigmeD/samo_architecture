@@ -49,4 +49,12 @@ describe("кабинет ученика (child)", () => {
   it("в sources[] есть SPEC-DNM-RATING-001", () => {
     expect(child.sources.some((s) => s.id === "SPEC-DNM-RATING-001")).toBe(true);
   });
+  it("солары: разрез merit/gift; merit сверх 1190; трата не снижает рейтинг", () => {
+    const blob = JSON.stringify(child);
+    expect(blob).toMatch(/merit/i);
+    expect(blob).toMatch(/gift|подароч/i);
+    expect(blob).toMatch(/1190/);
+    expect(blob).toMatch(/сверх|выше/i);
+    expect(blob).toMatch(/в рейтинг не идут|только в баланс/i);
+  });
 });
