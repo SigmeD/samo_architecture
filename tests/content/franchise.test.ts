@@ -39,4 +39,18 @@ describe("кабинет франчайзи / директора (franchise)", (
   it("все связи резолвятся в реестре", () => {
     for (const l of franchise.crossLinks) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
   });
+  it("crossLinks приведены к вертикали ±1 уровень (09.06)", () => {
+    const map = Object.fromEntries(franchise.crossLinks.map((l) => [l.toCabinet, l.direction]));
+    expect(map).toEqual({
+      "franchise-curator": "both",
+      "school-admin": "both",
+      finance: "both",
+      parent: "both",
+    });
+  });
+  it("удалены связи вне вертикали (curator/senior-curator/marketer/sales/lead)", () => {
+    const targets = franchise.crossLinks.map((l) => l.toCabinet);
+    for (const gone of ["curator", "senior-curator", "marketer", "sales", "lead"])
+      expect(targets).not.toContain(gone);
+  });
 });

@@ -33,4 +33,19 @@ describe("кабинет финансиста (finance)", () => {
   it("все связи резолвятся в реестре", () => {
     for (const l of finance.crossLinks) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
   });
+  it("crossLinks = целевая разводка фин.линии (09.06)", () => {
+    const map = Object.fromEntries(finance.crossLinks.map((l) => [l.toCabinet, l.direction]));
+    expect(map).toEqual({
+      franchise: "both",
+      "school-admin": "both",
+      "franchise-curator": "out",
+      lead: "out",
+      sales: "in",
+      parent: "in",
+    });
+  });
+  it("инвариант: куратор финансы НЕ видит — связь curator удалена", () => {
+    const targets = finance.crossLinks.map((l) => l.toCabinet);
+    expect(targets).not.toContain("curator");
+  });
 });

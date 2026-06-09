@@ -47,13 +47,13 @@ describe("кабинет родителя (parent)", () => {
     expect(blob).toMatch(/24 урок/i);
   });
 
-  it("C2: опросы о школе → отчётность франшизы → куратор франшиз (crossLink out)", () => {
+  it("C2: опросы о школе → вверх через школу/админа, НЕ напрямую куратору франшиз (нет crossLink franchise-curator)", () => {
     const surveys = parent.domains.find((d) => /Опрос/i.test(d.title));
     expect(surveys).toBeDefined();
     expect(JSON.stringify(surveys)).toMatch(/франш/i);
+    expect(JSON.stringify(surveys)).toMatch(/через школу\/админа|администратор/i);
     const link = parent.crossLinks.find((l) => l.toCabinet === "franchise-curator");
-    expect(link, "crossLink на franchise-curator").toBeDefined();
-    expect(link!.direction).toBe("out");
+    expect(link, "связь напрямую к куратору франшиз удалена").toBeUndefined();
   });
 
   it("C2: явный инвариант-запрет — сравнительные рейтинги школ родителю НЕ показываются", () => {
