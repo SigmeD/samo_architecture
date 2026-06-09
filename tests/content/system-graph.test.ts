@@ -7,6 +7,7 @@ describe("граф связей кабинетов — двусторонняя 
     const errors: string[] = [];
     for (const [slugA, cab] of Object.entries(CABINETS)) {
       for (const l of cab.crossLinks) {
+        if (l.stub) continue; // заглушка на роль без кабинета — реципрокность не требуется
         if (l.direction !== "both") continue;
         const B = CABINETS[l.toCabinet];
         if (!B) { errors.push(`${slugA}→${l.toCabinet}: целевой кабинет отсутствует`); continue; }
@@ -18,9 +19,11 @@ describe("граф связей кабинетов — двусторонняя 
     expect(errors, "\n" + errors.join("\n")).toEqual([]);
   });
 
-  it("все toCabinet резолвятся в реестре", () => {
+  it("все toCabinet резолвятся в реестре (кроме заглушек-связей)", () => {
     for (const [slugA, cab] of Object.entries(CABINETS))
-      for (const l of cab.crossLinks)
+      for (const l of cab.crossLinks) {
+        if (l.stub) continue; // заглушка на роль без кабинета
         expect(CABINETS[l.toCabinet], `${slugA}→${l.toCabinet}`).toBeDefined();
+      }
   });
 });

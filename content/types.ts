@@ -27,6 +27,8 @@ export interface CrossLink {
   toCabinet: string; label: string; direction: Direction; source?: string;
   /** Метка «New» (обновление 08.06): связь новая относительно прошлого постера. Снимается при мердже в master. */
   isNew?: boolean;
+  /** Заглушка-связь на роль БЕЗ кабинета (напр. «Финансист ГО» Само Глобал): задаёт отображаемое имя; карточка некликабельна, `toCabinet` не резолвится. */
+  stub?: string;
 }
 export interface ModuleRef {
   slug: string; title: string; status: ImplStatus; summary: string;
