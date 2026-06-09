@@ -52,21 +52,24 @@ describe("кабинет руководителя проекта (lead) — об
   it("все связи резолвятся в реестре; метки New на связях убраны", () => {
     const fc = lead.crossLinks.find((l) => l.toCabinet === "franchise-curator");
     expect(fc?.isNew).toBeFalsy();
-    for (const l of lead.crossLinks) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
+    for (const l of lead.crossLinks) if (!l.stub) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
   });
-  it("финлиния ГО: прямая связь с Финансист ГО (both — видимая карточка) + «напрямую» + Само Глобал", () => {
-    const f = lead.crossLinks.find((l) => l.toCabinet === "finance");
+  it("финлиния ГО: прямая связь = ЗАГЛУШКА «Финансист ГО» (Само Глобал, не школьный бухгалтер)", () => {
+    const f = lead.crossLinks.find((l) => l.stub === "Финансист ГО");
+    expect(f, "нет stub-связи Финансист ГО").toBeDefined();
     expect(f?.direction).toBe("both");
     expect(f?.label).toMatch(/напрямую/i);
-    expect(f?.label).toMatch(/Финансист ГО/);
     expect(f?.label).toMatch(/Само Глобал/);
+    expect(f?.label).toMatch(/НЕ школьный бухгалтер|отдельная финансовая линия/i);
+    // прямой связи на кабинет бухгалтера (finance) быть НЕ должно — это ломало логику
+    expect(lead.crossLinks.some((l) => l.toCabinet === "finance" && !l.stub)).toBe(false);
   });
-  it("СТРОГАЯ ВЕРТИКАЛЬ: crossLinks = ровно {franchise-curator:both, methodist:both, finance:both}", () => {
+  it("СТРОГАЯ ВЕРТИКАЛЬ: crossLinks = ровно {franchise-curator:both, methodist:both, finance-go(stub):both}", () => {
     const map = Object.fromEntries(lead.crossLinks.map((l) => [l.toCabinet, l.direction]));
     expect(map).toEqual({
       "franchise-curator": "both",
       methodist: "both",
-      finance: "both",
+      "finance-go": "both",
     });
   });
   it("УБРАНЫ обходящие вертикаль связи (school-admin, curator, senior-curator, sales, marketer, franchise)", () => {

@@ -58,8 +58,8 @@ export default async function CabinetPage({ params }: { params: Promise<{ slug: 
         )}
 
         {cabinet.crossLinks.length > 0 && (() => {
-          const mutual = cabinet.crossLinks.filter((l) => l.direction === "both");
-          const oneWay = cabinet.crossLinks.filter((l) => l.direction !== "both");
+          const mutual = cabinet.crossLinks.filter((l) => l.direction === "both" || l.stub);
+          const oneWay = cabinet.crossLinks.filter((l) => l.direction !== "both" && !l.stub);
           return (
             <>
               <SectionHeader no="03" title="Связи с кабинетами" caption="кликабельны только обоюдные ⇄" />
