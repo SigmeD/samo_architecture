@@ -77,7 +77,7 @@ export const systemMap: SystemMap = {
         "view", "none", "none", "none", "none", "partial", "full", "partial", "none", "none", "partial", "none", "view",
       ] },
       { role: "Менеджер по продажам", slug: "sales", cells: [
-        "none", "none", "none", "view", "none", "partial", "none", "full", "view", "none", "partial", "none", "none",
+        "none", "none", "none", "partial", "none", "partial", "none", "full", "view", "none", "partial", "none", "none",
       ] },
       { role: "Маркетолог / Таргетолог", slug: "marketer", cells: [
         "none", "none", "none", "none", "none", "partial", "none", "partial", "full", "none", "partial", "none", "none",
@@ -98,11 +98,12 @@ export const systemMap: SystemMap = {
   divergences: [],
   handoffs: [
     { title: "Продажи и зачисление", emoji: "🎯", flows: [
-      { from: { label: "Маркетолог", zone: "orange" }, what: "лиды", to: { label: "Менеджер", zone: "teal" } },
-      { from: { label: "Менеджер", zone: "teal" }, what: "демо-доступ + запись", to: { label: "Куратор", zone: "blue" } },
-      { from: { label: "Куратор", zone: "blue" }, what: "результат пробного", to: { label: "Менеджер", zone: "teal" } },
-      { from: { label: "Менеджер", zone: "teal" }, what: "согласившийся клиент", to: { label: "Администратор", zone: "orange" } },
-      { from: { label: "Администратор", zone: "orange" }, what: "договор + оплата", to: { label: "Бухгалтер", zone: "gold" }, suffix: "подтверждает" },
+      { from: { label: "Маркетолог", zone: "orange" }, what: "лиды (UTM)", to: { label: "Менеджер", zone: "teal" } },
+      { from: { label: "Менеджер", zone: "teal" }, what: "онбординг + пробное (сам / назначает)", to: { label: "Куратор", zone: "blue" } },
+      { from: { label: "Менеджер", zone: "teal" }, what: "договор (оформляет)", to: { label: "Администратор", zone: "orange" }, suffix: "подтверждает" },
+      { from: { label: "Администратор", zone: "orange" }, what: "оплата", to: { label: "Бухгалтер", zone: "gold" }, suffix: "подтверждает" },
+      { from: { label: "Администратор", zone: "orange" }, what: "зачислен", to: { label: "Старший куратор", zone: "blue" } },
+      { from: { label: "Старший куратор", zone: "blue" }, what: "в группу (сам / куратору)", to: { label: "Куратор", zone: "blue" } },
       { from: { label: "Администратор", zone: "orange" }, what: "доступ после оплаты", to: { label: "Ученик + Родитель", zone: "green" } },
     ] },
     { title: "Обучение и качество", emoji: "🎓", flows: [

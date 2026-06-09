@@ -44,6 +44,19 @@ describe("кабинет финансиста (finance)", () => {
       parent: "in",
     });
   });
+  it("финлиния ГО: связи на franchise-curator и lead отражают передачу отчётов школ вверх (Финансист ГО / Само Глобал)", () => {
+    const fc = finance.crossLinks.find((l) => l.toCabinet === "franchise-curator");
+    expect(fc?.direction).toBe("out");
+    expect(fc?.label).toMatch(/Финансист ГО|Само Глобал/);
+    expect(fc?.label).toMatch(/отчёт\S*/i);
+    expect(fc?.label).toMatch(/Куратор\S* франшиз|куратор\S* франшиз/i);
+
+    const ld = finance.crossLinks.find((l) => l.toCabinet === "lead");
+    expect(ld?.direction).toBe("out");
+    expect(ld?.label).toMatch(/Финансист ГО|Само Глобал/);
+    expect(ld?.label).toMatch(/сводн\S* финрезультат/i);
+    expect(ld?.label).toMatch(/Руководител/i);
+  });
   it("инвариант: куратор финансы НЕ видит — связь curator удалена", () => {
     const targets = finance.crossLinks.map((l) => l.toCabinet);
     expect(targets).not.toContain("curator");

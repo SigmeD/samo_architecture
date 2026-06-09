@@ -38,6 +38,13 @@ describe("кабинет куратора франшиз (franchise-curator)", (
     expect(m?.direction).toBe("both");
     expect(m?.label).toMatch(/методист/i);
   });
+  it("финлиния ГО: связь finance несёт «Финансист ГО»/«Само Глобал» + отчёты от бухгалтеров франчайзи", () => {
+    const f = franchiseCurator.crossLinks.find((l) => l.toCabinet === "finance");
+    expect(f?.direction).toBe("in");
+    expect(f?.label).toMatch(/Финансист ГО|Само Глобал/);
+    expect(f?.label).toMatch(/отчёт\S*/i);
+    expect(f?.label).toMatch(/бухгалтер\S*.*франчайзи|франчайзи/i);
+  });
   it("все связи резолвятся в реестре", () => {
     for (const l of franchiseCurator.crossLinks) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
   });

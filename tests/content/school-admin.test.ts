@@ -27,6 +27,16 @@ describe("кабинет администратора школы (school-admin)"
   it("инвариант scope: своя школа (schoolId)", () => {
     expect(JSON.stringify(schoolAdmin)).toMatch(/schoolId|свою школу|своей школы|одной школы/i);
   });
+  it("РЕВЕРС: админ ПОДТВЕРЖДАЕТ договор (оформляет менеджер), оплата через бухгалтерию", () => {
+    const blob = JSON.stringify(schoolAdmin);
+    // ядро-шаг «Договор-оферта»: подтверждение, не оформление
+    expect(blob).toMatch(/админ\S*[^.]*подтвержда\S*[^.]*договор|договор\S*[^.]*подтвержда\S*[^.]*админ/i);
+    expect(blob).toMatch(/менеджер\S*[^.]*оформля\S*[^.]*договор|договор\S*[^.]*оформля\S*[^.]*менеджер|менеджер\S*\s+передаёт\s+договор/i);
+    expect(blob).toMatch(/бухгалтери|бухгалтер/i);
+    // crossLink sales — менеджер передаёт договор → админ подтверждает
+    const salesLink = schoolAdmin.crossLinks.find((l) => l.toCabinet === "sales");
+    expect(salesLink?.label).toMatch(/передаёт\s+договор|подтвержда\S*/i);
+  });
   it("инвариант: отдел качества = функция администратора; пробные — в продажах; непосещение у админа", () => {
     const blob = JSON.stringify(schoolAdmin);
     expect(blob).toMatch(/Отдел качества/i);
