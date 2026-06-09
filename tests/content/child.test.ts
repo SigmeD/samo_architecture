@@ -66,4 +66,11 @@ describe("кабинет ученика (child)", () => {
     expect(blob).toMatch(/анонимизир/i);
     expect(blob).toMatch(/группа.*школа.*сет|3 среза|три среза/i);
   });
+  it("посещение: раннее предупреждение, tiered, наставник, мягкий возврат, без автозаморозки", () => {
+    const blob = JSON.stringify(child);
+    expect(blob).toMatch(/раннее предупреждение/i);
+    expect(blob).toMatch(/наставник посещаемости|success mentor/i);
+    expect(blob).toMatch(/без автоматической приостановки/i);
+    expect(blob).not.toMatch(/заморожен/); // гард-инвариант
+  });
 });
