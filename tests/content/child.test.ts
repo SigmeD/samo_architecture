@@ -73,11 +73,46 @@ describe("кабинет ученика (child)", () => {
     expect(blob).toMatch(/без автоматической приостановки/i);
     expect(blob).not.toMatch(/заморожен/); // гард-инвариант
   });
-  it("есть домены «Когортный слой» и «Удержание»; всего 16 доменов", () => {
+  it("есть домены «Какие курсы» (бывш. когортный слой), «Удержание», «Блог»; всего 17 доменов", () => {
     const titles = child.domains.map((d) => d.title);
-    expect(titles.some((t) => /Когортный слой/.test(t))).toBe(true);
+    expect(titles.some((t) => /Какие курсы/.test(t))).toBe(true);
     expect(titles.some((t) => /Удержание/.test(t))).toBe(true);
-    expect(child.domains).toHaveLength(16);
+    expect(titles.some((t) => /📝 Блог/.test(t))).toBe(true);
+    expect(child.domains).toHaveLength(17);
+  });
+  it("C1: термин «Когортный слой» в заголовках доменов убран (по просьбе заказчика)", () => {
+    const titles = child.domains.map((d) => d.title);
+    expect(titles.some((t) => /Когортный слой/.test(t))).toBe(false);
+  });
+  it("C1: виды уроков — у урока есть ВИД со своим визуалом, сложность считывается визуально", () => {
+    const blob = JSON.stringify(child);
+    expect(blob).toMatch(/вид[аы]? урок|у урока.*вид|ВИД/);
+    expect(blob).toMatch(/сложност/i);
+    expect(blob).toMatch(/визуал/i);
+  });
+  it("C1: «эффект гонки» — на любое действие сразу значок/балл", () => {
+    const blob = JSON.stringify(child);
+    expect(blob).toMatch(/эффект гонки/i);
+    expect(blob).toMatch(/на любое действие/i);
+  });
+  it("C1: усреднение позиции рейтинга — «вы 5-й» без раскрытия числа таких же", () => {
+    const blob = JSON.stringify(child);
+    expect(blob).toMatch(/усреднени|вы 5-й|не раскрыва/i);
+  });
+  it("C1: переход 13→14 — сертификат «взрослого», разблокировка взрослого курса, родитель видит", () => {
+    const blob = JSON.stringify(child);
+    expect(blob).toMatch(/стал взрослым|сертификат.*взросл/i);
+    expect(blob).toMatch(/разблокировк.*взросл/i);
+    expect(blob).toMatch(/родитель видит/i);
+  });
+  it("C1: мультиязычность ИИ-аватара ru/en/de (не путать с языком обучения)", () => {
+    const blob = JSON.stringify(child);
+    expect(blob).toMatch(/мультиязычн/i);
+    expect(blob).toMatch(/ru\/en\/de/i);
+  });
+  it("C1: за действия в СУ начисляются баллы/солары", () => {
+    const su = child.domains.find((d) => /систем[аыу] успеха/i.test(d.title))!;
+    expect(JSON.stringify(su.items)).toMatch(/балл|солар/i);
   });
   it("когортная подача на Главной; чат одноклассников; ритуал 13→14 в профиле", () => {
     const blob = JSON.stringify(child);

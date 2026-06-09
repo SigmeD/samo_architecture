@@ -8,6 +8,7 @@ import { franchise } from "@/content/cabinets/franchise";
 import { schoolAdmin } from "@/content/cabinets/school-admin";
 import { seniorCurator } from "@/content/cabinets/senior-curator";
 import { lead } from "@/content/cabinets/lead";
+import { methodist } from "@/content/cabinets/methodist";
 import { sales } from "@/content/cabinets/sales";
 import { marketer } from "@/content/cabinets/marketer";
 import { guest } from "@/content/cabinets/guest";
@@ -19,6 +20,7 @@ export const CABINETS: Record<string, CabinetSpec> = {
   "school-admin":   schoolAdmin,
   franchise,
   lead,
+  methodist,
   "senior-curator": seniorCurator,
   "franchise-curator": franchiseCurator,
   sales,

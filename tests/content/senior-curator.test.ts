@@ -46,4 +46,13 @@ describe("кабинет старшего куратора (senior-curator)", ()
   it("все связи резолвятся в реестре", () => {
     for (const l of seniorCurator.crossLinks) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
   });
+
+  // C4 (08.06): упрощённая подача цикла коучинга («слишком сложно» — заказчик)
+  it("C4: цикл коучинга помечен как упрощённый (заказчик: «слишком сложно»), суть не утеряна", () => {
+    const blob = JSON.stringify(seniorCurator).toLowerCase();
+    expect(blob).toMatch(/упрощённ[а-яё]* подач|упрощённ[а-яё]* цикл|облегчённ[а-яё]* подач/u);
+    expect(blob).toMatch(/слишком сложно/);
+    // содержимое цикла коучинга сохранено
+    expect(blob).toMatch(/цикл коучинга/);
+  });
 });
