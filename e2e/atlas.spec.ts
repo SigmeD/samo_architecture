@@ -276,3 +276,23 @@ test("кабинет гостя: визуальный снимок (baseline)", 
   await page.goto("/cabinet/guest/");
   await expect(page).toHaveScreenshot("cabinet-guest.png", { fullPage: true });
 });
+
+test("кабинет методиста: blue-зона, авторинг методики, конструктор видов уроков, обезличено", async ({ page }) => {
+  await page.goto("/cabinet/methodist/");
+  await expect(page.getByRole("heading", { level: 1, name: /Методист/ })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Домены и функции" })).toBeVisible();
+  // ядро — авторинг методики; конструктор видов уроков
+  await expect(page.getByText(/авторинг методики/i).first()).toBeVisible();
+  await expect(page.getByText(/конструктор видов уроков/i).first()).toBeVisible();
+  // инварианты: без доли роялти, без имён
+  await expect(page.locator("body")).not.toContainText("50%");
+  await expect(page.locator("body")).not.toContainText(/Д[оа]влат/);
+  // связь в руководителя проекта кликабельна (gate утверждения)
+  await page.getByRole("link", { name: /Руководитель проекта/ }).first().click();
+  await expect(page).toHaveURL(/\/cabinet\/lead/);
+});
+
+test("кабинет методиста: визуальный снимок (baseline)", async ({ page }) => {
+  await page.goto("/cabinet/methodist/");
+  await expect(page).toHaveScreenshot("cabinet-methodist.png", { fullPage: true });
+});
