@@ -39,7 +39,7 @@ describe("кабинет финансиста (finance)", () => {
       franchise: "both",
       "school-admin": "both",
       "franchise-curator": "out",
-      lead: "out",
+      lead: "both",
       sales: "in",
       parent: "in",
     });
@@ -52,7 +52,7 @@ describe("кабинет финансиста (finance)", () => {
     expect(fc?.label).toMatch(/Куратор\S* франшиз|куратор\S* франшиз/i);
 
     const ld = finance.crossLinks.find((l) => l.toCabinet === "lead");
-    expect(ld?.direction).toBe("out");
+    expect(ld?.direction).toBe("both");
     expect(ld?.label).toMatch(/Финансист ГО|Само Глобал/);
     expect(ld?.label).toMatch(/сводн\S* финрезультат/i);
     expect(ld?.label).toMatch(/Руководител/i);

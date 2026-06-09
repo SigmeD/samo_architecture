@@ -41,35 +41,32 @@ describe("кабинет руководителя проекта (lead) — об
     expect(blob).toMatch(/маркетингов\S* фонд/i);
     expect(blob).toMatch(/offboarding|отзыв доступов|миграци\S* учеников/i);
   });
-  it("метка «New»: есть новые блоки (isNew) и есть существовавшие в постере (без метки)", () => {
+  it("метки New убраны (нет isNew ни в одном блоке)", () => {
     const anyNew =
       lead.coreProcess.steps.some((s) => s.isNew) ||
       lead.domains.some((d) => d.isNew) ||
       lead.crossLinks.some((l) => l.isNew) ||
       lead.modules.some((m) => m.isNew);
-    expect(anyNew).toBe(true);
-    // «Вся сеть школа» существовала в постере → без метки New
-    const networkSchools = lead.domains.find((d) => d.title.includes("Вся сеть школ"));
-    expect(networkSchools?.isNew).toBeFalsy();
+    expect(anyNew).toBe(false);
   });
-  it("связь с куратором франшиз помечена New; все связи резолвятся в реестре", () => {
+  it("все связи резолвятся в реестре; метки New на связях убраны", () => {
     const fc = lead.crossLinks.find((l) => l.toCabinet === "franchise-curator");
-    expect(fc?.isNew).toBe(true);
+    expect(fc?.isNew).toBeFalsy();
     for (const l of lead.crossLinks) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
   });
-  it("финлиния ГО: связь finance несёт «напрямую» + «Финансист ГО» (Само Глобал)", () => {
+  it("финлиния ГО: прямая связь с Финансист ГО (both — видимая карточка) + «напрямую» + Само Глобал", () => {
     const f = lead.crossLinks.find((l) => l.toCabinet === "finance");
-    expect(f?.direction).toBe("in");
+    expect(f?.direction).toBe("both");
     expect(f?.label).toMatch(/напрямую/i);
     expect(f?.label).toMatch(/Финансист ГО/);
     expect(f?.label).toMatch(/Само Глобал/);
   });
-  it("СТРОГАЯ ВЕРТИКАЛЬ: crossLinks = ровно {franchise-curator:both, methodist:both, finance:in}", () => {
+  it("СТРОГАЯ ВЕРТИКАЛЬ: crossLinks = ровно {franchise-curator:both, methodist:both, finance:both}", () => {
     const map = Object.fromEntries(lead.crossLinks.map((l) => [l.toCabinet, l.direction]));
     expect(map).toEqual({
       "franchise-curator": "both",
       methodist: "both",
-      finance: "in",
+      finance: "both",
     });
   });
   it("УБРАНЫ обходящие вертикаль связи (school-admin, curator, senior-curator, sales, marketer, franchise)", () => {
