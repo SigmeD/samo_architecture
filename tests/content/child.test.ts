@@ -57,4 +57,13 @@ describe("кабинет ученика (child)", () => {
     expect(blob).toMatch(/сверх|выше/i);
     expect(blob).toMatch(/в рейтинг не идут|только в баланс/i);
   });
+  it("рейтинг: Версия A; 3 среза × когорта JUNIOR/SENIOR×семестр; тиры/перцентиль; анонимизация", () => {
+    const blob = JSON.stringify(child);
+    expect(blob).toMatch(/merit-солар/i);            // состав = Версия A с merit
+    expect(blob).toMatch(/тир/i);
+    expect(blob).toMatch(/перцентил/i);
+    expect(blob).toMatch(/когорт/i);
+    expect(blob).toMatch(/анонимизир/i);
+    expect(blob).toMatch(/группа.*школа.*сет|3 среза|три среза/i);
+  });
 });
