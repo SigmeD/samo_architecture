@@ -73,4 +73,10 @@ describe("кабинет ученика (child)", () => {
     expect(blob).toMatch(/без автоматической приостановки/i);
     expect(blob).not.toMatch(/заморожен/); // гард-инвариант
   });
+  it("есть домены «Когортный слой» и «Удержание»; всего 16 доменов", () => {
+    const titles = child.domains.map((d) => d.title);
+    expect(titles.some((t) => /Когортный слой/.test(t))).toBe(true);
+    expect(titles.some((t) => /Удержание/.test(t))).toBe(true);
+    expect(child.domains).toHaveLength(16);
+  });
 });
