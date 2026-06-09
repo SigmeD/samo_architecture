@@ -79,4 +79,10 @@ describe("кабинет ученика (child)", () => {
     expect(titles.some((t) => /Удержание/.test(t))).toBe(true);
     expect(child.domains).toHaveLength(16);
   });
+  it("когортная подача на Главной; чат одноклассников; ритуал 13→14 в профиле", () => {
+    const blob = JSON.stringify(child);
+    expect(blob).toMatch(/чат между одноклассниками|общени.*одногруппник/i);
+    expect(blob).toMatch(/Профиль основателя/i);
+    expect(blob).toMatch(/переход.*13.*14|Герой.*Профиль предпринимател/i);
+  });
 });
