@@ -38,4 +38,51 @@ describe("кабинет ученика (child)", () => {
   it("все связи резолвятся в реестре", () => {
     for (const l of child.crossLinks) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
   });
+  it("Эссе и Бизнес-проект — отдельные домены; БП только SENIOR", () => {
+    const titles = child.domains.map((d) => d.title);
+    expect(titles.some((t) => /^✍️ Эссе$/.test(t) || /✍️ Эссе/.test(t))).toBe(true);
+    expect(titles.some((t) => /💼 Бизнес-проект/.test(t))).toBe(true);
+    const blob = JSON.stringify(child);
+    expect(blob).toMatch(/только.*SENIOR|SENIOR.*кульминаци/i);
+    expect(blob).toMatch(/два самостоятельных блока/); // инвариант сохранён
+  });
+  it("в sources[] есть SPEC-DNM-RATING-001", () => {
+    expect(child.sources.some((s) => s.id === "SPEC-DNM-RATING-001")).toBe(true);
+  });
+  it("солары: разрез merit/gift; merit сверх 1190; трата не снижает рейтинг", () => {
+    const blob = JSON.stringify(child);
+    expect(blob).toMatch(/merit/i);
+    expect(blob).toMatch(/gift|подароч/i);
+    expect(blob).toMatch(/1190/);
+    expect(blob).toMatch(/сверх|выше/i);
+    expect(blob).toMatch(/в рейтинг не идут|только в баланс/i);
+  });
+  it("рейтинг: Версия A; 3 среза × когорта JUNIOR/SENIOR×семестр; тиры/перцентиль; анонимизация", () => {
+    const blob = JSON.stringify(child);
+    expect(blob).toMatch(/merit-солар/i);            // состав = Версия A с merit
+    expect(blob).toMatch(/тир/i);
+    expect(blob).toMatch(/перцентил/i);
+    expect(blob).toMatch(/когорт/i);
+    expect(blob).toMatch(/анонимизир/i);
+    expect(blob).toMatch(/группа.*школа.*сет|3 среза|три среза/i);
+  });
+  it("посещение: раннее предупреждение, tiered, наставник, мягкий возврат, без автозаморозки", () => {
+    const blob = JSON.stringify(child);
+    expect(blob).toMatch(/раннее предупреждение/i);
+    expect(blob).toMatch(/наставник посещаемости|success mentor/i);
+    expect(blob).toMatch(/без автоматической приостановки/i);
+    expect(blob).not.toMatch(/заморожен/); // гард-инвариант
+  });
+  it("есть домены «Когортный слой» и «Удержание»; всего 16 доменов", () => {
+    const titles = child.domains.map((d) => d.title);
+    expect(titles.some((t) => /Когортный слой/.test(t))).toBe(true);
+    expect(titles.some((t) => /Удержание/.test(t))).toBe(true);
+    expect(child.domains).toHaveLength(16);
+  });
+  it("когортная подача на Главной; чат одноклассников; ритуал 13→14 в профиле", () => {
+    const blob = JSON.stringify(child);
+    expect(blob).toMatch(/чат между одноклассниками|общени.*одногруппник/i);
+    expect(blob).toMatch(/Профиль основателя/i);
+    expect(blob).toMatch(/переход.*13.*14|Герой.*Профиль предпринимател/i);
+  });
 });
