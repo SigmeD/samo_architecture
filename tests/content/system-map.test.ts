@@ -22,11 +22,27 @@ describe("сводная карта системы (system-map)", () => {
     expect(flagged).toHaveLength(0);
     expect(systemMap.matrix.rows.some((r) => r.offCanon)).toBe(false);
   });
-  it("иерархия без tag-маркеров; есть Маркетолог ГО (Само Глобал); у куратора франшиз нет тега «методист»", () => {
+  it("иерархия без tag-маркеров; есть Маркетолог ГО; у куратора франшиз нет тега «методист»", () => {
     const allRoles = systemMap.hierarchy.flatMap((t) => t.roles);
     expect(allRoles.every((r) => !r.tag), "остался tag-маркер").toBe(true);
     expect(allRoles.some((r) => /Маркетолог ГО/.test(r.title)), "нет Маркетолог ГО").toBe(true);
     expect(JSON.stringify(systemMap)).not.toMatch(/право\s*«?методист/i);
+  });
+  it("ГО-роли: РОП ГО добавлен (структурный узел), «Старший куратор ГО» убран (OQ-ORG-04), ГО-роли не «заглушки/Само Глобал»", () => {
+    const allRoles = systemMap.hierarchy.flatMap((t) => t.roles);
+    // РОП ГО — новый структурный узел над Маркетолог ГО / Менеджер франшиз (ROLES v1.6 §2б)
+    expect(allRoles.some((r) => /РОП ГО/.test(r.title)), "нет РОП ГО").toBe(true);
+    // «Старший куратор ГО» понижен (OQ-ORG-04, 12.06) — больше не роль/маркер в /map
+    expect(allRoles.some((r) => /Старший куратор ГО/.test(r.title)), "Старший куратор ГО должен быть убран").toBe(false);
+    // РОП ГО — структурный узел, не строка RBAC: нет строки матрицы
+    expect(systemMap.matrix.rows.some((r) => /РОП ГО/.test(r.role)), "РОП ГО не должен быть строкой матрицы").toBe(false);
+    // ратифицированные ГО-роли v1.6 — не «заглушка»/«Само Глобал» в подписях иерархии
+    const goCaptions = allRoles
+      .filter((r) => /\bГО\b|франшиз/.test(r.title))
+      .map((r) => r.caption)
+      .join(" | ");
+    expect(goCaptions, "ГО-роль помечена «заглушка»").not.toMatch(/заглушк/i);
+    expect(goCaptions, "ГО-роль помечена «Само Глобал»").not.toMatch(/Само Глобал/i);
   });
   it("slug-и иерархии и матрицы резолвятся в реестре кабинетов", () => {
     const slugs = [
