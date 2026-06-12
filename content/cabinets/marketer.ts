@@ -7,9 +7,9 @@ import type { CabinetSpec } from "@/content/types";
  * Дизайн-спека: docs/superpowers/specs/2026-06-08-marketer-cabinet-design.md. Ветка update_08_06.
  *
  * Источники (текущие версии, ре-пин T5 12.06): REG-DNM-MARKETING-001 v1.2 (ключевой — регламент маркетинга франчайзи),
- * CONV-ROLES-DNM-001 v1.6, CONV-USER-ROLES-001 v1.3, CONV-ROLE-HIERARCHY-001 v1.11, CONV-RBAC-DNM-001 v1.6
+ * CONV-ROLES-DNM-001 v1.7, CONV-USER-ROLES-001 v1.3, CONV-ROLE-HIERARCHY-001 v1.11, CONV-RBAC-DNM-001 v1.6
  * (§9 «Маркетинговые ресурсы»; Мрк = 11-я роль с v1.5; роли события конверсии Мен/Адм/Фин), SPEC-CRM-TZ-001 v1.1,
- * ARCH-SERVICEMAP-001 v1.5, SPEC-DNM-TZ-001 v3.10, SPEC-M3-DNM-001 v2.10.
+ * ARCH-SERVICEMAP-001 v1.5, SPEC-DNM-TZ-001 v3.11, SPEC-M3-DNM-001 v2.10.
  *
  * Зона orange (как stub/L0). implStatus planned.
  *
@@ -140,7 +140,7 @@ export const marketer: CabinetSpec = {
       "«Подчинение» относительное — ключевой критерий результат (охваты/просмотры/лиды)",
       "⚠ OQ-ORG-01 (открыт): Таргетолог + СММ — ФУНКЦИИ этого кабинета (решение владельца); канон склоняется к сплиту op-marketolog-dnm=ГО / школа=СММ+Таргетолог — граница не ратифицирована",
       "Задачи и уведомления (заявки, протухшие лиды, оценки ТК)",
-    ], source: "проектный док §12; REG-DNM-MARKETING-001 v1.2 §1.1 (два уровня); CONV-ROLES-DNM-001 v1.6 (OQ-ORG-01); встреча 05.06" },
+    ], source: "проектный док §12; REG-DNM-MARKETING-001 v1.2 §1.1 (два уровня); CONV-ROLES-DNM-001 v1.7 (OQ-ORG-01); встреча 05.06" },
   ],
   crossLinks: [
     { toCabinet: "sales", direction: "both", label: "ПЕРЕДАЁТ КВАЛИФИЦИРОВАННЫЕ ЛИДЫ (с UTM-источником, топ-5 роликов для дожима) → менеджер по продажам; обратная петля = КАЧЕСТВО ЛИДА (квалифицирован/нет, причины отказа), БЕЗ close-rate/выручки в деньгах (это ГО, «ноль финансов»). Поток РЕКОМЕНДОВАННЫХ МАТЕРИАЛОВ: топ-5 роликов по просмотрам → менеджер берёт лучшие для клиента (не ищет ссылку в мессенджере)", source: "проектный док §2/§4; проектный док 2 §3; встреча 09.06 §4; CONV-RBAC-DNM-001 v1.6 §9; SPEC-CRM-TZ-001 v1.1" },
@@ -161,10 +161,10 @@ export const marketer: CabinetSpec = {
     { slug: "academy-marketing", title: "Академия и двухуровневая модель", status: "planned", summary: "Обучение по маркетингу; двухуровневая модель (HQ-маркетолог видит все аккаунты, франчайзи — закреплённый); критерий — результат. Проектный док §12; REG-DNM-MARKETING-001 v1.2 §1.1." },
   ],
   sources: [
-    { id: "REG-DNM-MARKETING-001", version: "1.2" }, { id: "CONV-ROLES-DNM-001", version: "1.6" },
+    { id: "REG-DNM-MARKETING-001", version: "1.2" }, { id: "CONV-ROLES-DNM-001", version: "1.7" },
     { id: "CONV-USER-ROLES-001", version: "1.3" }, { id: "CONV-ROLE-HIERARCHY-001", version: "1.11" },
     { id: "CONV-RBAC-DNM-001", version: "1.6" }, { id: "SPEC-CRM-TZ-001", version: "1.1" },
-    { id: "ARCH-SERVICEMAP-001", version: "1.5" }, { id: "SPEC-DNM-TZ-001", version: "3.10" },
+    { id: "ARCH-SERVICEMAP-001", version: "1.5" }, { id: "SPEC-DNM-TZ-001", version: "3.11" },
     { id: "SPEC-M3-DNM-001", version: "2.10" },
   ],
 };

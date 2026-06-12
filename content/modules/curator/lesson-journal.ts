@@ -17,5 +17,5 @@ export const lessonJournal: ModuleSpec = {
     ],
   },
   crossLinks: [{ toCabinet: "child", label: "Урок проводится для группы учеников", direction: "out" }],
-  sources: [{ id: "REG-DNM-LESSON-001", version: "1.0" }, { id: "REG-DNM-CURATOR-001", version: "1.0" }, { id: "SPEC-DNM-TZ-001", version: "3.8", section: "4.4" }],
+  sources: [{ id: "REG-DNM-LESSON-001", version: "1.0" }, { id: "REG-DNM-CURATOR-001", version: "1.0" }, { id: "SPEC-DNM-TZ-001", version: "3.11", section: "4.4" }],
 };
