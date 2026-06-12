@@ -9,7 +9,7 @@ import { homeworkReview } from "@/content/modules/curator/homework-review";
  * никаких персональных имён. Регрессионный сторож для всего контента.
  * Имя пишется в двух вариантах (Д[оа]влат) — ловим оба.
  */
-const NAMES = /Д[оа]влат|Айгерим|Анастас|Сережан|Саидмур|\bПавел\b/i;
+const NAMES = /Д[оа]влат|Айгерим|Анастас|Сережан|Саидмур|\bПавел\b|Гульшат/i;
 
 describe("обезличивание: контент атласа без персональных имён", () => {
   for (const [slug, cabinet] of Object.entries(CABINETS)) {

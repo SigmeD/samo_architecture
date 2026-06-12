@@ -6,6 +6,7 @@ import { finance } from "@/content/cabinets/finance";
 import { franchiseCurator } from "@/content/cabinets/franchise-curator";
 import { franchise } from "@/content/cabinets/franchise";
 import { schoolAdmin } from "@/content/cabinets/school-admin";
+import { director } from "@/content/cabinets/director";
 import { seniorCurator } from "@/content/cabinets/senior-curator";
 import { lead } from "@/content/cabinets/lead";
 import { methodist } from "@/content/cabinets/methodist";
@@ -18,6 +19,7 @@ export const CABINETS: Record<string, CabinetSpec> = {
   child,
   parent,
   "school-admin":   schoolAdmin,
+  director,
   franchise,
   lead,
   methodist,
