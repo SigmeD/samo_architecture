@@ -13,8 +13,8 @@ describe("кабинет маркетолога (marketer) — 08.06", () => {
     expect(marketer.isStub).toBeFalsy();
     expect(marketer.role.code).toBe("op-marketolog-dnm");
   });
-  it("ядро — контур лидогенерации со сквозной атрибуцией (6 шагов)", () => {
-    expect(marketer.coreProcess.title).toMatch(/атрибуци/i);
+  it("ядро — контур лидогенерации → квалифицированный лид (6 шагов)", () => {
+    expect(marketer.coreProcess.title).toMatch(/квалифицированн|лидогенерац/i);
     expect(marketer.coreProcess.steps).toHaveLength(6);
   });
   it("инвариант: франчайзи-уровень + двухуровневая модель (HQ vs франчайзи)", () => {
@@ -28,16 +28,19 @@ describe("кабинет маркетолога (marketer) — 08.06", () => {
     expect(blob).toMatch(/передаёт лиды|передача менеджеру/i);
     expect(blob).toMatch(/не закрывает сделку/i);
   });
-  it("инвариант: сквозная UTM-атрибуция; событие конверсии = подтверждение оплаты бухгалтером → close rate", () => {
+  it("инвариант «ноль финансов» (C2, RBAC v1.6 §9): UTM-атрибуция до квалификации; выручка/close-rate — у ГО, маркетолог франчайзи НЕ видит", () => {
     const blob = JSON.stringify(marketer);
     expect(blob).toMatch(/UTM/);
-    expect(blob).toMatch(/событие конверсии/i);
+    expect(blob).toMatch(/ноль финансов/i);
     expect(blob).toMatch(/бухгалтер/i);
-    expect(blob).toMatch(/close rate/i);
+    // выручка/close-rate отнесены к ГО, не к франчайзи-маркетологу
+    expect(blob).toMatch(/у ГО|уровень ГО|Маркетолог ГО/);
+    expect(blob).toMatch(/НЕ видит|не получает выручку|не видит выручк/i);
   });
-  it("инвариант: KPI = качество (close rate), не объём; не создаёт брендбук/центральный контент", () => {
+  it("инвариант: KPI = доля квалиф. лидов (качество), не объём и не выручка/close-rate; не создаёт брендбук/центральный контент", () => {
     const blob = JSON.stringify(marketer);
-    expect(blob).toMatch(/не объём|квалифицированные лиды|квалиф\. лиды/i);
+    expect(blob).toMatch(/доля квалифицированных лидов|квалиф\. лид/i);
+    expect(blob).toMatch(/не объём/i);
     expect(blob).toMatch(/не создаёт брендбук|центральн\S* контент/i);
   });
   it("нет меток New (эталон-постера нет) и scope = школа", () => {
@@ -54,6 +57,12 @@ describe("кабинет маркетолога (marketer) — 08.06", () => {
     expect(s).toBeDefined();
     expect(s?.direction).toBe("both");
     for (const l of marketer.crossLinks) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
+  });
+  it("crossLink director = both: маркетолог (под РОП) подчиняется директору школы (орг-дерево)", () => {
+    const dir = marketer.crossLinks.find((l) => l.toCabinet === "director");
+    expect(dir, "связь к директору школы").toBeDefined();
+    expect(dir?.direction).toBe("both");
+    expect(dir?.label).toMatch(/директор\S* школ/i);
   });
   it("C6: интеграции соцсетей/Google Ads через AI/API (автосбор статистики)", () => {
     const blob = JSON.stringify(marketer);

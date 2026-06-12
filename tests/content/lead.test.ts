@@ -17,11 +17,17 @@ describe("кабинет руководителя проекта (lead) — об
     expect(lead.coreProcess.title).toMatch(/стратегическ\S* контур/i);
     expect(lead.coreProcess.steps).toHaveLength(6);
   });
-  it("ПОПРАВКА: программу авторит куратор франшиз, руководитель ПОДТВЕРЖДАЕТ (не авторит)", () => {
+  it("C3 ЗАКРЫТ: программу авторит МЕТОДИСТ, руководитель ПОДТВЕРЖДАЕТ (не авторит); подтверждено владельцем", () => {
     const blob = JSON.stringify(lead);
-    expect(blob).toMatch(/куратор франшиз.*авторит|авторит.*куратор франшиз/i);
+    expect(blob).toMatch(/методист\s+авторит|авторит\S*\s+методист|авторит\/готовит\s+МЕТОДИСТ/i);
     expect(blob).toMatch(/подтвержда/i);
     expect(blob).toMatch(/поправк\S* к постеру/i);
+    // ратифицировано M3 v2.10 + подтверждено владельцем — C3 закрыт, прежний флаг «на согласовании/OQ-ORG-03» снят
+    expect(blob).toMatch(/SPEC-M3-DNM-001 v2\.10/);
+    expect(blob).toMatch(/FR-M3-013\/101/);
+    expect(blob).toMatch(/подтвержд\S*\s+владельц|C3 закрыт/i);
+    // C3 закрыт: где упомянут OQ-ORG-03, он только в контексте «снят/закрыт» — не как открытый pending
+    expect(blob).toMatch(/C3 закрыт|OQ-ORG-03[^"]*снят/i);
   });
   it("ГРАНИЦА: руководитель НЕ видит данные отдельного ученика (только агрегат)", () => {
     const blob = JSON.stringify(lead);
@@ -54,12 +60,13 @@ describe("кабинет руководителя проекта (lead) — об
     expect(fc?.isNew).toBeFalsy();
     for (const l of lead.crossLinks) if (!l.stub) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
   });
-  it("финлиния ГО: прямая связь = ЗАГЛУШКА «Финансист ГО» (Само Глобал, не школьный бухгалтер)", () => {
+  it("финлиния ГО: ЗАГЛУШКА «Финансист ГО» = ГО-роль ДНМ (ратифицировано, не Само Глобал, не школьный бухгалтер)", () => {
     const f = lead.crossLinks.find((l) => l.stub === "Финансист ГО");
     expect(f, "нет stub-связи Финансист ГО").toBeDefined();
     expect(f?.direction).toBe("both");
-    expect(f?.label).toMatch(/напрямую/i);
-    expect(f?.label).toMatch(/Само Глобал/);
+    expect(f?.label).toMatch(/ГО-роль ДНМ|op-finansist-go-dnm/i);
+    // T5: framing «Само Глобал отдельный продукт» снят (ратифицировано ROLES v1.6 §2а)
+    expect(f?.label).not.toMatch(/Само Глобал/);
     expect(f?.label).toMatch(/НЕ школьный бухгалтер|отдельная финансовая линия/i);
     // прямой связи на кабинет бухгалтера (finance) быть НЕ должно — это ломало логику
     expect(lead.crossLinks.some((l) => l.toCabinet === "finance" && !l.stub)).toBe(false);

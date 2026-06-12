@@ -34,11 +34,19 @@ describe("кабинет методиста (methodist) — 09.06, новая р
     expect(blob).toMatch(/утвержда\S*\s*\/?\s*отклоня|подтвержда\S*.*(не правит|gate)/i);
     expect(blob).toMatch(/не правит/i);
   });
-  it("⚠ расхождение: авторинг переходит от куратора франшиз к методисту + конфликт с RBAC v1.4 → canon-proposal", () => {
+  it("✅ C3 ЗАКРЫТ (12.06): авторинг у методиста — ратифицировано M3 v2.10 FR-M3-013/101 + подтверждено владельцем; КФ-ревью = орг-заметка (не pending)", () => {
     const blob = JSON.stringify(methodist);
     expect(blob).toMatch(/куратор\S*\s+франшиз/i);
-    expect(blob).toMatch(/CONV-RBAC-DNM-001 v1\.4/);
-    expect(blob).toMatch(/canon-proposal/i);
+    // дрейф ратифицирован M3 v2.10 + подтверждён владельцем — C3 закрыт, прежний флаг «конфликт с RBAC v1.4 / OQ-ORG-03» снят
+    expect(blob).toMatch(/SPEC-M3-DNM-001 v2\.10/);
+    expect(blob).toMatch(/FR-M3-013\/101/);
+    expect(blob).toMatch(/ратифицир/i);
+    expect(blob).toMatch(/подтвержд\S*\s+владельц|C3 закрыт/i);
+    // КФ — организационный руководитель методиста, финальный gate — руководитель (не «спорный project-doc / pending»)
+    expect(blob).toMatch(/подчин\S*\s+КФ|подчиня\S*\s+куратор\S*\s+франшиз|непосредственн\S*\s+руководител/i);
+    expect(blob).toMatch(/финальн\S*\s+gate|финальный gate утверждения/i);
+    // где OQ-ORG-03 ещё упомянут — только в контексте «снят/закрыт» (C3 разрешён)
+    expect(blob).toMatch(/C3 закрыт|OQ-ORG-03[^"]*снят/i);
   });
   it("домен методконтента Бизнес-академии (курс куратора, 100 вопросов о дисциплине)", () => {
     const blob = JSON.stringify(methodist);

@@ -43,6 +43,26 @@ describe("кабинет старшего куратора (senior-curator)", ()
     // подчинение теперь директору, не администратору
     expect(blob).toMatch(/Подчинение: директор школы → старший куратор/iu);
   });
+  it("C5: лейблы отчётности многослойны — качество→админ, ГО-агрегат→КФ (без новых связей, орг-подчинение директору)", () => {
+    const blob = JSON.stringify(seniorCurator);
+    // (a) орг-подчинение директору (T3) сохранено
+    expect(blob).toMatch(/директор[а-яё]* школы/iu);
+    // (b) in-school эскалация качества → администратор
+    expect(blob).toMatch(/эскалаци[яи] КАЧЕСТВА.*администратор|качества.*→.*администратор/iu);
+    // (c) ГО-агрегат образовательных данных → Куратор франшиз (не напрямую руководителю)
+    expect(blob).toMatch(/ГО-агрегат.*Куратор[ау] франшиз|поднимается к КУРАТОРУ ФРАНШИЗ/iu);
+    expect(blob).toMatch(/OQ-ORG-04/);
+    // НЕ добавлять новую связь senior-curator↔franchise-curator (вертикаль ±1 через цепочку)
+    expect(seniorCurator.crossLinks.some((l) => l.toCabinet === "franchise-curator")).toBe(false);
+  });
+  it("C5/C1: ст.куратор назначает свободного куратора на ПРОБНЫЙ урок по цепочке менеджер→админ→ст.куратор", () => {
+    const blob = JSON.stringify(seniorCurator);
+    expect(blob).toMatch(/пробн/iu);
+    expect(blob).toMatch(/назнача[а-яё]* свободного куратора|назначает свободного/iu);
+    // в крослинке school-admin — цепочка передачи запроса
+    const adminLink = seniorCurator.crossLinks.find((l) => l.toCabinet === "school-admin");
+    expect(adminLink?.label).toMatch(/пробн/iu);
+  });
   it("ядро — двойная роль «играющий тренер» (6 шагов)", () => {
     expect(seniorCurator.coreProcess.badge).toMatch(/играющий тренер/i);
     expect(seniorCurator.coreProcess.steps).toHaveLength(6);
