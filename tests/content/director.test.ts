@@ -22,9 +22,9 @@ describe("кабинет директора школы (director)", () => {
   it("вход как директор (FR-M3-094)", () => {
     expect(JSON.stringify(director)).toMatch(/FR-M3-094|как директор/i);
   });
-  it("связи director = franchise + school-admin (both), вертикаль не напрямую руководителю", () => {
+  it("связи director = franchise + school-admin + senior-curator (both), вертикаль не напрямую руководителю", () => {
     const dir = Object.fromEntries(director.crossLinks.map((l) => [l.toCabinet, l.direction]));
-    expect(dir).toEqual({ franchise: "both", "school-admin": "both" });
+    expect(dir).toEqual({ franchise: "both", "school-admin": "both", "senior-curator": "both" });
     expect(director.crossLinks.map((l) => l.toCabinet)).not.toContain("lead");
   });
   it("все связи резолвятся", () => {
