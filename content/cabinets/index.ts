@@ -13,6 +13,7 @@ import { methodist } from "@/content/cabinets/methodist";
 import { sales } from "@/content/cabinets/sales";
 import { marketer } from "@/content/cabinets/marketer";
 import { guest } from "@/content/cabinets/guest";
+import { hr } from "@/content/cabinets/hr";
 
 export const CABINETS: Record<string, CabinetSpec> = {
   curator,
@@ -29,6 +30,7 @@ export const CABINETS: Record<string, CabinetSpec> = {
   marketer,
   finance,
   guest,
+  hr,
 };
 
 export const getCabinet = (slug: string): CabinetSpec | undefined => CABINETS[slug];
