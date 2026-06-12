@@ -63,4 +63,26 @@ describe("кабинет франчайзи-партнёра (franchise)", () =>
     for (const gone of ["curator", "senior-curator", "marketer", "sales", "lead"])
       expect(targets).not.toContain(gone);
   });
+  it("онбординг новичка + шкала развития L0–L5 (закрытие «Пути франчайзи-партнёра»)", () => {
+    const blob = JSON.stringify(franchise);
+    expect(blob).toMatch(/L0/);
+    expect(blob).toMatch(/L5/);
+    expect(blob).toMatch(/шкал\S* развития/i);
+    expect(blob).toMatch(/онбординг/i);
+    expect(blob).toMatch(/прогрессивн\S* разблокировк|нанял.*открыл/i);
+  });
+  it("новые домены онбординга/уровней присутствуют (4 шт)", () => {
+    const titles = franchise.domains.map((d) => d.title);
+    expect(titles.some((t) => /шкала развития.*L0.*L5/i.test(t))).toBe(true);
+    expect(titles.some((t) => /прогрессивн\S* разблокировк/i.test(t))).toBe(true);
+    expect(titles.some((t) => /провижининг|выдача доступов/i.test(t))).toBe(true);
+    expect(titles.some((t) => /дашборд эффективности/i.test(t))).toBe(true);
+  });
+  it("новые модули онбординга/уровней присутствуют (5 шт, planned)", () => {
+    const bySlug = Object.fromEntries(franchise.modules.map((m) => [m.slug, m]));
+    for (const slug of ["onboarding-tracker", "development-levels", "role-based-unlocks", "staff-provisioning", "efficiency-recommendations"]) {
+      expect(bySlug[slug], slug).toBeDefined();
+      expect(bySlug[slug]!.status).toBe("planned");
+    }
+  });
 });
