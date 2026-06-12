@@ -7,9 +7,9 @@ import type { CabinetSpec } from "@/content/types";
  * синтез двойной роли → адверсариальная верификация) из проектного дока «ЛК Старший куратор» (Google Doc)
  * + встречи 04–05.06 + канон (локальный клон samo-docs; MCP устаревший — версии из canon/INDEX.md).
  * Источники (текущие версии, ре-пин T5 12.06): CONV-ROLE-HIERARCHY-001 v1.11, CONV-RBAC-DNM-001 v1.6, SPEC-M3-DNM-001 v2.10,
- * SPEC-DNM-TZ-001 v3.10, SPEC-DNM-FUNC-001 v2.3, SPEC-DNM-RATING-001 v1.5, SPEC-KPI-PAYOUT-001 v1.3,
+ * SPEC-DNM-TZ-001 v3.11, SPEC-DNM-FUNC-001 v2.3, SPEC-DNM-RATING-001 v1.5, SPEC-KPI-PAYOUT-001 v1.3,
  * REG-DNM-SCHOOL-ADMIN-001 v1.2, REG-DNM-CURATOR-001 v1.0, REG-DNM-LESSON-001 v1.0,
- * CONV-ROLES-DNM-001 v1.6, CONV-USER-ROLES-001 v1.3. См. docs/STATUS.md.
+ * CONV-ROLES-DNM-001 v1.7, CONV-USER-ROLES-001 v1.3. См. docs/STATUS.md.
  * Зона blue (управление/операции — как куратор, решение владельца; СК = зеркало куратора, НЕ teal/продажи).
  * implStatus planned (продукт роли в коде не реализован; выделенной FR-секции кабинета СК в каноне нет —
  * состав собран из верифицированных прав RBAC v1.6 + проектного дока ЛК).
@@ -119,7 +119,7 @@ export const seniorCurator: CabinetSpec = {
     { toCabinet: "school-admin", direction: "both", label: "Операционная стыковка с администратором: согласование расписания, табель/штатка ↔ нагрузка кураторов, замены заболевших, передача сигналов непосещения (админ обрабатывает 1-е/2-е). In-school эскалация КАЧЕСТВА (проблемные кейсы/разбор) идёт к администратору (REG-SCHOOL-ADMIN v1.2 §6.1). Назначение на ПРОБНЫЙ урок (цепочка C1): администратор передаёт запрос на куратора для пробного → ст.куратор смотрит расписание и назначает свободного куратора. Обучающие отчёты/посещаемость старший куратор поднимает ВВЕРХ ПО ВЕРТИКАЛИ к директору школы (не к администратору). + прямой чат.", source: "CONV-ROLE-HIERARCHY-001 v1.11; CONV-RBAC-DNM-001 v1.6 §3,§7; REG-DNM-SCHOOL-ADMIN-001 v1.2 §6.1" },
     { toCabinet: "curator", direction: "both", label: "вниз: управляет кураторами, контроль качества, наставничество; получает отчёты/ОС. Перераспределяет группы И учеников (CRU шк, эксклюзив), заменяет заболевших, ведёт лидерборд/рейтинг (R), обучает/аттестует (CRU). B1 контроль и B2 коучинг — раздельно", source: "CONV-ROLE-HIERARCHY-001 v1.11; CONV-RBAC-DNM-001 v1.6 §1,§2,§3,§4" },
     { toCabinet: "child", direction: "out", label: "своё преподавание (двойная роль — ведёт свои группы): уроки-видеосозвоны, проверка ДЗ/классных «принято/на доработку» без баллов, начисление соларов, посещаемость, групповой чат — scope школа", source: "SPEC-M3-DNM-001 v2.10 §2.1; CONV-RBAC-DNM-001 v1.6 §2,§3,§5" },
-    { toCabinet: "parent", direction: "out", label: "своё преподавание: отчёты родителю своих групп (как куратор) + ежемесячный видеоотзыв «кругляшочек», мессенджер/видеозвонок. Отзыв родителя — вход рейтинга куратора; СК видит его как R-сигнал качества команды", source: "REG-DNM-CURATOR-PARENTS-001 v1.0; SPEC-DNM-TZ-001 v3.10 §4.3; SPEC-DNM-RATING-001 v1.5 §3" },
+    { toCabinet: "parent", direction: "out", label: "своё преподавание: отчёты родителю своих групп (как куратор) + ежемесячный видеоотзыв «кругляшочек», мессенджер/видеозвонок. Отзыв родителя — вход рейтинга куратора; СК видит его как R-сигнал качества команды", source: "REG-DNM-CURATOR-PARENTS-001 v1.0; SPEC-DNM-TZ-001 v3.11 §4.3; SPEC-DNM-RATING-001 v1.5 §3" },
   ],
   modules: [
     { slug: "own-teaching", title: "Моё преподавание (зеркало куратора)", status: "planned", summary: "Ядро A: ст.куратор САМ ведёт свои группы (поправка к постеру «не ведёт напрямую»). Уроки-видеосозвоны, проверка ДЗ/классных «принято/на доработку» без баллов, солары, посещаемость, ОС родителям, свой рейтинг. Scope школа, права куратора (CONV-RBAC §2,§3,§5)." },
@@ -135,11 +135,11 @@ export const seniorCurator: CabinetSpec = {
   ],
   sources: [
     { id: "CONV-ROLE-HIERARCHY-001", version: "1.11" }, { id: "CONV-RBAC-DNM-001", version: "1.6" },
-    { id: "SPEC-M3-DNM-001", version: "2.10" }, { id: "SPEC-DNM-TZ-001", version: "3.10" },
+    { id: "SPEC-M3-DNM-001", version: "2.10" }, { id: "SPEC-DNM-TZ-001", version: "3.11" },
     { id: "SPEC-DNM-FUNC-001", version: "2.3" }, { id: "SPEC-DNM-RATING-001", version: "1.5" },
     { id: "SPEC-KPI-PAYOUT-001", version: "1.3" }, { id: "REG-DNM-SCHOOL-ADMIN-001", version: "1.2" },
     { id: "REG-DNM-CURATOR-001", version: "1.0" }, { id: "REG-DNM-LESSON-001", version: "1.0" },
-    { id: "REG-DNM-CURATOR-PARENTS-001", version: "1.0" }, { id: "CONV-ROLES-DNM-001", version: "1.6" },
+    { id: "REG-DNM-CURATOR-PARENTS-001", version: "1.0" }, { id: "CONV-ROLES-DNM-001", version: "1.7" },
     { id: "CONV-USER-ROLES-001", version: "1.3" },
   ],
 };
