@@ -35,6 +35,34 @@ describe("сводная карта системы (system-map)", () => {
     ].filter(Boolean) as string[];
     for (const s of slugs) expect(getCabinet(s), s).toBeDefined();
   });
+  it("сплит Админ/Директор: обе роли в иерархии и матрице как отдельные строки", () => {
+    const hierSlugs = systemMap.hierarchy.flatMap((t) => t.roles.map((r) => r.slug));
+    expect(hierSlugs).toContain("director");
+    expect(hierSlugs).toContain("school-admin");
+    const rowSlugs = systemMap.matrix.rows.map((r) => r.slug);
+    expect(rowSlugs).toContain("director");
+    expect(rowSlugs).toContain("school-admin");
+    // Директор школы и Администратор — разные строки матрицы (не дубль одной)
+    expect(new Set(rowSlugs.filter((s) => s === "director" || s === "school-admin")).size).toBe(2);
+  });
+  it("Директор: per-resource RBAC отложен в OQ-ORG-03 — неизвестные ячейки помечены note, без выдуманных full", () => {
+    const dir = systemMap.matrix.rows.find((r) => r.slug === "director");
+    expect(dir, "нет строки Директор").toBeDefined();
+    // Финансы сети директору закрыты (P&L не его); не должно быть full на «Финансы сети»
+    const idx = (label: string) => systemMap.matrix.sections.indexOf(label);
+    const cellLevel = (i: number) => {
+      const c = dir!.cells[i];
+      return typeof c === "object" ? c.level : c;
+    };
+    expect(cellLevel(idx("Финансы сети"))).toBe("none");
+    // где использован уровень scope (view/partial) на спорных разделах — ожидаем пометку OQ-ORG-03 хотя бы в одной ячейке
+    const hasOqNote = dir!.cells.some((c) => typeof c === "object" && /OQ-ORG-03/.test(c.note ?? ""));
+    expect(hasOqNote, "нет пометки OQ-ORG-03 на отложенных правах Директора").toBe(true);
+  });
+  it("матрица сослана на RBAC v1.6", () => {
+    const rbac = systemMap.sources.find((s) => s.id === "CONV-RBAC-DNM-001");
+    expect(rbac?.version).toBe("1.6");
+  });
   it("обезличено: без персональных имён и без доли роялти 50%", () => {
     const blob = JSON.stringify(systemMap);
     expect(blob).not.toMatch(/Д[оа]влат|Айгерим|Анастас|Сережан|\bПавел\b/i);

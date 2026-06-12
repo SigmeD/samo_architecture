@@ -3,10 +3,13 @@ import type { SystemMap } from "@/content/types";
 /**
  * Сводная карта системы (L0 /map) — иерархия ролей + матрица «роль×раздел×право» + карта передач.
  * Портирована из проектного дока `docs/architecture/sistema-karta-rolei.html` (видение владельца) и
- * СВЕРЕНА С КАНОНОМ: значения матрицы = `CONV-RBAC-DNM-001` v1.4 (авторитет, локальный клон samo-docs);
+ * СВЕРЕНА С КАНОНОМ: значения матрицы = `CONV-RBAC-DNM-001` v1.6 (авторитет, локальный клон samo-docs);
  * ячейки, где новое намерение (кабинеты/canon-proposals) расходится с текущим каноном, помечены `divergent`.
  * Цель (запрос владельца): зафиксировать принятые решения и вскрыть нестыковки ДО разработки.
- * Источники: CONV-RBAC-DNM-001 v1.4, CONV-ROLE-HIERARCHY-001 v1.8, CONV-ROLES-DNM-001 v1.3.
+ * v1.6: сплит Администратор/Директор — Директор школы = управляющий (оверсайт/KPI/тоглы),
+ * Администратор = обслуживающая/распределяющая роль (операционка, P&L закрыт). Детальный per-resource
+ * RBAC новых ролей (Директор и др.) отложен каноном в OQ-ORG-03 — CRUD-ячейки не выдумываем (scope/note).
+ * Источники: CONV-RBAC-DNM-001 v1.6, CONV-ROLE-HIERARCHY-001 v1.11, CONV-ROLES-DNM-001 v1.6.
  * Обезличено (только роли); доля распределения роялти не отображается (роялти 20% — как в каноне).
  */
 
@@ -33,9 +36,12 @@ export const systemMap: SystemMap = {
       { title: "Франчайзи-партнёр", slug: "franchise", caption: "владелец сети школ · роялти · план/факт" },
     ] },
     { label: "Управление школой", zone: "orange", connector: "down", roles: [
-      { title: "Администратор школы", slug: "school-admin", caption: "операции · директор школы" },
+      { title: "Директор школы", slug: "director", caption: "управляет школой: оверсайт, KPI, фиче-тоглы, отчётность" },
       { title: "Бухгалтер", slug: "finance", dashed: true, caption: "у франчайзи · подтверждает оплаты" },
       { title: "РОП + маркетинг", dashed: true, caption: "в модели сети — под франчайзи" },
+    ] },
+    { label: "Операции школы", zone: "orange", connector: "down", roles: [
+      { title: "Администратор школы", slug: "school-admin", caption: "обслуживающий/распределяющий контур: приём, оплаты, расписание, распределение" },
     ] },
     { label: "Продажи · маркетинг", zone: "teal", connector: "down", roles: [
       { title: "Менеджер по продажам", slug: "sales", caption: "воронка лида-родителя" },
@@ -67,8 +73,23 @@ export const systemMap: SystemMap = {
       { role: "Франчайзи-партнёр", slug: "franchise", cells: [
         "none", "none", "none", "partial", "partial", "full", "view", "view", "partial", "partial", "partial", "partial", "view",
       ] },
+      { role: "Директор школы", slug: "director", cells: [
+        "none", "none", "none",
+        { level: "partial", note: "P&L закрыт; видит операционные финансы школы (RBAC v1.6)" },
+        "view",
+        { level: "full", note: "управление школой: оверсайт, KPI, фиче-тоглы" },
+        { level: "view", note: "scope-уровень; детальный RBAC — OQ-ORG-03" },
+        "view",
+        { level: "view", note: "детальный RBAC — OQ-ORG-03" },
+        "view",
+        "partial",
+        { level: "partial", note: "делегирование прав/тоглы — у директора; точные ячейки — OQ-ORG-03" },
+        { level: "partial", note: "контроль качества/видеофиксация; детальный RBAC — OQ-ORG-03" },
+      ] },
       { role: "Администратор школы", slug: "school-admin", cells: [
-        "none", "none", "none", "partial", "none", "full", "full", "partial", "toggle", "full", "partial", "none", "full",
+        "none", "none", "none",
+        { level: "partial", note: "приём оплат/дебиторка/возвраты — операционно; P&L закрыт (RBAC v1.6 §6)" },
+        "none", "view", "partial", "partial", "none", "full", "partial", "none", "none",
       ] },
       { role: "Старший куратор", slug: "senior-curator", cells: [
         "none", "none", "none", "none", "none", "view", "partial", "none", "none", "none", "partial", "none", "partial",
@@ -94,7 +115,7 @@ export const systemMap: SystemMap = {
     ],
   },
   matrixNote:
-    "Значения — по канону RBAC v1.4. Данные ученика (прогресс, сертификаты) видят только куратор, старший куратор, администратор, родитель и сам ученик — руководитель и куратор франшиз их не видят (агрегаты по школам). Финансовый дашборд ведёт бухгалтер, а отображается в трёх кабинетах (бухгалтер → франчайзи / куратор франшиз → руководитель) по правам.",
+    "Значения — по канону RBAC v1.6. Жирный «администратор-как-управляющий» разделён: Директор школы — управление (оверсайт, KPI, фиче-тоглы, отчётность), Администратор — обслуживающая/распределяющая роль (приём, оплаты-операционно, расписание, распределение; P&L закрыт). Детальный per-resource RBAC новых ролей (Директор школы и др.) канон отложил в OQ-ORG-03 — ячейки Директора показаны на уровне scope (view/partial с пометками), точные CRUD не выдуманы. Данные ученика (прогресс, сертификаты) видят только куратор, старший куратор, администратор/директор, родитель и сам ученик — руководитель и куратор франшиз их не видят (агрегаты по школам). Финансовый дашборд ведёт бухгалтер, а отображается в трёх кабинетах (бухгалтер → франчайзи / куратор франшиз → руководитель) по правам.",
   divergences: [],
   handoffs: [
     { title: "Продажи и зачисление", emoji: "🎯", flows: [
@@ -110,12 +131,12 @@ export const systemMap: SystemMap = {
       { from: { label: "Куратор", zone: "blue" }, what: "отчёты, ОС, прогресс", to: { label: "Родитель", zone: "blue" } },
       { from: { label: "Куратор", zone: "blue" }, what: "показатели групп", to: { label: "Старший куратор", zone: "blue" } },
       { from: { label: "Старший куратор", zone: "blue" }, what: "нагрузка + наставничество", to: { label: "Куратор", zone: "blue" } },
-      { from: { label: "Старший куратор", zone: "blue" }, what: "отчёты по кураторам", to: { label: "Администратор", zone: "orange" } },
+      { from: { label: "Старший куратор", zone: "blue" }, what: "отчёты по кураторам", to: { label: "Директор школы", zone: "orange" } },
       { from: { label: "Ученик", zone: "green" }, what: "достижения / гордость", to: { label: "Родитель", zone: "blue" } },
       { from: { label: "Родитель", zone: "blue" }, what: "обращения: заморозка/возврат", to: { label: "Администратор", zone: "orange" } },
     ] },
     { title: "Управление сетью", emoji: "🏢", flows: [
-      { from: { label: "Администратор", zone: "orange" }, what: "отчёты/KPI школы", to: { label: "Франчайзи", zone: "purple" }, suffix: "входит как директор" },
+      { from: { label: "Директор школы", zone: "orange" }, what: "отчёты/KPI школы", to: { label: "Франчайзи", zone: "purple" }, suffix: "в модели A — сам владелец" },
       { from: { label: "Франчайзи", zone: "purple" }, what: "KPI, план/факт", to: { label: "Куратор франшиз", zone: "purple" } },
       { from: { label: "Куратор франшиз", zone: "purple" }, what: "сводки, статус франчайзи", to: { label: "Руководитель", zone: "blue" } },
       { from: { label: "Куратор франшиз", zone: "purple" }, what: "настройка программы", to: { label: "Руководитель", zone: "blue" }, suffix: "утверждает" },
@@ -131,8 +152,8 @@ export const systemMap: SystemMap = {
     ] },
   ],
   sources: [
-    { id: "CONV-RBAC-DNM-001", version: "1.4" },
-    { id: "CONV-ROLE-HIERARCHY-001", version: "1.8" },
-    { id: "CONV-ROLES-DNM-001", version: "1.3" },
+    { id: "CONV-RBAC-DNM-001", version: "1.6" },
+    { id: "CONV-ROLE-HIERARCHY-001", version: "1.11" },
+    { id: "CONV-ROLES-DNM-001", version: "1.6" },
   ],
 };
