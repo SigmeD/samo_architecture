@@ -3,7 +3,7 @@ import type { CabinetSpec } from "@/content/types";
 /**
  * Кабинет «HR / рекрутинг ДНМ» (роль op-hr-dnm) — кадровый контур школы/сети.
  * Спроектирован из дизайн-спеки docs/superpowers/specs/2026-06-12-hr-cabinet-design.md (§1–§7)
- * по канону REG-DNM-HR-001 v1.1 (12.06) + CONV-ROLES-DNM-001 v1.6 §2а/§1.7 + CONV-RBAC-DNM-001 v1.6
+ * по канону REG-DNM-HR-001 v1.1 (12.06) + CONV-ROLES-DNM-001 v1.7 §2а/§1.7 + CONV-RBAC-DNM-001 v1.6
  * + CONV-ROLE-HIERARCHY-001 v1.11 + org-чарт reports/2026-06-10-org-struktura-dnm-resheniya.md §2.
  *
  * Решения владельца: D4 (создать HR по канону); зона blue (управление/операции); implStatus planned
@@ -96,7 +96,7 @@ export const hr: CabinetSpec = {
     ], source: "REG-DNM-HR-001 v1.1 §3" },
   ],
   crossLinks: [
-    { toCabinet: "director", direction: "both", label: "ВВЕРХ ПО ВЕРТИКАЛИ: HR подчинён директору школы (в Модели Б — головному/наёмному директору сети). Согласование KPI-карт ролей и оргструктуры; отчёты по найму/укомплектованности/текучести — директору. (CONV-ROLES §2а; OQ-ORG-02 закрыт реш. владельца 12.06 — канон §2б/TZ §18.1 выравниваются, samo-docs PR #18/#19).", source: "REG-DNM-HR-001 v1.1 §1; CONV-ROLES-DNM-001 v1.6 §2а; CONV-ROLE-HIERARCHY-001 v1.11; reports 2026-06-10 §2" },
+    { toCabinet: "director", direction: "both", label: "ВВЕРХ ПО ВЕРТИКАЛИ: HR подчинён директору школы (в Модели Б — головному/наёмному директору сети). Согласование KPI-карт ролей и оргструктуры; отчёты по найму/укомплектованности/текучести — директору. (CONV-ROLES §2а; OQ-ORG-02 закрыт реш. владельца 12.06 — канон выровнен: CONV-ROLES v1.7 §2а/§2б + TZ v3.11 §18.1, samo-docs #21).", source: "REG-DNM-HR-001 v1.1 §1; CONV-ROLES-DNM-001 v1.7 §2а; CONV-ROLE-HIERARCHY-001 v1.11; reports 2026-06-10 §2" },
     { toCabinet: "finance", direction: "out", label: "Кадровый handoff в бухгалтерию: KPI-карты ролей и база персонала (ставка как кадровый атрибут) питают ФОТ — бухгалтер + движок SPEC-KPI-PAYOUT считают выплату (Фикс+Бонус−Штраф). HR НЕ считает выплаты (граница OQ-HR-02).", source: "REG-DNM-HR-001 v1.1 §2.3/§2.4; SPEC-KPI-PAYOUT-001 v1.3" },
   ],
   modules: [
@@ -110,7 +110,7 @@ export const hr: CabinetSpec = {
   ],
   sources: [
     { id: "REG-DNM-HR-001", version: "1.1" },
-    { id: "CONV-ROLES-DNM-001", version: "1.6" },
+    { id: "CONV-ROLES-DNM-001", version: "1.7" },
     { id: "CONV-RBAC-DNM-001", version: "1.6" },
     { id: "CONV-ROLE-HIERARCHY-001", version: "1.11" },
     { id: "SPEC-KPI-PAYOUT-001", version: "1.3" },

@@ -9,7 +9,7 @@ import type { SystemMap } from "@/content/types";
  * v1.6: сплит Администратор/Директор — Директор школы = управляющий (оверсайт/KPI/тоглы),
  * Администратор = обслуживающая/распределяющая роль (операционка, P&L закрыт). Детальный per-resource
  * RBAC новых ролей (Директор и др.) отложен каноном в OQ-ORG-03 — CRUD-ячейки не выдумываем (scope/note).
- * Источники: CONV-RBAC-DNM-001 v1.6, CONV-ROLE-HIERARCHY-001 v1.11, CONV-ROLES-DNM-001 v1.6.
+ * Источники: CONV-RBAC-DNM-001 v1.6, CONV-ROLE-HIERARCHY-001 v1.11, CONV-ROLES-DNM-001 v1.7.
  * Обезличено (только роли); доля распределения роялти не отображается (роялти 20% — как в каноне).
  */
 
@@ -38,7 +38,7 @@ export const systemMap: SystemMap = {
     { label: "Управление школой", zone: "orange", connector: "down", roles: [
       { title: "Директор школы", slug: "director", caption: "управляет школой: оверсайт, KPI, фиче-тоглы, отчётность" },
       { title: "Бухгалтер", slug: "finance", dashed: true, caption: "под директором · P&L/роялти/дебиторка (downstream; приём/подтв. оплаты — Адм/Мен §6)" },
-      { title: "HR / рекрутинг", slug: "hr", caption: "найм · кадры · KPI-карты · удержание · OQ-ORG-02" },
+      { title: "HR / рекрутинг", slug: "hr", caption: "найм · кадры · KPI-карты · удержание · под директором (OQ-ORG-02 закрыт)" },
       { title: "РОП + маркетинг", dashed: true, caption: "в модели сети — под франчайзи" },
     ] },
     { label: "Операции школы", zone: "orange", connector: "down", roles: [
@@ -165,7 +165,7 @@ export const systemMap: SystemMap = {
   sources: [
     { id: "CONV-RBAC-DNM-001", version: "1.6" },
     { id: "CONV-ROLE-HIERARCHY-001", version: "1.11" },
-    { id: "CONV-ROLES-DNM-001", version: "1.6" },
+    { id: "CONV-ROLES-DNM-001", version: "1.7" },
     { id: "REG-DNM-HR-001", version: "1.1" },
   ],
 };
