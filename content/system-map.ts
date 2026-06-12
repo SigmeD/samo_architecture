@@ -37,7 +37,7 @@ export const systemMap: SystemMap = {
     ] },
     { label: "Управление школой", zone: "orange", connector: "down", roles: [
       { title: "Директор школы", slug: "director", caption: "управляет школой: оверсайт, KPI, фиче-тоглы, отчётность" },
-      { title: "Бухгалтер", slug: "finance", dashed: true, caption: "у франчайзи · подтверждает оплаты" },
+      { title: "Бухгалтер", slug: "finance", dashed: true, caption: "под директором · P&L/роялти/дебиторка (downstream; приём/подтв. оплаты — Адм/Мен §6)" },
       { title: "HR / рекрутинг", slug: "hr", caption: "найм · кадры · KPI-карты · удержание · OQ-ORG-02" },
       { title: "РОП + маркетинг", dashed: true, caption: "в модели сети — под франчайзи" },
     ] },
@@ -105,7 +105,7 @@ export const systemMap: SystemMap = {
         "none", "none", "none", "none", "none", "partial", "none", "partial", "full", "none", "partial", "none", "none",
       ] },
       { role: "Бухгалтер / Финансист", slug: "finance", cells: [
-        "none", "none", "full", "full", "partial", "view", "none", "view", "none", "view", "partial", "none", "none",
+        "none", "none", "full", "full", "partial", "view", "none", "view", "none", "none", "partial", "none", "none",
       ] },
       { role: "HR / рекрутинг", slug: "hr", cells: [
         // Программа (авторинг/утвержд.), финансы (сеть/школа), данные ученика, воронка/CRM, маркетинг, магазин — вне кадрового scope HR
@@ -133,7 +133,7 @@ export const systemMap: SystemMap = {
       { from: { label: "Маркетолог", zone: "orange" }, what: "лиды (UTM)", to: { label: "Менеджер", zone: "teal" } },
       { from: { label: "Менеджер", zone: "teal" }, what: "онбординг + пробное (сам / назначает)", to: { label: "Куратор", zone: "blue" } },
       { from: { label: "Менеджер", zone: "teal" }, what: "договор (оформляет)", to: { label: "Администратор", zone: "orange" }, suffix: "подтверждает" },
-      { from: { label: "Администратор", zone: "orange" }, what: "оплата", to: { label: "Бухгалтер", zone: "gold" }, suffix: "подтверждает" },
+      { from: { label: "Администратор", zone: "orange" }, what: "оплата (приём/подтв. — Адм/Мен §6, факт — M12)", to: { label: "Бухгалтер", zone: "gold" }, suffix: "учёт P&L (downstream)" },
       { from: { label: "Администратор", zone: "orange" }, what: "зачислен", to: { label: "Старший куратор", zone: "blue" } },
       { from: { label: "Старший куратор", zone: "blue" }, what: "в группу (сам / куратору)", to: { label: "Куратор", zone: "blue" } },
       { from: { label: "Администратор", zone: "orange" }, what: "доступ после оплаты", to: { label: "Ученик + Родитель", zone: "green" } },
@@ -158,7 +158,7 @@ export const systemMap: SystemMap = {
       { from: { label: "Бухгалтер франчайзи", zone: "gold" }, what: "фин. дашборд — 1 в 2 кабинета", to: { label: "Куратор франшиз", zone: "purple" }, also: { label: "Руководитель", zone: "blue" } },
       { from: { label: "Финансист", zone: "gold" }, what: "финансы сети сводно", to: { label: "Руководитель", zone: "blue" } },
       { from: { label: "Франчайзи", zone: "purple" }, what: "роялти 20% ежемес.", to: { label: "Головной офис", zone: "blue" } },
-      { from: { label: "Родитель", zone: "blue" }, what: "оплата", to: { label: "Бухгалтер", zone: "gold" }, suffix: "подтверждает → билет" },
+      { from: { label: "Родитель", zone: "blue" }, what: "оплата (факт — M12/админ §6)", to: { label: "Бухгалтер", zone: "gold" }, suffix: "учёт (downstream) → билет" },
       { from: { label: "Франчайзи", zone: "purple" }, what: "взнос", to: { label: "Маркетинговый фонд", zone: "blue" }, suffix: "перераспределение" },
     ] },
   ],

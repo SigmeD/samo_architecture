@@ -96,7 +96,7 @@ export const hr: CabinetSpec = {
     ], source: "REG-DNM-HR-001 v1.1 §3" },
   ],
   crossLinks: [
-    { toCabinet: "director", direction: "both", label: "ВВЕРХ ПО ВЕРТИКАЛИ: HR подчиняется директору школы (Модель А; в Модели Б — на уровне сети, OQ-ORG-02). Согласование KPI-карт ролей и оргструктуры; отчёты по найму/укомплектованности/текучести — директору.", source: "REG-DNM-HR-001 v1.1 §1; CONV-ROLE-HIERARCHY-001 v1.11; reports 2026-06-10 §2" },
+    { toCabinet: "director", direction: "both", label: "ВВЕРХ ПО ВЕРТИКАЛИ: HR подчинён директору школы (в Модели Б — головному/наёмному директору сети). Согласование KPI-карт ролей и оргструктуры; отчёты по найму/укомплектованности/текучести — директору. (CONV-ROLES §2а; OQ-ORG-02 закрыт реш. владельца 12.06 — канон §2б/TZ §18.1 выравниваются, samo-docs PR #18/#19).", source: "REG-DNM-HR-001 v1.1 §1; CONV-ROLES-DNM-001 v1.6 §2а; CONV-ROLE-HIERARCHY-001 v1.11; reports 2026-06-10 §2" },
     { toCabinet: "finance", direction: "out", label: "Кадровый handoff в бухгалтерию: KPI-карты ролей и база персонала (ставка как кадровый атрибут) питают ФОТ — бухгалтер + движок SPEC-KPI-PAYOUT считают выплату (Фикс+Бонус−Штраф). HR НЕ считает выплаты (граница OQ-HR-02).", source: "REG-DNM-HR-001 v1.1 §2.3/§2.4; SPEC-KPI-PAYOUT-001 v1.3" },
   ],
   modules: [

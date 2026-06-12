@@ -26,7 +26,7 @@ export default function MapPage() {
           <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-samo-blue-b bg-samo-blue-l text-2xl" aria-hidden="true">🗺️</span>
           <div>
             <h1 className="font-display text-2xl font-extrabold leading-tight text-samo-blue-d md:text-3xl">Сводная карта системы</h1>
-            <p className="mt-1.5 text-xs font-semibold text-muted">Роли · иерархия · матрица доступа · карта передач — сверено с каноном RBAC v1.4</p>
+            <p className="mt-1.5 text-xs font-semibold text-muted">Роли · иерархия · матрица доступа · карта передач — сверено с каноном RBAC v1.6</p>
           </div>
         </div>
       </header>
