@@ -24,7 +24,7 @@ describe("кабинет директора школы (director)", () => {
   });
   it("связи director = franchise + school-admin + senior-curator (both), вертикаль не напрямую руководителю", () => {
     const dir = Object.fromEntries(director.crossLinks.map((l) => [l.toCabinet, l.direction]));
-    expect(dir).toEqual({ franchise: "both", "school-admin": "both", "senior-curator": "both" });
+    expect(dir).toEqual({ franchise: "both", "school-admin": "both", "senior-curator": "both", hr: "both" });
     expect(director.crossLinks.map((l) => l.toCabinet)).not.toContain("lead");
   });
   it("все связи резолвятся", () => {

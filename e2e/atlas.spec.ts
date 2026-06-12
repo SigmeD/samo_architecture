@@ -316,3 +316,19 @@ test("кабинет методиста: визуальный снимок (base
   await page.goto("/cabinet/methodist/");
   await expect(page).toHaveScreenshot("cabinet-methodist.png", { fullPage: true });
 });
+
+test("кабинет HR/рекрутинг: blue-зона, воронка найма, кадровые границы, обезличено", async ({ page }) => {
+  await page.goto("/cabinet/hr/");
+  await expect(page.getByRole("heading", { level: 1, name: /HR|рекрутинг/ })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Домены и функции" })).toBeVisible();
+  await expect(page.getByText(/воронк/i).first()).toBeVisible();
+  await expect(page.locator("body")).not.toContainText("50%");
+  await expect(page.locator("body")).not.toContainText(/Д[оа]влат|Гульшат/);
+  await page.getByRole("link", { name: /Директор школы/ }).first().click();
+  await expect(page).toHaveURL(/\/cabinet\/director/);
+});
+
+test("кабинет HR/рекрутинг: визуальный снимок (baseline)", async ({ page }) => {
+  await page.goto("/cabinet/hr/");
+  await expect(page).toHaveScreenshot("cabinet-hr.png", { fullPage: true });
+});
