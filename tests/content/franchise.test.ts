@@ -43,7 +43,7 @@ describe("кабинет франчайзи / директора (franchise)", (
     const map = Object.fromEntries(franchise.crossLinks.map((l) => [l.toCabinet, l.direction]));
     expect(map).toEqual({
       "franchise-curator": "both",
-      "school-admin": "both",
+      director: "both",
       finance: "both",
       parent: "both",
     });
