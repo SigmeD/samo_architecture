@@ -75,9 +75,9 @@ describe("кабинет родителя (parent)", () => {
     expect(blob).toMatch(/совместн\S*.*ребёнк|ДЗ.*с ребёнком/i);
     expect(blob).not.toMatch(/PRESENT|ABSENT|EXCUSED|LATE/);
   });
-  it("обоюдные (both) связи: child/curator/school-admin/franchise/sales; нет меток New", () => {
+  it("обоюдные (both) связи: child/curator/school-admin/franchise/sales/director; нет меток New", () => {
     const both = parent.crossLinks.filter((l) => l.direction === "both").map((l) => l.toCabinet).sort();
-    expect(both).toEqual(["child", "curator", "franchise", "sales", "school-admin"]);
+    expect(both).toEqual(["child", "curator", "director", "franchise", "sales", "school-admin"]);
     const anyNew =
       parent.domains.some((d) => d.isNew) ||
       parent.crossLinks.some((l) => l.isNew) ||

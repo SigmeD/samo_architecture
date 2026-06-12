@@ -41,6 +41,7 @@ describe("кабинет финансиста (finance)", () => {
       "franchise-curator": "out",
       sales: "in",
       parent: "in",
+      director: "both",
     });
   });
   it("финлиния ГО: связь на franchise-curator (отчёты школ вверх); прямой связи на lead НЕТ (через Финансист ГО заглушку)", () => {

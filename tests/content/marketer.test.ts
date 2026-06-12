@@ -58,6 +58,12 @@ describe("кабинет маркетолога (marketer) — 08.06", () => {
     expect(s?.direction).toBe("both");
     for (const l of marketer.crossLinks) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
   });
+  it("crossLink director = both: маркетолог (под РОП) подчиняется директору школы (орг-дерево)", () => {
+    const dir = marketer.crossLinks.find((l) => l.toCabinet === "director");
+    expect(dir, "связь к директору школы").toBeDefined();
+    expect(dir?.direction).toBe("both");
+    expect(dir?.label).toMatch(/директор\S* школ/i);
+  });
   it("C6: интеграции соцсетей/Google Ads через AI/API (автосбор статистики)", () => {
     const blob = JSON.stringify(marketer);
     expect(blob).toMatch(/AI\/API|через API/i);

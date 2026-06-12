@@ -98,6 +98,12 @@ describe("кабинет менеджера по продажам (sales) — р
     expect(sa?.label).toMatch(/договор/i);
     expect(sa?.label).toMatch(/подтвержда/i);
   });
+  it("crossLink director = both: менеджер (под РОП) подчиняется директору школы (орг-дерево)", () => {
+    const dir = sales.crossLinks.find((l) => l.toCabinet === "director");
+    expect(dir, "связь к директору школы").toBeDefined();
+    expect(dir?.direction).toBe("both");
+    expect(dir?.label).toMatch(/директор\S* школ/i);
+  });
   it("crossLink curator: пробное менеджер сам ИЛИ куратор по цепочке менеджер→админ→ст.куратор, под контролем качества", () => {
     const cur = sales.crossLinks.find((l) => l.toCabinet === "curator");
     expect(cur).toBeDefined();
