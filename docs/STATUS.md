@@ -3,6 +3,7 @@
 > Зеркало текущего состояния кода относительно дизайн-спеки и канона. Обновляется вместе с кодом.
 
 ## Сделано
+- [x] **12.06 — сессия gap-анализа канон↔атлас (Screenshot_4): всё смёржено в `main` (PR #10→#11→#12), прод verified.** T3 сплит Админ/Директор (`/director` + лёгкий `/school-admin`) · T4 ЛК HR/рекрутинг ДНМ · T5 ре-пин всех 15 кабинетов под канон 12.06 + ГО-маркеры `/map` · разрешён открытый дрейф C1–C5 (`docs/canon-proposals/2026-06-12-t5-open-drift.md`) · связи Директора расширены до 8 (Screenshot_4) · онбординг новичка + шкала развития L0–L5 франчайзи (`docs/onboarding-i-urovni-franchayzi.md`). typecheck 0 · test 278/278 · e2e 35/35 · vision-gate ✓. (Подробности — раздел «Расхождения 12.06» ниже + «В работе».)
 - [x] Дизайн-спека утверждена (`docs/superpowers/specs/2026-06-06-dnm-interactive-architecture-design.md`)
 - [x] Защитный git-снимок (`f134113`); `frontend-architecture.md` заменён на атласный (`0ea981d`)
 - [x] План вертикального среза «Куратор» (`docs/superpowers/plans/2026-06-06-dnm-curator-vertical-slice.md`)
