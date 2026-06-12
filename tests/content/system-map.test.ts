@@ -59,6 +59,26 @@ describe("сводная карта системы (system-map)", () => {
     const hasOqNote = dir!.cells.some((c) => typeof c === "object" && /OQ-ORG-03/.test(c.note ?? ""));
     expect(hasOqNote, "нет пометки OQ-ORG-03 на отложенных правах Директора").toBe(true);
   });
+  it("HR/рекрутинг: в иерархии и матрице; кадровый scope, учёба/финансы закрыты, per-resource RBAC отложен в OQ-ORG-03", () => {
+    const hierSlugs = systemMap.hierarchy.flatMap((t) => t.roles.map((r) => r.slug));
+    expect(hierSlugs).toContain("hr");
+    const hr = systemMap.matrix.rows.find((r) => r.slug === "hr");
+    expect(hr, "нет строки HR").toBeDefined();
+    expect(hr!.cells.length, "HR: ячеек ≠ числу разделов").toBe(systemMap.matrix.sections.length);
+    const idx = (label: string) => systemMap.matrix.sections.indexOf(label);
+    const cellLevel = (i: number) => {
+      const c = hr!.cells[i];
+      return typeof c === "object" ? c.level : c;
+    };
+    // учебные и финансовые данные HR закрыты (REG-DNM-HR-001 v1.1 §5)
+    expect(cellLevel(idx("Финансы сети"))).toBe("none");
+    expect(cellLevel(idx("Финансы школы"))).toBe("none");
+    expect(cellLevel(idx("Данные ученика"))).toBe("none");
+    // нет выдуманных full (нет per-resource RBAC-колонки у HR)
+    expect(hr!.cells.some((c) => (typeof c === "object" ? c.level : c) === "full"), "HR: выдуманный full").toBe(false);
+    // отложенные права помечены OQ-ORG-03
+    expect(hr!.cells.some((c) => typeof c === "object" && /OQ-ORG-03/.test(c.note ?? "")), "нет пометки OQ-ORG-03 у HR").toBe(true);
+  });
   it("матрица сослана на RBAC v1.6", () => {
     const rbac = systemMap.sources.find((s) => s.id === "CONV-RBAC-DNM-001");
     expect(rbac?.version).toBe("1.6");
