@@ -190,7 +190,7 @@ export const overview: OverviewSpec = {
       title: "Сеть и управление",
       cabinets: [
         {
-          slug: "franchise", emoji: "🏢", name: "Франчайзи / директор", roleCaption: "владелец мини-бизнеса · платит роялти за франшизу",
+          slug: "franchise", emoji: "🏢", name: "Франчайзи-партнёр", roleCaption: "собственник сети · владелец P&L · платит роялти (управление — у директора школы)",
           zone: "purple",
           highlights: [
             "Сеть школ → школы → группы → ученики → родители",

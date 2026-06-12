@@ -3,7 +3,7 @@ import { franchise } from "@/content/cabinets/franchise";
 import { CabinetSchema } from "@/content/schema";
 import { getCabinet } from "@/content/cabinets";
 
-describe("кабинет франчайзи / директора (franchise)", () => {
+describe("кабинет франчайзи-партнёра (franchise)", () => {
   it("валиден по CabinetSchema", () => {
     expect(() => CabinetSchema.parse(franchise)).not.toThrow();
   });
@@ -11,6 +11,16 @@ describe("кабинет франчайзи / директора (franchise)", (
     expect(franchise.zone).toBe("purple");
     expect(franchise.implStatus).toBe("planned");
     expect(franchise.isStub).toBeFalsy();
+  });
+  it("C4: роль расцеплена — title «Франчайзи-партнёр» (собственник), не конфлейтит директора; code сохранён", () => {
+    expect(franchise.role.code).toBe("pr2-franchayzi-dnm");
+    expect(franchise.role.title).toBe("Франчайзи-партнёр");
+    expect(franchise.role.title).not.toMatch(/директор/i);
+    const blob = JSON.stringify(franchise);
+    // идентичность собственника + операционка у директора школы (отдельный кабинет)
+    expect(blob).toMatch(/собственник/i);
+    expect(blob).toMatch(/op-direktor-shkoly-dnm|директор школы/i);
+    expect(franchise.crossLinks.some((l) => l.toCabinet === "director")).toBe(true);
   });
   it("ядро — цикл управления сетью (6 шагов)", () => {
     expect(franchise.coreProcess.title).toMatch(/сет|управлени/i);
