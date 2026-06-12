@@ -34,10 +34,15 @@ describe("кабинет методиста (methodist) — 09.06, новая р
     expect(blob).toMatch(/утвержда\S*\s*\/?\s*отклоня|подтвержда\S*.*(не правит|gate)/i);
     expect(blob).toMatch(/не правит/i);
   });
-  it("⚠ расхождение: авторинг переходит от куратора франшиз к методисту + конфликт с RBAC v1.4 → canon-proposal", () => {
+  it("✅ ратифицировано (T5): авторинг/конструктор программы у методиста — SPEC-M3-DNM-001 v2.10 FR-M3-013/101; ⚠ остаётся открытым шаг КФ-ревью (OQ-ORG-03 → canon-proposal C3)", () => {
     const blob = JSON.stringify(methodist);
     expect(blob).toMatch(/куратор\S*\s+франшиз/i);
-    expect(blob).toMatch(/CONV-RBAC-DNM-001 v1\.4/);
+    // дрейф ратифицирован M3 v2.10 — прежний флаг «конфликт с RBAC v1.4» снят
+    expect(blob).toMatch(/SPEC-M3-DNM-001 v2\.10/);
+    expect(blob).toMatch(/FR-M3-013\/101/);
+    expect(blob).toMatch(/ратифицир/i);
+    // остаётся открытым только шаг КФ-ревью (OQ-ORG-03)
+    expect(blob).toMatch(/OQ-ORG-03/);
     expect(blob).toMatch(/canon-proposal/i);
   });
   it("домен методконтента Бизнес-академии (курс куратора, 100 вопросов о дисциплине)", () => {

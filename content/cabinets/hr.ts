@@ -68,14 +68,14 @@ export const hr: CabinetSpec = {
       "Граница (OQ-HR-02): HR задаёт что мерить + таргеты; движок SPEC-KPI-PAYOUT считает ВЫПЛАТУ (Фикс+Бонус−Штраф). HR не считает выплат",
       "KPI-карты питают репутационные рейтинги ролей (SPEC-DNM-RATING §4)",
       "Согласование KPI-карт ролей и оргструктуры — с директором школы",
-    ], source: "REG-DNM-HR-001 v1.1 §2.3; SPEC-KPI-PAYOUT-001 v1.1; SPEC-DNM-RATING-001 v1.2 §4" },
+    ], source: "REG-DNM-HR-001 v1.1 §2.3; SPEC-KPI-PAYOUT-001 v1.3; SPEC-DNM-RATING-001 v1.5 §4" },
 
     { title: "🗂️ База данных персонала", items: [
       "System of record по сотрудникам: карточка (роль, школа, дата приёма, статус, документы, история ролей/переводов, результаты тестов/аттестаций, табель/отпуска)",
       "Ставка хранится как КАДРОВЫЙ АТРИБУТ — не платёж и не платёжная операция (выплату считает бухгалтер)",
       "Питает ФОТ (через SPEC-KPI-PAYOUT §2.4 + бухгалтер), оргструктуру и IAM/M1 (создание/деактивация учёток)",
       "ПДн персонала — OQ-HR-03 (на подтверждении)",
-    ], source: "REG-DNM-HR-001 v1.1 §2.4; SPEC-KPI-PAYOUT-001 v1.1 §2.4" },
+    ], source: "REG-DNM-HR-001 v1.1 §2.4; SPEC-KPI-PAYOUT-001 v1.3 §2.4" },
 
     { title: "🤝 Внутренняя политика / дисциплина / медиация", items: [
       "Регламенты входа/выхода сотрудника, корпоративный этикет, контроль соблюдения",
@@ -97,7 +97,7 @@ export const hr: CabinetSpec = {
   ],
   crossLinks: [
     { toCabinet: "director", direction: "both", label: "ВВЕРХ ПО ВЕРТИКАЛИ: HR подчиняется директору школы (Модель А; в Модели Б — на уровне сети, OQ-ORG-02). Согласование KPI-карт ролей и оргструктуры; отчёты по найму/укомплектованности/текучести — директору.", source: "REG-DNM-HR-001 v1.1 §1; CONV-ROLE-HIERARCHY-001 v1.11; reports 2026-06-10 §2" },
-    { toCabinet: "finance", direction: "out", label: "Кадровый handoff в бухгалтерию: KPI-карты ролей и база персонала (ставка как кадровый атрибут) питают ФОТ — бухгалтер + движок SPEC-KPI-PAYOUT считают выплату (Фикс+Бонус−Штраф). HR НЕ считает выплаты (граница OQ-HR-02).", source: "REG-DNM-HR-001 v1.1 §2.3/§2.4; SPEC-KPI-PAYOUT-001 v1.1" },
+    { toCabinet: "finance", direction: "out", label: "Кадровый handoff в бухгалтерию: KPI-карты ролей и база персонала (ставка как кадровый атрибут) питают ФОТ — бухгалтер + движок SPEC-KPI-PAYOUT считают выплату (Фикс+Бонус−Штраф). HR НЕ считает выплаты (граница OQ-HR-02).", source: "REG-DNM-HR-001 v1.1 §2.3/§2.4; SPEC-KPI-PAYOUT-001 v1.3" },
   ],
   modules: [
     { slug: "recruiting-funnel", title: "Воронка рекрутинга", status: "planned", summary: "Стадии и метрики воронки (обзвонил → пригласил → дошёл до теста → нанято), шаблоны вакансий, кадровый резерв по ролям. ⏸ ATS-автоматизация — planned (conditional, ADR-0002). REG-DNM-HR-001 v1.1 §2.1." },
@@ -113,7 +113,7 @@ export const hr: CabinetSpec = {
     { id: "CONV-ROLES-DNM-001", version: "1.6" },
     { id: "CONV-RBAC-DNM-001", version: "1.6" },
     { id: "CONV-ROLE-HIERARCHY-001", version: "1.11" },
-    { id: "SPEC-KPI-PAYOUT-001", version: "1.1" },
-    { id: "SPEC-DNM-RATING-001", version: "1.2" },
+    { id: "SPEC-KPI-PAYOUT-001", version: "1.3" },
+    { id: "SPEC-DNM-RATING-001", version: "1.5" },
   ],
 };

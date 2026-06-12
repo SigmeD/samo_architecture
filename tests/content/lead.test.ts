@@ -54,12 +54,13 @@ describe("кабинет руководителя проекта (lead) — об
     expect(fc?.isNew).toBeFalsy();
     for (const l of lead.crossLinks) if (!l.stub) expect(getCabinet(l.toCabinet), l.toCabinet).toBeDefined();
   });
-  it("финлиния ГО: прямая связь = ЗАГЛУШКА «Финансист ГО» (Само Глобал, не школьный бухгалтер)", () => {
+  it("финлиния ГО: ЗАГЛУШКА «Финансист ГО» = ГО-роль ДНМ (ратифицировано, не Само Глобал, не школьный бухгалтер)", () => {
     const f = lead.crossLinks.find((l) => l.stub === "Финансист ГО");
     expect(f, "нет stub-связи Финансист ГО").toBeDefined();
     expect(f?.direction).toBe("both");
-    expect(f?.label).toMatch(/напрямую/i);
-    expect(f?.label).toMatch(/Само Глобал/);
+    expect(f?.label).toMatch(/ГО-роль ДНМ|op-finansist-go-dnm/i);
+    // T5: framing «Само Глобал отдельный продукт» снят (ратифицировано ROLES v1.6 §2а)
+    expect(f?.label).not.toMatch(/Само Глобал/);
     expect(f?.label).toMatch(/НЕ школьный бухгалтер|отдельная финансовая линия/i);
     // прямой связи на кабинет бухгалтера (finance) быть НЕ должно — это ломало логику
     expect(lead.crossLinks.some((l) => l.toCabinet === "finance" && !l.stub)).toBe(false);
